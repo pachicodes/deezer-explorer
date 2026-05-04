@@ -1,114 +1,115 @@
 # Deezer Explorer
 
-Deezer Explorer is a static, responsive web app for discovering artists and albums through the public Deezer API. A user will search for an artist, pick one result, browse that artist's albums as cover cards, and open an album to see the tracklist, release date, and cover image.
+O Deezer Explorer é um app web estático e responsivo para descobrir artistas e álbuns por meio da API pública da Deezer. O usuário pesquisa um artista, escolhe um resultado, navega pelos álbuns desse artista em cartões de capa e abre um álbum para ver a lista de faixas, a data de lançamento e a imagem de capa.
 
-## Current Status
+## Estado atual
 
-This repository is at the very beginning of the project.
+Este repositório está no início do projeto.
 
-- PLAN.md is the source of truth for scope, stack, and implementation phases.
-- No application code has been implemented yet.
-- The repo currently contains planning artifacts only.
+- O **PLAN.md** é a fonte da verdade para escopo, stack e fases de implementação.
+- O **AGENTS.md** reúne notas de operação para quem implementa ou automatiza mudanças (incluindo agentes de IA).
+- Ainda não há código de aplicação implementado.
+- No momento, o repositório contém apenas artefatos de planejamento.
 
-## v1 Scope
+## Escopo da v1
 
-The first version is intentionally narrow. It will deliver one complete discovery flow:
+A primeira versão é propositalmente restrita. Entrega um fluxo completo de descoberta:
 
-1. Open the site.
-2. Search for an artist by name.
-3. View matching artist results.
-4. Select one artist.
-5. Browse that artist's albums as cards with cover art.
-6. Open one album.
-7. View the album tracklist, release date, and cover image.
+1. Abrir o site.
+2. Pesquisar um artista pelo nome.
+3. Ver os resultados correspondentes de artistas.
+4. Selecionar um artista.
+5. Navegar pelos álbuns desse artista em cartões com arte de capa.
+6. Abrir um álbum.
+7. Ver a lista de faixas do álbum, a data de lançamento e a imagem de capa.
 
-The v1 API surface is limited to these Deezer endpoints:
+A superfície de API da v1 limita-se a estes endpoints da Deezer:
 
-- GET /search/artist?q=...
-- GET /artist/{id}/albums
-- GET /album/{id}
+- `GET /search/artist?q=...`
+- `GET /artist/{id}/albums`
+- `GET /album/{id}`
 
-## User Flow
+## Fluxo do usuário
 
-The intended experience is simple and linear:
+A experiência pretendida é simples e linear:
 
-- The user lands on a search-focused home screen.
-- The user enters an artist name and submits the search.
-- The app shows artist matches.
-- The user chooses one artist.
-- The app shows that artist's albums as responsive cards.
-- The user opens one album to see the tracklist and release date.
+- O usuário chega a uma tela inicial focada na pesquisa.
+- O usuário informa o nome do artista e envia a pesquisa.
+- O app mostra correspondências de artistas.
+- O usuário escolhe um artista.
+- O app mostra os álbuns desse artista em cartões responsivos.
+- O usuário abre um álbum para ver a lista de faixas e a data de lançamento.
 
-The app must support loading, empty, and error states throughout that flow.
+O app deve oferecer estados de carregamento, vazio e erro em todo esse fluxo.
 
-## Chosen Stack
+## Stack escolhida
 
-The plan chooses one concrete direction:
+O plano define uma direção concreta:
 
 - Vite
 - React
 - TypeScript
-- Plain CSS with CSS variables and small, component-scoped styles
+- CSS puro com variáveis CSS e estilos pequenos escopados ao componente
 
-Why this stack:
+Por que esta stack:
 
-- Vite fits a static GitHub Pages deployment and keeps the build simple.
-- React gives a clean component model for search, results, album browsing, and album detail views.
-- TypeScript helps with API response handling from a small external surface area.
-- Plain CSS keeps dependencies low and avoids locking the project into a UI library before the product shape is proven.
+- O Vite combina com deploy estático no GitHub Pages e mantém o build simples.
+- O React oferece um modelo de componentes claro para pesquisa, resultados, navegação por álbuns e vista de detalhe do álbum.
+- O TypeScript ajuda no tratamento das respostas da API, com uma superfície externa pequena.
+- O CSS puro mantém dependências baixas e evita prender o projeto a uma biblioteca de UI antes da forma do produto estar validada.
 
-## Local Development
+## Desenvolvimento local
 
-The implementation has not started yet, so there is no running app today. The intended local workflow after the initial scaffold is added is:
+A implementação ainda não começou; portanto, hoje não há app em execução. O fluxo local pretendido, depois que o scaffold inicial for adicionado, é:
 
-1. Install dependencies.
-2. Start the Vite development server.
-3. Develop against the Deezer API and verify the main flow in the browser.
-4. Build the production bundle.
-5. Preview the production build locally before publishing.
+1. Instalar dependências.
+2. Subir o servidor de desenvolvimento do Vite.
+3. Desenvolver contra a API da Deezer e verificar o fluxo principal no browser.
+4. Gerar o bundle de produção.
+5. Fazer preview do build de produção localmente antes de publicar.
 
-The exact package scripts will be introduced when the project scaffold is created.
+Os scripts exatos do pacote serão introduzidos quando o scaffold do projeto for criado.
 
-## GitHub Pages Deployment
+## Deploy no GitHub Pages
 
-The final host for the app is GitHub Pages. Because this is a static site, the deployment must ensure that:
+O ambiente final do app é o GitHub Pages. Por ser um site estático, o deploy precisa garantir que:
 
-- asset paths resolve correctly under the repository subpath,
-- the chosen navigation approach works on a static host,
-- the published site still supports the full search-to-album flow.
+- os caminhos dos assets resolvam corretamente sob o subcaminho do repositório,
+- a abordagem de navegação escolhida funcione em um host estático,
+- o site publicado ainda suporte o fluxo completo da pesquisa até o álbum.
 
-If client-side routing is used, the routing strategy will need to stay compatible with GitHub Pages. If that becomes awkward, a hash-based approach may be the simpler option.
+Se for usado roteamento no lado do cliente, a estratégia precisa permanecer compatível com o GitHub Pages. Se isso ficar desconfortável, uma abordagem baseada em hash pode ser a opção mais simples.
 
-## Known Risks and Limitations
+## Riscos e limitações conhecidos
 
-The main technical risk is browser access to the Deezer API.
+O principal risco técnico é o acesso da Deezer a partir do browser.
 
-- Deezer may block direct browser requests with CORS.
-- If standard fetch does not work, a browser-safe fallback will be needed.
-- There is no backend in this project, so the solution must stay static-host friendly.
-- Album artwork and search results may vary in quality or completeness, so the UI must tolerate missing or uneven data.
-- The app must remain usable on mobile and with keyboard navigation.
+- A Deezer pode bloquear requisições diretas do browser com CORS.
+- Se o `fetch` padrão não funcionar, será necessário um fallback seguro para o browser.
+- Não há backend neste projeto; a solução precisa continuar adequada a host estático.
+- Arte dos álbuns e resultados de pesquisa podem variar em qualidade ou completude; a UI deve tolerar dados ausentes ou irregulares.
+- O app deve permanecer utilizável em mobile e com navegação por teclado.
 
-These constraints are part of the current plan and will be verified early, before deeper implementation work.
+Essas restrições fazem parte do plano atual e serão verificadas cedo, antes de aprofundar a implementação.
 
-## Next Steps
+## Próximos passos
 
-The immediate next steps are:
+Os próximos passos imediatos são:
 
-1. Confirm a browser-safe way to read the Deezer endpoints from a static site.
-2. Scaffold the Vite + React + TypeScript app.
-3. Build the app shell with loading, empty, and error states.
-4. Wire artist search and result selection.
-5. Add album browsing and album detail views.
-6. Verify accessibility and responsiveness.
-7. Configure GitHub Pages deployment.
+1. Confirmar uma forma segura no browser de ler os endpoints da Deezer a partir de um site estático.
+2. Criar o scaffold do app Vite + React + TypeScript.
+3. Construir o shell do app com estados de carregamento, vazio e erro.
+4. Integrar a pesquisa de artistas e a seleção de resultado.
+5. Adicionar navegação por álbuns e vistas de detalhe do álbum.
+6. Verificar acessibilidade e responsividade.
+7. Configurar o deploy no GitHub Pages.
 
-## Out of Scope For Now
+## Fora do escopo por enquanto
 
-- User accounts or authentication.
-- Saved favorites or persistent user data.
-- Search history.
-- Audio playback or previews.
-- Advanced filtering or sorting.
-- A custom backend or database.
-- Design polish beyond what is needed for clarity, usability, and responsiveness.
+- Contas de usuário ou autenticação.
+- Favoritos salvos ou dados persistentes do usuário.
+- Histórico de pesquisa.
+- Reprodução de áudio ou previews.
+- Filtragem ou ordenação avançada.
+- Backend customizado ou banco de dados.
+- Polimento de design além do necessário para clareza, usabilidade e responsividade.

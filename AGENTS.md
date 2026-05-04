@@ -1,108 +1,108 @@
-# Deezer Explorer Agent Operating Notes
+# Notas de operação do agente — Deezer Explorer
 
-## Project Overview
+## Visão geral do projeto
 
-Deezer Explorer is planned as a static, responsive web app for searching artists, browsing their albums, and opening album details through the public Deezer API. The product is intentionally narrow and focused on one primary flow:
+O Deezer Explorer está planejado como um app web estático e responsivo para pesquisar artistas, navegar pelos álbuns e abrir detalhes do álbum por meio da API pública da Deezer. O produto é propositalmente restrito e focado em um fluxo principal:
 
-1. Search for an artist.
-2. Pick one artist result.
-3. Browse that artist's albums as cover cards.
-4. Open one album.
-5. View the album tracklist, release date, and cover image.
+1. Pesquisar um artista.
+2. Escolher um resultado entre os artistas.
+3. Navegar pelos álbuns desse artista em cartões de capa.
+4. Abrir um álbum.
+5. Ver a lista de faixas, a data de lançamento e a imagem de capa do álbum.
 
-The final host is GitHub Pages. There is no backend, no authentication, and no database in scope.
+O ambiente final é o GitHub Pages. Não há backend, autenticação ou banco de dados no escopo.
 
-## Current v1 Scope
+## Escopo atual da v1
 
-The v1 plan is the source of truth for what should be built first. The current v1 scope is limited to the Deezer endpoints below:
+O plano da v1 é a fonte da verdade sobre o que construir primeiro. O escopo da v1 limita-se aos endpoints da Deezer abaixo:
 
-- GET /search/artist?q=...
-- GET /artist/{id}/albums
-- GET /album/{id}
+- `GET /search/artist?q=...`
+- `GET /artist/{id}/albums`
+- `GET /album/{id}`
 
-The v1 experience must support loading, empty, and error states, and it must remain usable on mobile and with keyboard navigation.
+A experiência da v1 deve oferecer estados de carregamento, vazio e erro, e permanecer utilizável em dispositivos móveis e com navegação por teclado.
 
-## Source of Truth
+## Fontes da verdade
 
-Use these files as the primary project sources of truth:
+Use estes arquivos como principais fontes da verdade do projeto:
 
-- PLAN.md for product scope, implementation phases, risks, and open decisions.
-- README.md for the current repository status, developer-facing summary, and the intended user flow.
+- **PLAN.md** — escopo do produto, fases de implementação, riscos e decisões em aberto.
+- **README.md** — estado atual do repositório, resumo voltado a desenvolvedores e fluxo pretendido do usuário.
 
-If there is any conflict between assumptions and these documents, update the documents first or align the code change with them.
+Se houver conflito entre suposições e esses documentos, atualize os documentos primeiro ou alinhe a alteração de código a eles.
 
-## How to Work in This Repository
+## Como trabalhar neste repositório
 
-Before proposing changes, read PLAN.md and README.md and use them to ground the next step. Do not invent stack choices, endpoints, workflow details, or deployment behavior that are not already supported by those files.
+Antes de propor mudanças, leia **PLAN.md** e **README.md** e use-os para fundamentar o próximo passo. Não invente escolhas de stack, endpoints, detalhes de fluxo ou comportamento de deploy que não estejam respaldados nesses arquivos.
 
-When the task requires implementation, work in small phases that can be validated independently. Prefer the smallest change that proves the next decision. Avoid broad rewrites or speculative architecture changes.
+Quando a tarefa exigir implementação, trabalhe em **fases pequenas** que possam ser validadas de forma independente. Prefira a menor mudança que prove a próxima decisão. Evite reescritas amplas ou mudanças arquiteturais especulativas.
 
-If a decision changes the scope, stack, workflow, or deployment model, update PLAN.md first and then refresh README.md so both documents stay consistent.
+Se uma decisão alterar escopo, stack, fluxo ou modelo de deploy, atualize **PLAN.md** primeiro e depois atualize **README.md** para manter os dois consistentes.
 
-## Current Technical State
+## Estado técnico atual
 
-The repository is still at the planning stage.
+O repositório ainda está na fase de planejamento.
 
-- There is no application code yet.
-- There are no documented build, test, or dev commands yet.
-- Any commands for local development, preview, or deployment will need to be introduced when the project scaffold is created.
+- Ainda não há código de aplicação.
+- Ainda não há comandos documentados de build, teste ou desenvolvimento.
+- Comandos para desenvolvimento local, preview ou deploy precisarão ser introduzidos quando o scaffold do projeto for criado.
 
-Do not assume package managers, scripts, or folder structure that are not present in the repository.
+Não assuma gerenciadores de pacotes, scripts ou estrutura de pastas que não existam no repositório.
 
-## Quality Expectations
+## Expectativas de qualidade
 
-Keep changes specific, testable, and aligned with the documented flow.
+Mantenha mudanças específicas, testáveis e alinhadas ao fluxo documentado.
 
-- Validate the browser-safe Deezer access path early because CORS is a real risk.
-- Preserve mobile-first behavior and keyboard usability.
-- Treat loading, empty, and error states as required behavior, not optional polish.
-- Keep dependencies low unless a dependency solves a concrete problem already identified in the plan.
-- Make sure GitHub Pages compatibility remains part of every implementation decision.
+- Valide cedo o caminho de acesso à Deezer seguro para o browser, pois **CORS** é um risco real.
+- Preserve comportamento mobile first e usabilidade com teclado.
+- Trate estados de carregamento, vazio e erro como **comportamento obrigatório**, não como polimento opcional.
+- Mantenha dependências baixas, salvo se uma dependência resolver um problema concreto já identificado no plano.
+- Garanta que a compatibilidade com **GitHub Pages** faça parte de toda decisão de implementação.
 
-## Validation Expectations
+## Expectativas de validação
 
-Use the cheapest meaningful validation for the change you made.
+Use a validação mais barata que ainda seja significativa para a mudança feita.
 
-- For documentation changes, verify the file content directly and confirm the wording matches the plan.
-- For implementation changes, validate the touched slice before expanding scope.
-- For any API-access decision, confirm the browser behavior rather than assuming the Deezer API will accept standard requests.
+- Para mudanças em documentação, verifique o conteúdo do arquivo diretamente e confirme que a redação está alinhada ao plano.
+- Para mudanças de implementação, valide o recorte tocado antes de expandir o escopo.
+- Para qualquer decisão de acesso à API, confirme o comportamento no browser em vez de assumir que a API da Deezer aceitará requisições padrão.
 
-If a narrow validation exists, run it before doing unrelated follow-up work.
+Se existir uma validação estreita, execute-a antes de trabalhos de acompanhamento não relacionados.
 
-## Document Update Rules
+## Regras de atualização de documentos
 
-Update PLAN.md when any of these change:
+Atualize **PLAN.md** quando qualquer um destes itens mudar:
 
-- the scope of v1,
-- the stack choice,
-- the implementation phases,
-- the known risks,
-- the open decisions that affect how the app is built.
+- escopo da v1,
+- escolha de stack,
+- fases de implementação,
+- riscos conhecidos,
+- decisões em aberto que afetem como o app é construído.
 
-Update README.md when any of these change:
+Atualize **README.md** quando qualquer um destes itens mudar:
 
-- the project summary,
-- the current repository status,
-- the documented user flow,
-- the local development story,
-- the deployment story,
-- the high-level risks and next steps.
+- resumo do projeto,
+- estado atual do repositório,
+- fluxo de usuário documentado,
+- história de desenvolvimento local,
+- história de deploy,
+- riscos de alto nível e próximos passos.
 
-Keep both documents honest. If the implementation has not started, say that clearly instead of describing a finished product.
+Mantenha os dois documentos honestos. Se a implementação ainda não começou, diga isso claramente em vez de descrever um produto pronto.
 
-## What Not to Invent or Assume
+## O que não inventar nem assumir
 
-Do not introduce any of the following without explicit alignment with the plan:
+Não introduza nenhum dos itens abaixo sem alinhamento explícito com o plano:
 
-- a backend service,
-- authentication,
-- a database,
-- audio playback or previews,
-- saved favorites,
-- search history,
-- advanced filtering or sorting,
-- a UI framework or dependency-heavy design system,
-- a routing approach that breaks GitHub Pages compatibility,
-- commands that are not actually present in the repository.
+- serviço de backend,
+- autenticação,
+- banco de dados,
+- reprodução de áudio ou previews,
+- favoritos salvos,
+- histórico de pesquisa,
+- filtragem ou ordenação avançada,
+- framework de UI ou design system com muitas dependências,
+- abordagem de roteamento que quebre a compatibilidade com GitHub Pages,
+- comandos que na prática não existam no repositório.
 
-If a requirement is still open, keep it open and document the decision point rather than guessing.
+Se um requisito ainda estiver em aberto, mantenha-o em aberto e documente o ponto de decisão em vez de chutar.
