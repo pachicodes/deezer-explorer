@@ -41,6 +41,9 @@ The first version includes exactly this user journey:
 - TypeScript reduces mistakes in API response handling, which matters because the app will depend on a small number of external payloads.
 - Plain CSS keeps dependencies low and avoids adding a UI library before the product shape is proven.
 
+### Stack decision status
+This stack is the default direction for v1 and should stay in place unless a concrete implementation problem appears. At the moment, there is no reason to change it.
+
 ## Implementation Plan
 
 ### Phase 1 - Confirm API access path
@@ -48,17 +51,20 @@ The first version includes exactly this user journey:
 Verify how the browser can reliably read Deezer data without a custom backend.
 
 **Deliverables**
-- A documented decision for the API access strategy.
-- A small request wrapper design that fits the chosen approach.
+- A documented decision for the browser access strategy.
+- A minimal request wrapper shape for the three required endpoints.
+- A clear note about whether the app can use direct fetch, needs a fallback, or needs a different browser-safe approach.
 
 **Criteria for acceptance**
 - At least one browser-safe approach is confirmed for all three required endpoints.
 - The approach is compatible with a static site on GitHub Pages.
 - The approach is simple enough to keep the app dependency-light.
+- The chosen strategy is confirmed with an actual browser test, not just by reading documentation.
 
 **Manual validation**
 - Open the planned target URLs in a browser context.
-- Confirm search, artist albums, and album detail requests can be made from the client side without failing due to CORS or mixed-content issues.
+- Test the three required requests from the browser.
+- Verify the result is usable without a backend and without violating CORS or mixed-content constraints.
 
 **Risks**
 - Deezer may block direct browser requests with CORS.
@@ -72,25 +78,26 @@ Verify how the browser can reliably read Deezer data without a custom backend.
 
 ### Phase 2 - App shell and navigation structure
 **Objective**
-Create the minimal application structure that supports the full flow without data complexity.
+Create the minimal application shell that supports the full flow without data complexity.
 
 **Deliverables**
-- A responsive app shell.
-- Search input area.
-- Results view placeholder.
-- Album list view placeholder.
-- Album detail view placeholder.
-- Clear loading, empty, and error states.
+- A responsive shell with a search area, a results area, an album list area, and an album detail area.
+- A single shared state model for loading, empty, error, and success states.
+- Keyboard-friendly focus order across the major areas.
+- Visual placeholders for the three main content states before real data is wired.
 
 **Criteria for acceptance**
 - The app has a visible, usable layout on mobile and desktop.
 - The main flow can be followed without the page breaking or requiring a mouse.
 - Focus order is predictable and keyboard-friendly.
+- The shell renders cleanly with no Deezer data present.
+- State transitions between loading, empty, error, and success are visible in the UI.
 
 **Manual validation**
 - Resize the browser from narrow mobile width to desktop width.
 - Tab through the interface and confirm focus reaches interactive elements in a logical order.
 - Confirm state transitions do not cause layout jumps that make the page hard to use.
+- Reload the page with no data loaded and confirm the shell still makes sense.
 
 **Risks**
 - The UI can become cluttered if search, results, and details all compete for the same screen space.
@@ -105,20 +112,24 @@ Create the minimal application structure that supports the full flow without dat
 Wire the search form to Deezer artist search and allow the user to choose one artist.
 
 **Deliverables**
-- Search submission flow.
+- Working artist search submission.
 - Artist result list with name and image where available.
 - Selection behavior that stores the chosen artist in app state.
-- Empty-state message when no results are returned.
+- Empty-state and error handling for search failures.
+- A way to clear or replace the current artist selection by searching again.
 
 **Criteria for acceptance**
 - Submitting an artist name shows matching artists from the API.
 - Selecting a result moves the user into the album browsing step.
 - Search errors are shown in a clear, non-blocking way.
+- Search works with keyboard-only input.
+- A no-result search shows a specific empty state instead of a broken screen.
 
 **Manual validation**
 - Search for a known artist and confirm the result list updates.
 - Search for a nonsense term and confirm the empty state appears.
 - Repeat the search using only the keyboard.
+- Repeat the search after an initial result and confirm the previous selection is replaced in a predictable way.
 
 **Risks**
 - Search results may be noisy or inconsistent, so the UI needs to make selection unambiguous.
@@ -134,20 +145,24 @@ Load the selected artist's albums and then fetch a chosen album's details.
 
 **Deliverables**
 - Album grid or list with cover cards.
-- Album selection behavior.
+- Album selection behavior that loads the chosen album details.
 - Album detail view showing cover, release date, and tracklist.
 - Back navigation to the artist album list.
+- Loading and error states for album list and album detail requests.
 
 **Criteria for acceptance**
 - Selecting an artist loads the corresponding albums.
 - Selecting an album loads its detail view.
 - The album tracklist is readable and ordered as provided by the API.
 - The user can go back without losing the selected artist context.
+- A failed album request does not erase the selected artist context.
+- The album list remains usable after a detail view is closed.
 
 **Manual validation**
 - Select an artist, open an album, and verify the detail view shows the correct cover and release date.
 - Navigate back and confirm the album list remains available.
 - Use keyboard-only navigation for the same path.
+- Open a second album from the same artist and confirm the new detail view replaces the old one cleanly.
 
 **Risks**
 - Album artwork sizes may vary, so the layout must avoid distorted images.
@@ -166,16 +181,21 @@ Make the app reliable enough for real use on keyboard and mobile before publishi
 - Semantically correct buttons, headings, and landmarks.
 - Sane fallback behavior for missing images and failed requests.
 - Responsive spacing and text sizing tuned for small screens.
+- Clear labels for search, result selection, album selection, and back navigation.
+- A final pass on image fallbacks and loading states.
 
 **Criteria for acceptance**
 - The core flow works with keyboard only.
 - The UI remains readable at common mobile widths.
 - Failed network requests do not leave the app in a broken state.
+- The focus ring is visible and usable on every interactive control.
+- The app can complete the core flow without pointer input.
 
 **Manual validation**
 - Run through the full flow using only Tab, Shift+Tab, Enter, and Escape where applicable.
 - Test on a mobile-width viewport.
 - Force a network failure or invalid query and confirm the error state is understandable.
+- Check the page with images missing or delayed and confirm the layout stays stable.
 
 **Risks**
 - Accessibility issues often appear only after real keyboard testing, so this phase should not be skipped.
@@ -193,16 +213,19 @@ Publish the static app and verify it works from the final production URL.
 - GitHub Pages deployment configuration.
 - Production build settings that match the repository path and asset base URL.
 - A final smoke test on the live site.
+- A documented deployment checklist that matches the actual build setup.
 
 **Criteria for acceptance**
 - The app loads correctly from GitHub Pages.
 - Static assets resolve under the repository path.
 - The main Deezer flow works in production, not only locally.
+- Refreshing the page on the live site does not break the expected user flow.
 
 **Manual validation**
 - Open the deployed GitHub Pages URL.
 - Repeat the main search-to-album flow.
 - Confirm refresh and deep navigation behavior are acceptable for the chosen routing approach.
+- Verify static assets and cover images load from the deployed path.
 
 **Risks**
 - GitHub Pages path handling can break asset loading if the base path is not configured correctly.
