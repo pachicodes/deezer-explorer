@@ -11,20 +11,21 @@ O produto é propositalmente restrito: concentra-se em um fluxo claro de descobe
 Implementadores e automação devem tratar o **AGENTS.md** como restrições de operação junto com este arquivo:
 
 - **PLAN.md** (este documento): escopo do produto, fases, riscos e decisões em aberto que afetam como o app é construído.
-- **README.md**: estado do repositório, resumo para desenvolvedores, fluxo do usuário e história de desenvolvimento/deploy quando existir.
+- **README.md**: estado do repositório, resumo para desenvolvedores, fluxo do usuário e histórico de desenvolvimento/publicação quando existir.
 
 Trabalhe em **fases pequenas**, cada uma produzindo algo **verificável de forma independente**. Prefira a menor mudança que prove a próxima decisão. Não introduza escolhas de stack, roteamento ou fluxo que quebrem a compatibilidade com GitHub Pages ou que não estejam fundamentadas aqui. Se escopo, stack, fases, riscos ou decisões que afetem o build mudarem, atualize este arquivo primeiro e mantenha o **README.md** consistente.
 
-**Estado atual do repositório:** fase de planejamento; ainda não há scaffold da aplicação nem comandos de desenvolvimento documentados. As primeiras fases que introduzirem ferramentas também devem documentar os comandos mínimos para executar e compilar o app.
+**Estado atual do repositório:** fase de planejamento; ainda não há estrutura inicial da aplicação nem comandos de desenvolvimento documentados. As primeiras fases que introduzirem ferramentas também devem documentar os comandos mínimos para executar e compilar o app.
 
 ## Escopo da v1
 
-A primeira versão inclui exatamente esta jornada do usuário:
+A primeira versão inclui exatamente esta jornada do usuário.
+Observação: a etapa de pesquisa retorna uma lista de possíveis correspondências, e o usuário escolhe o artista correto dentro dessa lista.
 
 1. Abrir o site.
 2. Pesquisar um artista pelo nome.
-3. Ver os resultados da pesquisa de artistas.
-4. Selecionar um artista.
+3. Ver os artistas retornados pela pesquisa.
+4. Selecionar o artista correto entre os resultados.
 5. Ver a lista de álbuns desse artista em cartões com capas.
 6. Abrir um álbum.
 7. Ver a lista de faixas do álbum, a data de lançamento e a imagem de capa.
@@ -55,19 +56,19 @@ A primeira versão inclui exatamente esta jornada do usuário:
 
 ### Por que esta stack
 
-- Combina com deploy estático no GitHub Pages e uma base de código pequena.
+- Combina com publicação estática no GitHub Pages e uma base de código pequena.
 - TypeScript ajuda nas poucas formas de resposta externa das quais o app depende.
 - CSS puro está alinhado ao objetivo de manter poucas dependências.
 
 ### Status da decisão de stack
 
-Esta stack permanece o padrão da v1 **salvo se surgir um problema concreto de implementação** (por exemplo, restrição de build incompatível ou bloqueio que só outra cadeia de ferramentas resolva). Não há mudança de stack nesta revisão; as fases abaixo assumem Vite + React + TypeScript + CSS puro.
+Esta stack permanece o padrão da v1 **salvo se surgir um problema concreto de implementação** (por exemplo, restrição de build incompatível ou bloqueio que só outra toolchain resolva). Não há mudança de stack nesta revisão; as fases abaixo assumem Vite + React + TypeScript + CSS puro.
 
 ---
 
 ## Fases de implementação
 
-Cada fase abaixo é propositalmente **estreita**, termina com **critérios de aceite explícitos** e deve ser **validada** antes da seguinte. Use a validação mais barata que ainda seja significativa (passos manuais são aceitáveis onde ainda não houver testes automatizados).
+Cada fase abaixo é propositalmente **estreita**, termina com **critérios de aceite explícitos** e deve ser **validada** antes da seguinte. Use a validação mais barata que ainda seja significativa (validações manuais são aceitáveis onde ainda não houver testes automatizados).
 
 ### Fase 1 — Acesso à Deezer seguro no browser (caminho da API)
 
@@ -86,7 +87,7 @@ Demonstrar como o browser pode ler dados da Deezer nos três endpoints da v1 sem
 **Critérios de aceite**
 
 1. Pelo menos uma abordagem está **confirmada em um browser real** (não só lendo documentação de terceiros) para os três endpoints.
-2. A abordagem escolhida é **compatível com deploy estático no GitHub Pages** (sem servidor privado obrigatório controlado por este app).
+2. A abordagem escolhida é **compatível com publicação estática no GitHub Pages** (sem servidor privado obrigatório controlado por este app).
 3. A abordagem é **simples o suficiente** para manter o cliente com poucas dependências; se fosse necessário proxy ou serviço intermediário, isso seria mudança de escopo e deve ser registrado aqui antes.
 4. Riscos e itens de continuidade (por exemplo, limites de taxa, formas de erro) estão **listados** para a próxima fase.
 
@@ -102,7 +103,7 @@ Demonstrar como o browser pode ler dados da Deezer nos três endpoints da v1 sem
 
 ---
 
-### Fase 2 — Scaffold da cadeia de ferramentas (sem UI de produto)
+### Fase 2 — Estrutura inicial da toolchain (sem UI de produto)
 
 **Objetivo**  
 Criar o menor projeto Vite + React + TypeScript que compila e roda localmente, preparado para configuração consciente do GitHub Pages depois.
@@ -116,13 +117,13 @@ Criar o menor projeto Vite + React + TypeScript que compila e roda localmente, p
 **Critérios de aceite**
 
 1. Um novo colaborador consegue subir o servidor de desenvolvimento e ver o app usando apenas comandos documentados.
-2. `npm run build` (ou equivalente do gerenciador escolhido) conclui sem erros e gera assets estáticos em `dist` (ou padrão do Vite).
+2. `npm run build` (ou equivalente do gerenciador escolhido) conclui sem erro e gera assets estáticos em `dist` (ou padrão do Vite).
 3. Nenhuma dependência de produção é adicionada em violação a “poucas dependências” sem motivo registrado neste plano.
 4. O repositório reflete que o projeto deixa de ser “somente planejamento” no que diz respeito a ferramentas (linha de status do README quando você atualizar o README).
 
 **Validação manual**
 
-- Instalação limpa, executar dev, executar build, abrir preview do build se for usado.
+- Instalação limpa, executar dev, executar build, abrir visualização local do build se for usado.
 
 **Riscos**
 
@@ -234,7 +235,7 @@ Carregar álbuns do artista selecionado e mostrar detalhe com lista de faixas, d
 **Critérios de aceite**
 
 1. Álbuns exibidos após selecionar artista correspondem a esse artista na API.
-2. A vista de detalhe corresponde ao id do álbum selecionado (conferir título e contagem de faixas).
+2. A tela de detalhes corresponde ao id do álbum selecionado (conferir título e contagem de faixas).
 3. Voltar retorna à lista de álbuns com a lista ainda utilizável; o segundo álbum substitui o detalhe de forma limpa.
 4. Listas longas de faixas rolam ou quebram linha sem destruir o layout da página.
 5. Teclado: o usuário vai dos álbuns ao detalhe e **volta** sem mouse.
@@ -282,9 +283,9 @@ Publicar o build estático e confirmar o comportamento na URL real do Pages.
 
 **Entregas**
 
-- GitHub Actions ou deploy manual documentado que publique a saída `dist` do Vite no GitHub Pages.
+- GitHub Actions ou publicação manual documentada que publique a saída `dist` do Vite no GitHub Pages.
 - **URL base** / `base` no Vite alinhado ao caminho do repositório (site de projeto versus site de usuário); links de assets funcionando.
-- **Checklist de deploy** curto no README (quando o README for atualizado): build, base path, teste de fumaça.
+- **Checklist de publicação** curto no README (quando o README for atualizado): build, base path, teste de fumaça.
 
 **Critérios de aceite**
 
@@ -321,4 +322,3 @@ Hospedagem estática mantém as operações simples; o principal risco é **base
 - Recursos no servidor, bancos de dados ou backend próprio controlado por este projeto.
 - Frameworks de UI ou design systems com muitas dependências.
 - Polimento visual além do necessário para clareza, usabilidade, responsividade e acessibilidade conforme acima.
- 

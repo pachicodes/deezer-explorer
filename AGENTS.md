@@ -33,11 +33,11 @@ Se houver conflito entre suposições e esses documentos, atualize os documentos
 
 ## Como trabalhar neste repositório
 
-Antes de propor mudanças, leia **PLAN.md** e **README.md** e use-os para fundamentar o próximo passo. Não invente escolhas de stack, endpoints, detalhes de fluxo ou comportamento de deploy que não estejam respaldados nesses arquivos.
+Antes de propor mudanças, leia **PLAN.md** e **README.md** e use-os para fundamentar o próximo passo. Não invente escolhas de stack, endpoints, detalhes de fluxo ou comportamento de publicação que não estejam respaldados nesses arquivos.
 
 Quando a tarefa exigir implementação, trabalhe em **fases pequenas** que possam ser validadas de forma independente. Prefira a menor mudança que prove a próxima decisão. Evite reescritas amplas ou mudanças arquiteturais especulativas.
 
-Se uma decisão alterar escopo, stack, fluxo ou modelo de deploy, atualize **PLAN.md** primeiro e depois atualize **README.md** para manter os dois consistentes.
+Se uma decisão alterar escopo, stack, fluxo ou modelo de publicação, atualize **PLAN.md** primeiro e depois atualize **README.md** para manter os dois consistentes.
 
 ## Estado técnico atual
 
@@ -45,7 +45,7 @@ O repositório ainda está na fase de planejamento.
 
 - Ainda não há código de aplicação.
 - Ainda não há comandos documentados de build, teste ou desenvolvimento.
-- Comandos para desenvolvimento local, preview ou deploy precisarão ser introduzidos quando o scaffold do projeto for criado.
+- Comandos para desenvolvimento local, visualização local ou publicação precisarão ser introduzidos quando a estrutura inicial do projeto for criada.
 
 Não assuma gerenciadores de pacotes, scripts ou estrutura de pastas que não existam no repositório.
 
@@ -85,7 +85,7 @@ Atualize **README.md** quando qualquer um destes itens mudar:
 - estado atual do repositório,
 - fluxo de usuário documentado,
 - história de desenvolvimento local,
-- história de deploy,
+- histórico de publicação,
 - riscos de alto nível e próximos passos.
 
 Mantenha os dois documentos honestos. Se a implementação ainda não começou, diga isso claramente em vez de descrever um produto pronto.
