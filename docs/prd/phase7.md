@@ -30,7 +30,7 @@ This phase is a **polish and audit** pass on [`src/shell/AppShell.tsx`](../../sr
 
 ## Out of scope
 
-- **Phase 8** — GitHub Pages pipeline, **`base`** URL, production smoke (separate PRD / phase).
+- **Phase 8** — GitHub Pages pipeline, **`base`** URL, production smoke ([`phase8.md`](./phase8.md)).
 
 - **WCAG formal audit** or third-party certification — this phase is **project-defined** acceptance only.
 

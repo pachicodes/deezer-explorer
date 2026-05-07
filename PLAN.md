@@ -15,7 +15,7 @@ Implementers and automation must treat **AGENTS.md** as operating constraints al
 
 Work in **small phases**, each producing something **independently verifiable**. Prefer the smallest change that proves the next decision. Do not introduce stack, routing, or flow choices that break GitHub Pages compatibility or are not grounded here. If scope, stack, phases, risks, or build-affecting decisions change, update this file first and keep **README.md** consistent.
 
-**Repository status:** **Phase 3 — complete**; **Phase 4 — complete** (mock shell + [`docs/prd/phase4.md`](docs/prd/phase4.md) checklist closed). **Phase 5 — implemented** ([`docs/prd/phase5.md`](docs/prd/phase5.md)); PRD closure optional pending §§1 & §3 manual checks ([`reports/phase-5-report.md`](reports/phase-5-report.md)). **Phase 6 — implemented** ([`docs/prd/phase6.md`](docs/prd/phase6.md); [`reports/phase-6-report.md`](reports/phase-6-report.md)); PRD manual checklist may remain open until browser verification. **Phase 7 — implemented** ([`docs/prd/phase7.md`](docs/prd/phase7.md)); PRD **§§1–5** browser validation pending. Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** **Phase 8** GitHub Pages per [`PLAN.md`](PLAN.md#phase-8--github-pages-publishing).
+**Repository status:** **Phase 3 — complete**; **Phase 4 — complete** (mock shell + [`docs/prd/phase4.md`](docs/prd/phase4.md) checklist closed). **Phase 5 — implemented** ([`docs/prd/phase5.md`](docs/prd/phase5.md)); PRD closure optional pending §§1 & §3 manual checks ([`reports/phase-5-report.md`](reports/phase-5-report.md)). **Phase 6 — implemented** ([`docs/prd/phase6.md`](docs/prd/phase6.md); [`reports/phase-6-report.md`](reports/phase-6-report.md)); PRD manual checklist may remain open until browser verification. **Phase 7 — implemented** ([`docs/prd/phase7.md`](docs/prd/phase7.md)); PRD **§§1–5** browser validation pending. Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** **Phase 8** GitHub Pages per [`docs/prd/phase8.md`](docs/prd/phase8.md) / [`PLAN.md`](PLAN.md#phase-8--github-pages-publishing).
 
 ## v1 scope
 
@@ -283,6 +283,8 @@ Close gaps for real keyboard/mobile use and unstable network or images.
 ---
 
 ### Phase 8 — GitHub Pages publishing
+
+**PRD:** [`docs/prd/phase8.md`](docs/prd/phase8.md).
 
 **Goal**  
 Publish the static build and confirm behavior at the real Pages URL.
