@@ -8,3 +8,50 @@
   color: #444;
   margin-top: 0.75rem;
 }
+
+.dev-panel {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #ccc;
+  max-width: 42rem;
+}
+
+.dev-panel-title {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.dev-panel-help {
+  font-size: 0.875rem;
+  color: #555;
+  margin: 0 0 1rem;
+}
+
+.dev-panel-help code {
+  font-size: 0.8125rem;
+}
+
+.dev-panel-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.dev-panel-buttons button {
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+}
+
+.dev-panel-log {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  background: #f6f6f6;
+  padding: 0.75rem;
+  overflow: auto;
+  max-height: 14rem;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

@@ -41,11 +41,11 @@ If a decision changes scope, stack, flow, or publishing model, update **PLAN.md*
 
 ## Current technical state
 
-The repository contains the **initial toolchain** for the app (Phase 2):
+The repository contains the **Phase 2 toolchain** plus the **Phase 3 Deezer client**:
 
 - **Vite + React + TypeScript** at the repo root, with `package.json`, `dev`, `build`, and `preview` scripts, and production output in `dist/`.
-- Dev and build commands are documented in [`README.md`](README.md).
-- Current UI is **placeholder** only; Deezer API integration belongs to **later phases** ([`PLAN.md`](PLAN.md)).
+- **Deezer v1 API access** is centralized in [`src/lib/deezer`](src/lib/deezer) using **JSONP only** (see [`docs/prd/phase1.md`](docs/prd/phase1.md), [`docs/prd/phase3.md`](docs/prd/phase3.md)).
+- Product UI is still **placeholder**; Phase 4+ builds the shell and wires real flows ([`PLAN.md`](PLAN.md)).
 
 Use **npm** and the root `package-lock.json` for reproducible installs, as in the README.
 

@@ -15,11 +15,11 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 1** is **complete**: browser API access decision (CORS / JSONP) in [`docs/prd/phase1.md`](docs/prd/phase1.md).
 
-**Phase 2** is **complete**: **Vite + React + TypeScript** at the root, with `dev`, `build`, and `preview` scripts; validation is recorded in [`docs/prd/phase2.md`](docs/prd/phase2.md). The UI is **placeholder** only — **no Deezer integration** until **Phase 3** ([`PLAN.md`](PLAN.md)).
+**Phase 2** is **complete**: **Vite + React + TypeScript** at the root, with `dev`, `build`, and `preview` scripts; validation is recorded in [`docs/prd/phase2.md`](docs/prd/phase2.md).
 
-**Phase 3** is **in planning / implementation next**: PRD and checklist in [`docs/prd/phase3.md`](docs/prd/phase3.md) — Deezer client module (three endpoints, JSONP only).
+**Phase 3** is **implemented**: JSONP client for the three v1 endpoints lives in [`src/lib/deezer`](src/lib/deezer); PRD and checklist in [`docs/prd/phase3.md`](docs/prd/phase3.md). A **dev-only** smoke-test panel appears when you run `npm run dev` (not in production preview/build output until later phases import the client).
 
-**Next step:** Implement Phase 3 per that PRD (then Phase 4 — app shell).
+**Next step:** Phase 4 — app shell and layout ([`PLAN.md`](PLAN.md)).
 
 ## Local development
 
@@ -51,10 +51,27 @@ Useful to sanity-check static artifacts:
 npm run preview
 ```
 
+### Phase 3 — validating the Deezer client (PRD)
+
+Run **`npm run dev`** (not `preview`) so the **Phase 3 — client smoke tests** panel is visible. Click each button and confirm the log:
+
+| Button | PRD check |
+| --- | --- |
+| Search “daft punk” | Search happy path: ≥1 hit with `id` + `name` |
+| Albums artist 27 | Album list: entries with `id` + `title` |
+| Album 494309801 | Detail: `title`, `release_date`, track count |
+| Parse fail (bad id) | Structured error (`parse`), no uncaught exception |
+| Timeout (1ms) | Structured error (`timeout`), no hang |
+
+Optional: DevTools **offline** or block `api.deezer.com` → expect `network` / `timeout`-style failure from a happy-path button.
+
+Then tick the **Manual validation** boxes in [`docs/prd/phase3.md`](docs/prd/phase3.md).
+
 ## Important documents
 
 - [`PLAN.md`](PLAN.md): v1 scope, phases, acceptance themes, risks, and decisions.
 - [`docs/prd/phase1.md`](docs/prd/phase1.md): Phase 1 PRD and execution log (CORS, JSONP, manual validation).
+- [`docs/prd/phase2.md`](docs/prd/phase2.md): Phase 2 PRD (toolchain).
 - [`docs/prd/phase3.md`](docs/prd/phase3.md): Phase 3 PRD — Deezer client module (JSONP, three endpoints).
 - [`AGENTS.md`](AGENTS.md): rules for implementers and automation.
 - [`GLOSSARY.md`](GLOSSARY.md): explanation of technical terms used in the repo.

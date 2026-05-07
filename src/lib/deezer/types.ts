@@ -8,6 +8,11 @@ export type DeezerResult<T> =
   | { ok: true; data: T }
   | { ok: false; error: DeezerClientError }
 
+/** Optional tuning for tests / dev tools (default timeout remains 15s). */
+export type DeezerCallOptions = {
+  timeoutMs?: number
+}
+
 /** Search result row (narrow model for later UI). */
 export type ArtistSearchHit = {
   id: number

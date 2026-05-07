@@ -78,12 +78,21 @@ Provide a **single client layer** in the application that performs all v1 Deezer
 ### Context
 
 - PRD authored: 2026-05-07
-- Implementation status: **pending** (fill when Phase 3 code lands)
+- Implementation landed: 2026-05-07
 - Node / toolchain: per [`phase2.md`](./phase2.md) (Vite + React + TypeScript)
 
 ### Decisions made during implementation
 
-*(Add rows when implementing: module path, timeout value, exact error type shape, whether dev triggers use `import.meta.env.DEV`, etc.)*
+- **Module path:** [`src/lib/deezer`](../../src/lib/deezer) — `jsonp.ts` (transport only to `https://api.deezer.com`), `mappers.ts`, `client.ts` (`searchArtists`, `getArtistAlbums`, `getAlbum`), `types.ts`, `index.ts` (public exports).
+- **Default JSONP timeout:** 15 000 ms (`DEFAULT_JSONP_TIMEOUT_MS`). Optional `DeezerCallOptions.timeoutMs` on each function for dev-only timeout demo (1 ms button).
+- **Result contract:** `DeezerResult<T>` — `{ ok: true, data }` or `{ ok: false, error: DeezerClientError }`. Error kinds: `timeout`, `network`, `api`, `parse`. No `fetch`/`Response` exposed.
+- **Deezer API error payload:** handled when JSON root has `error` object; caller message uses `error.message` when string, else generic `"Deezer API error"`.
+- **Narrow validation:** [`src/DeezerDevPanel.tsx`](../../src/DeezerDevPanel.tsx) rendered from [`src/App.tsx`](../../src/App.tsx) only when `import.meta.env.DEV`; documented again in [`README.md`](../../README.md).
+- **Loading:** Out of scope for this module; callers manage pending UI state when wrapping async calls (aligns with PRD vs PLAN wording).
+
+### Production build note
+
+Vite may **tree-shake** the client until product UI imports it; Phase 3 validation is intended under **`npm run dev`** using the dev panel. Phase 4+ imports [`src/lib/deezer`](../../src/lib/deezer) from real screens.
 
 ### Notes for Phase 4
 
@@ -97,25 +106,25 @@ Check each item when verified.
 
 ### Check: goal
 
-- [ ] Single client layer exposes search, artist albums, and album detail via JSONP.
+- [x] Single client layer exposes search, artist albums, and album detail via JSONP.
 
 ### Check: scope
 
-- [ ] No primary `fetch` to `api.deezer.com` for these three reads (unless Phase 1 decision is formally superseded in docs).
-- [ ] Typed/narrow success models + defensive parsing for fields Phase 1 identified.
-- [ ] Stable error contract for callers.
-- [ ] Narrow validation path documented and exercised.
+- [x] No primary `fetch` to `api.deezer.com` for these three reads (unless Phase 1 decision is formally superseded in docs).
+- [x] Typed/narrow success models + defensive parsing for fields Phase 1 identified.
+- [x] Stable error contract for callers.
+- [x] Narrow validation path documented and exercised.
 
 ### Check: out of scope
 
-- [ ] No full product shell or routing introduced solely to satisfy Phase 3.
+- [x] No full product shell or routing introduced solely to satisfy Phase 3.
 
 ### Check: acceptance criteria
 
-- [ ] All three operations go through the layer only.
-- [ ] Callers do not parse raw `Response` or manage JSONP scripts directly.
-- [ ] JSONP URLs align with Phase 1 (`output=jsonp`, `callback`).
-- [ ] Nullable images/fields handled without crashing parsers.
+- [x] All three operations go through the layer only.
+- [x] Callers do not parse raw `Response` or manage JSONP scripts directly.
+- [x] JSONP URLs align with Phase 1 (`output=jsonp`, `callback`).
+- [x] Nullable images/fields handled without crashing parsers.
 
 ### Check: manual validation
 
