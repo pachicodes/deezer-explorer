@@ -140,10 +140,12 @@ When every checklist item below and manual step above is marked, Phase 8 is clos
 
 | Topic | Decision |
 | --- | --- |
-| **Hosting shape** | *TBD* — user **`username.github.io`** vs **project** **`username.github.io/<repo>/`** vs **custom domain** |
-| **`vite.base`** | *TBD* — must match hosting shape |
-| **Publish mechanism** | *TBD* — GitHub Actions vs documented manual |
-| **Pages source** | *TBD* — `gh-pages` branch vs GitHub Actions **artifact** vs **`/docs`** on `main` |
+| **Hosting shape** | **GitHub project site:** **`https://<owner>.github.io/deezer-explorer/`** — repo slug **`deezer-explorer`** must match GitHub (see [`package.json`](../../package.json) **`name`**). If you rename the repo on GitHub, update **`vite.config.ts`** **`base`** and redeploy. |
+| **`vite.base`** | **`'/deezer-explorer/'`** (leading and trailing slash per Vite). |
+| **Publish mechanism** | **GitHub Actions** — workflow **`.github/workflows/deploy-pages.yml`** builds **`dist/`** and deploys via **`upload-pages-artifact`** + **`deploy-pages`**. |
+| **Pages source** | **GitHub Actions** — repo **Settings → Pages → Build and deployment → Source: GitHub Actions**. |
+
+**Routing model:** Single-view React state only (**no** client-side router). Users load and reload the **site entry URL** above; no **`404.html`** SPA fallback required for v1.
 
 ### Automated verification log
 
