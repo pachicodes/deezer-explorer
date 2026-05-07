@@ -39,8 +39,8 @@ Deezer Explorer is a learning project focused on a simple flow:
 | [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) | CI: build `dist/` and deploy to GitHub Pages. |
 | [`src/lib/deezer`](src/lib/deezer) | Deezer v1 client — JSONP only, three endpoints (`PLAN.md` / Phase 3 PRD). |
 | [`src/shell/AppShell.tsx`](src/shell/AppShell.tsx) | Product shell — live search ([`phase5.md`](docs/prd/phase5.md)), albums + detail ([`phase6.md`](docs/prd/phase6.md)), Phase 7 accessibility refinements ([`phase7.md`](docs/prd/phase7.md)). |
-| [`src/DeezerDevPanel.tsx`](src/DeezerDevPanel.tsx) | Dev-only smoke tests for the JSONP client (`npm run dev` only). |
-| [`src/App.tsx`](src/App.tsx) | Root UI — skip link, **`main`** landmark, `AppShell`, and (in dev) `DeezerDevPanel`. |
+| [`src/DeezerDevPanel.tsx`](src/DeezerDevPanel.tsx) | Opt-in JSONP smoke tests: **`npm run dev`** + URL **`?phase3`**. |
+| [`src/App.tsx`](src/App.tsx) | Root UI — skip link, **`main`** landmark, `AppShell`, optional `DeezerDevPanel` when **`?phase3`**. |
 
 ## Local development
 
@@ -89,7 +89,7 @@ See **[`docs/prd/phase8.md`](docs/prd/phase8.md)** for PRD checklists.
 
 ### Phase 3 client — regression checks (optional)
 
-The PRD manual checklist is **closed** (recorded in [`docs/prd/phase3.md`](docs/prd/phase3.md)). After changing [`src/lib/deezer`](src/lib/deezer), run **`npm run dev`** and use **Phase 3 — client smoke tests**:
+The PRD manual checklist is **closed** (recorded in [`docs/prd/phase3.md`](docs/prd/phase3.md)). After changing [`src/lib/deezer`](src/lib/deezer), run **`npm run dev`** and open the app with **`?phase3`** (e.g. **`http://localhost:5173/deezer-explorer/?phase3`**) to show the **Phase 3 — client smoke tests** panel:
 
 | Button | Expect |
 | --- | --- |

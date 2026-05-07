@@ -6,7 +6,7 @@ import {
   searchArtists,
 } from './lib/deezer'
 
-/** Phase 3 narrow validation — visible only when `import.meta.env.DEV` is true. */
+/** Phase 3 narrow validation — rendered from `App` only when dev server + URL has `?phase3`. */
 export function DeezerDevPanel() {
   const [lines, setLines] = useState<string[]>([])
 
@@ -65,8 +65,8 @@ export function DeezerDevPanel() {
     <section className="dev-panel" aria-label="Deezer client dev validation">
       <h2 className="dev-panel-title">Phase 3 — client smoke tests (dev only)</h2>
       <p className="dev-panel-help">
-        Calls use JSONP only (<code>output=jsonp</code>, default timeout{' '}
-        {DEFAULT_JSONP_TIMEOUT_MS / 1000}s). See{' '}
+        Opened with <code>?phase3</code> on the dev URL. Calls use JSONP only (
+        <code>output=jsonp</code>, default timeout {DEFAULT_JSONP_TIMEOUT_MS / 1000}s). See{' '}
         <code>docs/prd/phase3.md</code> manual validation.
       </p>
       <div className="dev-panel-buttons">

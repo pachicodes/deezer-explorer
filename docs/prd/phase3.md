@@ -88,7 +88,7 @@ Provide a **single client layer** in the application that performs all v1 Deezer
 - **Default JSONP timeout:** 15 000 ms (`DEFAULT_JSONP_TIMEOUT_MS`). Optional `DeezerCallOptions.timeoutMs` on each function for dev-only timeout demo (1 ms button).
 - **Result contract:** `DeezerResult<T>` — `{ ok: true, data }` or `{ ok: false, error: DeezerClientError }`. Error kinds: `timeout`, `network`, `api`, `parse`. No `fetch`/`Response` exposed.
 - **Deezer API error payload:** handled when JSON root has `error` object; caller message uses `error.message` when string, else generic `"Deezer API error"`.
-- **Narrow validation:** [`src/DeezerDevPanel.tsx`](../../src/DeezerDevPanel.tsx) rendered from [`src/App.tsx`](../../src/App.tsx) only when `import.meta.env.DEV`; documented again in [`README.md`](../../README.md).
+- **Narrow validation:** [`src/DeezerDevPanel.tsx`](../../src/DeezerDevPanel.tsx) rendered from [`src/App.tsx`](../../src/App.tsx) only when **`import.meta.env.DEV`** and the URL includes the **`phase3`** query parameter; documented in [`README.md`](../../README.md).
 - **Loading:** Out of scope for this module; callers manage pending UI state when wrapping async calls (aligns with PRD vs PLAN wording).
 
 ### Production build note
