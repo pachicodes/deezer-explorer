@@ -23,16 +23,16 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 5** — **implemented** (live search + artist selection): [`docs/prd/phase5.md`](docs/prd/phase5.md); objective summary in [`reports/phase-5-report.md`](reports/phase-5-report.md). PRD manual checklist **partially** complete — see report before declaring Phase 5 closed.
 
-**Phase 6** — **PRD ready:** [`docs/prd/phase6.md`](docs/prd/phase6.md) (album list + album detail API).
+**Phase 6** — **implemented** (live albums + album detail): [`docs/prd/phase6.md`](docs/prd/phase6.md); summary in [`reports/phase-6-report.md`](reports/phase-6-report.md). PRD **manual validation** §§1–5 and compliance checklists remain until marked in the PRD.
 
-**Next step:** Implement Phase 6 per [`docs/prd/phase6.md`](docs/prd/phase6.md) (album list + album detail). Optionally finish Phase 5 PRD §§1 & §3 in [`docs/prd/phase5.md`](docs/prd/phase5.md).
+**Next step:** Run Phase 6 **manual validation** in [`docs/prd/phase6.md`](docs/prd/phase6.md), then Phase 7 accessibility pass per [`PLAN.md`](PLAN.md). Optionally finish Phase 5 PRD §§1 & §3 in [`docs/prd/phase5.md`](docs/prd/phase5.md).
 
 ## Source layout (high level)
 
 | Path | Purpose |
 | --- | --- |
 | [`src/lib/deezer`](src/lib/deezer) | Deezer v1 client — JSONP only, three endpoints (`PLAN.md` / Phase 3 PRD). |
-| [`src/shell/AppShell.tsx`](src/shell/AppShell.tsx) | Product shell — live search ([`phase5.md`](docs/prd/phase5.md)); albums + detail stubs until Phase 6 ([`phase6.md`](docs/prd/phase6.md)). |
+| [`src/shell/AppShell.tsx`](src/shell/AppShell.tsx) | Product shell — live search ([`phase5.md`](docs/prd/phase5.md)), albums + album detail ([`phase6.md`](docs/prd/phase6.md)). |
 | [`src/DeezerDevPanel.tsx`](src/DeezerDevPanel.tsx) | Dev-only smoke tests for the JSONP client (`npm run dev` only). |
 | [`src/App.tsx`](src/App.tsx) | Root UI — renders `AppShell` and (in dev) `DeezerDevPanel`. |
 
@@ -90,6 +90,7 @@ Optional: DevTools **offline** or block **`api.deezer.com`** on a happy-path but
 - [`docs/prd/phase4.md`](docs/prd/phase4.md): Phase 4 PRD — app shell, layout, state placeholders (mock data).
 - [`docs/prd/phase5.md`](docs/prd/phase5.md): Phase 5 PRD — live search + artist selection.
 - [`docs/prd/phase6.md`](docs/prd/phase6.md): Phase 6 PRD — album list + album detail API.
+- [`reports/phase-6-report.md`](reports/phase-6-report.md): Phase 6 implementation summary.
 - [`AGENTS.md`](AGENTS.md): rules for implementers and automation.
 - [`GLOSSARY.md`](GLOSSARY.md): technical terms used in this repo.
 

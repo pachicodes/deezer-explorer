@@ -55,7 +55,7 @@ Exact naming in code may differ (`null` vs `"idle"`) but behavior must be **visi
 ## Technical notes
 
 - **IDs:** `ArtistSearchHit.id` and `AlbumCard.id` are **`number`** in types; **`getArtistAlbums`** / **`getAlbum`** accept **`string`** — use **`String(id)`** or equivalent safe conversion.  
-- **Dev tooling:** [`ShellDevControls`](../../src/shell/ShellDevControls.tsx) Phase 5 stub overrides **conflict** with live albums/detail — **remove**, **replace**, or **narrow** in Phase 6 and record in execution log.  
+- **Dev tooling:** Phase 5 **`ShellDevControls`** conflicted with live albums/detail — **removed** in Phase 6 (see execution log below); files **`ShellDevControls.tsx`** and **`shell/types.ts`** deleted.  
 - **Images:** Prefer explicit **`width`/`height`** or CSS aspect-ratio placeholders to limit CLS when covers load.  
 - **Errors:** Surface **`DeezerClientError.message`** or generic user-safe strings; **no uncaught promise rejections** from shell handlers.
 
@@ -114,7 +114,7 @@ Use **Chrome** or **Firefox** with **`npm run dev`** (network to **`api.deezer.c
 1. `npm run lint` — no errors.  
 2. `npm run build` — succeeds.
 
-- [ ] Lint + build OK.
+- [x] Lint + build OK.
 
 ### Closure
 
@@ -143,19 +143,23 @@ Closed **2026-05-07** before coding:
 | --- | --- |
 | **`cover_*` hierarchy** | **Album cards:** `cover_medium ?? cover_small`. **Album detail hero:** `cover_medium ?? cover_big ?? cover_small`. Same fallback philosophy; detail prefers larger when present. |
 | **Detail “empty” tracks** | If `getAlbum` returns `ok: true` with `tracks.length === 0`, UI stays **`success`** and shows a short inline message (“No tracks listed for this album.”) inside the detail panel — no separate `detailSlice === 'empty'` for this case. **`detailSlice`:** `idle` \| `loading` \| `error` \| `success` only. |
-| **`ShellDevControls`** | **Removed** for Phase 6 — live albums/detail cannot coexist with fake regional overrides; [`src/shell/ShellDevControls.tsx`](../../src/shell/ShellDevControls.tsx) deleted. |
+| **`ShellDevControls`** | **Removed** for Phase 6 — live albums/detail cannot coexist with fake regional overrides; **`src/shell/ShellDevControls.tsx`** and **`src/shell/types.ts`** deleted from the repo. |
 | **Manual validation §3 (`getAlbum` error)** | Use Chrome/Firefox **Network request blocking** with pattern `*api.deezer.com/album/*` (or offline) while opening an album after a successful album list — confirm detail error and **`selectedArtist`** unchanged. |
 | **Back / refetch** | **Back** clears album selection and detail state only; **does not** refetch album list or clear **`selectedArtist`**. **No** automatic refetch on Back. |
 
 ### Automated verification log
 
-- *(Populate after `npm run lint` / `npm run build` and `rg` checks.)*
+- **`npm run lint`** — **pass** — **2026-05-07** (after refactor; no `react-hooks/set-state-in-effect` violations in shell).
+- **`npm run build`** — **pass** — **2026-05-07**.
+- **Shell must not call JSONP Helpers directly:** `src/shell` contains **no** `jsonpRequest` / **`ShellDevControls`** references (verified via workspace search).
 
 ### Decisions made during implementation
 
-- **Fetches:** `useEffect` on **`selectedArtist`** → **`getArtistAlbums(String(id))`** with **`albumListGenRef`** (latest-wins). **`handlePickAlbum`** → **`getAlbum(String(album.id))`** with **`detailGenRef`**.  
-- **Same artist re-click:** `handlePickArtist` returns early when **`hit.id === selectedArtist?.id`** to avoid redundant list reload.  
-- **Search clears downstream:** existing **`runSearch`** clears **`selectedArtist`**; effect resets albums + detail.
+- **Album list:** **`AlbumGridSection`** keyed by **`selectedArtist.id`**; **`useEffect`** only kicks off **`getArtistAlbums`** and applies **`albumListGenRef`** latest-wins inside the async completion path (avoids synchronous **`setState`** in the effect body per ESLint).
+- **Album detail:** **`handlePickAlbum`** → **`getAlbum(String(album.id))`** with **`detailGenRef`** (latest-wins).
+- **Clear detail when artist context changes:** **`resetAlbumDetail()`** runs from **`runSearch`** (before clearing **`selectedArtist`**) and **`handlePickArtist`** (when switching artists); **not** refetched on **Back**.
+- **Same artist re-click:** **`handlePickArtist`** returns early when **`hit.id === selectedArtist?.id`** to avoid redundant list reload.
+- **Search clears downstream:** **`runSearch`** clears **`selectedArtist`**; **`AlbumGridSection`** unmounts (idle copy in parent); detail cleared via **`resetAlbumDetail`**.
 
 ### Notes for Phase 7
 

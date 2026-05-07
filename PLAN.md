@@ -15,7 +15,7 @@ Implementers and automation must treat **AGENTS.md** as operating constraints al
 
 Work in **small phases**, each producing something **independently verifiable**. Prefer the smallest change that proves the next decision. Do not introduce stack, routing, or flow choices that break GitHub Pages compatibility or are not grounded here. If scope, stack, phases, risks, or build-affecting decisions change, update this file first and keep **README.md** consistent.
 
-**Repository status:** **Phase 3 — complete**; **Phase 4 — complete** (mock shell + [`docs/prd/phase4.md`](docs/prd/phase4.md) checklist closed). **Phase 5 — implemented** ([`docs/prd/phase5.md`](docs/prd/phase5.md)); PRD closure optional pending §§1 & §3 manual checks ([`reports/phase-5-report.md`](reports/phase-5-report.md)). **Phase 6 PRD** — [`docs/prd/phase6.md`](docs/prd/phase6.md) (albums + album detail — implementation next). Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** implement Phase 6 per [`docs/prd/phase6.md`](docs/prd/phase6.md).
+**Repository status:** **Phase 3 — complete**; **Phase 4 — complete** (mock shell + [`docs/prd/phase4.md`](docs/prd/phase4.md) checklist closed). **Phase 5 — implemented** ([`docs/prd/phase5.md`](docs/prd/phase5.md)); PRD closure optional pending §§1 & §3 manual checks ([`reports/phase-5-report.md`](reports/phase-5-report.md)). **Phase 6 — implemented** ([`docs/prd/phase6.md`](docs/prd/phase6.md); [`reports/phase-6-report.md`](reports/phase-6-report.md)); PRD manual checklist may remain open until browser verification. Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** close Phase 6 PRD checks in browser, then Phase 7 per [`PLAN.md`](#phase-7--accessibility-and-resilience-pass).
 
 ## v1 scope
 
@@ -210,7 +210,7 @@ Wire search UI to `GET /search/artist` and persist the chosen artist for later p
 2. Nonsense query shows dedicated **empty** state, not a blank or broken list.
 3. Network failure shows clear **error** without crashing the app.
 4. Full path usable **keyboard-only** (submit, move focus to results, select).
-5. After selecting an artist, UI is ready to load albums (albums may still stub until Phase 6).
+5. After selecting an artist, albums load via Phase 6 ([`docs/prd/phase6.md`](docs/prd/phase6.md)).
 
 **Manual validation**
 

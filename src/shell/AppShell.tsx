@@ -101,59 +101,25 @@ function DetailHeroCover({ detail }: { detail: AlbumDetail }) {
   )
 }
 
-export function AppShell() {
-  const [query, setQuery] = useState('')
-  const [submittedQuery, setSubmittedQuery] = useState('')
-  const [resultsSlice, setResultsSlice] = useState<ResultsSlice>('idle')
-  const [hits, setHits] = useState<ArtistSearchHit[]>([])
-  const [resultsError, setResultsError] = useState<string | null>(null)
-  const [selectedArtist, setSelectedArtist] = useState<ArtistSearchHit | null>(
-    null,
-  )
-  const searchGenRef = useRef(0)
-
-  const [albumsSlice, setAlbumsSlice] = useState<AlbumsSlice>('idle')
+function AlbumGridSection({
+  artist,
+  selectedAlbumId,
+  onPickAlbum,
+}: {
+  artist: ArtistSearchHit
+  selectedAlbumId: number | null
+  onPickAlbum: (card: AlbumCard) => void
+}) {
+  const [albumsSlice, setAlbumsSlice] = useState<AlbumsSlice>('loading')
   const [albums, setAlbums] = useState<AlbumCard[]>([])
   const [albumsError, setAlbumsError] = useState<string | null>(null)
   const albumListGenRef = useRef(0)
 
-  const [selectedAlbumId, setSelectedAlbumId] = useState<number | null>(null)
-  const [detailSlice, setDetailSlice] = useState<DetailSlice>('idle')
-  const [detail, setDetail] = useState<AlbumDetail | null>(null)
-  const [detailError, setDetailError] = useState<string | null>(null)
-  const detailGenRef = useRef(0)
-
-  const trimmed = query.trim()
-  const canSubmit = trimmed.length > 0
-  const whitespaceOnly = query.length > 0 && trimmed.length === 0
-
   useEffect(() => {
-    if (!selectedArtist) {
-      albumListGenRef.current += 1
-      setAlbumsSlice('idle')
-      setAlbums([])
-      setAlbumsError(null)
-      detailGenRef.current += 1
-      setSelectedAlbumId(null)
-      setDetailSlice('idle')
-      setDetail(null)
-      setDetailError(null)
-      return
-    }
-
     const gen = ++albumListGenRef.current
-    setAlbumsSlice('loading')
-    setAlbums([])
-    setAlbumsError(null)
-
-    detailGenRef.current += 1
-    setSelectedAlbumId(null)
-    setDetailSlice('idle')
-    setDetail(null)
-    setDetailError(null)
 
     void (async () => {
-      const r = await getArtistAlbums(String(selectedArtist.id))
+      const r = await getArtistAlbums(String(artist.id))
       if (gen !== albumListGenRef.current) return
 
       if (!r.ok) {
@@ -168,7 +134,82 @@ export function AppShell() {
       setAlbums(r.data)
       setAlbumsSlice('success')
     })()
-  }, [selectedArtist])
+  }, [artist])
+
+  return (
+    <>
+      {albumsSlice === 'loading' && (
+        <p className="shell-state-msg" role="status">
+          Loading albums…
+        </p>
+      )}
+      {albumsSlice === 'empty' && (
+        <p className="shell-state-msg shell-muted">
+          No albums found for this artist.
+        </p>
+      )}
+      {albumsSlice === 'error' && (
+        <p className="shell-state-msg shell-error" role="alert">
+          {albumsError ?? 'Could not load albums'}
+        </p>
+      )}
+      {albumsSlice === 'success' && (
+        <ul className="shell-card-grid">
+          {albums.map((alb) => (
+            <li key={alb.id}>
+              <button
+                type="button"
+                className={`shell-card-btn${
+                  selectedAlbumId === alb.id ? ' shell-card-btn-selected' : ''
+                }`}
+                onClick={() => onPickAlbum(alb)}
+              >
+                <AlbumCardCover card={alb} />
+                <span className="shell-card-title">{alb.title}</span>
+                {alb.release_date ? (
+                  <span className="shell-card-meta">{alb.release_date}</span>
+                ) : (
+                  <span className="shell-card-meta shell-card-meta-na">
+                    —
+                  </span>
+                )}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
+  )
+}
+
+export function AppShell() {
+  const [query, setQuery] = useState('')
+  const [submittedQuery, setSubmittedQuery] = useState('')
+  const [resultsSlice, setResultsSlice] = useState<ResultsSlice>('idle')
+  const [hits, setHits] = useState<ArtistSearchHit[]>([])
+  const [resultsError, setResultsError] = useState<string | null>(null)
+  const [selectedArtist, setSelectedArtist] = useState<ArtistSearchHit | null>(
+    null,
+  )
+  const searchGenRef = useRef(0)
+
+  const [selectedAlbumId, setSelectedAlbumId] = useState<number | null>(null)
+  const [detailSlice, setDetailSlice] = useState<DetailSlice>('idle')
+  const [detail, setDetail] = useState<AlbumDetail | null>(null)
+  const [detailError, setDetailError] = useState<string | null>(null)
+  const detailGenRef = useRef(0)
+
+  const trimmed = query.trim()
+  const canSubmit = trimmed.length > 0
+  const whitespaceOnly = query.length > 0 && trimmed.length === 0
+
+  const resetAlbumDetail = useCallback(() => {
+    detailGenRef.current += 1
+    setSelectedAlbumId(null)
+    setDetailSlice('idle')
+    setDetail(null)
+    setDetailError(null)
+  }, [])
 
   const runSearch = useCallback(async (q: string) => {
     const gen = ++searchGenRef.current
@@ -176,6 +217,7 @@ export function AppShell() {
     setResultsSlice('loading')
     setResultsError(null)
     setHits([])
+    resetAlbumDetail()
     setSelectedArtist(null)
 
     const result = await searchArtists(q)
@@ -192,7 +234,7 @@ export function AppShell() {
     }
     setHits(result.data)
     setResultsSlice('success')
-  }, [])
+  }, [resetAlbumDetail])
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -203,6 +245,7 @@ export function AppShell() {
 
   function handlePickArtist(hit: ArtistSearchHit) {
     if (selectedArtist?.id === hit.id) return
+    resetAlbumDetail()
     setSelectedArtist(hit)
   }
 
@@ -344,50 +387,17 @@ export function AppShell() {
         <h2 id="shell-albums-heading" className="shell-region-heading">
           Albums
         </h2>
-        {albumsSlice === 'idle' && (
+        {!selectedArtist ? (
           <p className="shell-state-msg shell-muted">
             Pick an artist from the results to see albums.
           </p>
-        )}
-        {albumsSlice === 'loading' && (
-          <p className="shell-state-msg" role="status">
-            Loading albums…
-          </p>
-        )}
-        {albumsSlice === 'empty' && (
-          <p className="shell-state-msg shell-muted">
-            No albums found for this artist.
-          </p>
-        )}
-        {albumsSlice === 'error' && (
-          <p className="shell-state-msg shell-error" role="alert">
-            {albumsError ?? 'Could not load albums'}
-          </p>
-        )}
-        {albumsSlice === 'success' && (
-          <ul className="shell-card-grid">
-            {albums.map((alb) => (
-              <li key={alb.id}>
-                <button
-                  type="button"
-                  className={`shell-card-btn${
-                    selectedAlbumId === alb.id ? ' shell-card-btn-selected' : ''
-                  }`}
-                  onClick={() => handlePickAlbum(alb)}
-                >
-                  <AlbumCardCover card={alb} />
-                  <span className="shell-card-title">{alb.title}</span>
-                  {alb.release_date ? (
-                    <span className="shell-card-meta">{alb.release_date}</span>
-                  ) : (
-                    <span className="shell-card-meta shell-card-meta-na">
-                      —
-                    </span>
-                  )}
-                </button>
-              </li>
-            ))}
-          </ul>
+        ) : (
+          <AlbumGridSection
+            key={selectedArtist.id}
+            artist={selectedArtist}
+            selectedAlbumId={selectedAlbumId}
+            onPickAlbum={handlePickAlbum}
+          />
         )}
       </section>
 
