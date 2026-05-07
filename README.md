@@ -23,18 +23,20 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 5** — **implemented** (live search + artist selection): [`docs/prd/phase5.md`](docs/prd/phase5.md); objective summary in [`reports/phase-5-report.md`](reports/phase-5-report.md). PRD manual checklist **partially** complete — see report before declaring Phase 5 closed.
 
-**Phase 6** — **implemented** (live albums + album detail): [`docs/prd/phase6.md`](docs/prd/phase6.md); summary in [`reports/phase-6-report.md`](reports/phase-6-report.md). PRD **manual validation** §§1–5 and compliance checklists remain until marked in the PRD.
+**Phase 6** — **implemented** (live albums + album detail): [`docs/prd/phase6.md`](docs/prd/phase6.md); summary in [`reports/phase-6-report.md`](reports/phase-6-report.md). PRD **manual validation** §§1–5 may remain until marked in the PRD.
 
-**Next step:** Implement **Phase 7** per [`docs/prd/phase7.md`](docs/prd/phase7.md). Optionally finish Phase 6 PRD manual validation in [`docs/prd/phase6.md`](docs/prd/phase6.md) and Phase 5 §§1 & §3 in [`docs/prd/phase5.md`](docs/prd/phase5.md).
+**Phase 7** — **implemented** (accessibility + resilience pass): [`docs/prd/phase7.md`](docs/prd/phase7.md). PRD **manual validation** §§1–5 remains for browser sign-off; §6 (lint/build) recorded in the PRD.
+
+**Next step:** **Phase 8** — GitHub Pages publishing per [`PLAN.md`](PLAN.md). Optionally finish Phase 6 / Phase 7 PRD checklists in the browser and Phase 5 §§1 & §3 in [`docs/prd/phase5.md`](docs/prd/phase5.md).
 
 ## Source layout (high level)
 
 | Path | Purpose |
 | --- | --- |
 | [`src/lib/deezer`](src/lib/deezer) | Deezer v1 client — JSONP only, three endpoints (`PLAN.md` / Phase 3 PRD). |
-| [`src/shell/AppShell.tsx`](src/shell/AppShell.tsx) | Product shell — live search ([`phase5.md`](docs/prd/phase5.md)), albums + album detail ([`phase6.md`](docs/prd/phase6.md)). |
+| [`src/shell/AppShell.tsx`](src/shell/AppShell.tsx) | Product shell — live search ([`phase5.md`](docs/prd/phase5.md)), albums + detail ([`phase6.md`](docs/prd/phase6.md)), Phase 7 accessibility refinements ([`phase7.md`](docs/prd/phase7.md)). |
 | [`src/DeezerDevPanel.tsx`](src/DeezerDevPanel.tsx) | Dev-only smoke tests for the JSONP client (`npm run dev` only). |
-| [`src/App.tsx`](src/App.tsx) | Root UI — renders `AppShell` and (in dev) `DeezerDevPanel`. |
+| [`src/App.tsx`](src/App.tsx) | Root UI — skip link, **`main`** landmark, `AppShell`, and (in dev) `DeezerDevPanel`. |
 
 ## Local development
 
