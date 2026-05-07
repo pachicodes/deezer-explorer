@@ -21,7 +21,7 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 4** is **complete** (implemented + PRD manual validation): mock-only shell — [`docs/prd/phase4.md`](docs/prd/phase4.md); summary in [`reports/phase-4-report.md`](reports/phase-4-report.md).
 
-**Phase 5** — **implemented** (live search + artist selection): [`docs/prd/phase5.md`](docs/prd/phase5.md). Complete **Manual validation** there before marking Phase 5 closed.
+**Phase 5** — **implemented** (live search + artist selection): [`docs/prd/phase5.md`](docs/prd/phase5.md); objective summary in [`reports/phase-5-report.md`](reports/phase-5-report.md). PRD manual checklist **partially** complete — see report before declaring Phase 5 closed.
 
 **Next step:** Run Phase 5 PRD manual checks, then Phase 6 (albums + detail API).
 
