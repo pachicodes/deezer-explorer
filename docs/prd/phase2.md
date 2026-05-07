@@ -92,7 +92,7 @@ Repeat these steps when validating a new machine (note Node version if results d
 
 ### Notes for Phase 3
 
-- The Deezer client layer should follow the strategy in [`phase1.md`](./phase1.md) (JSONP as the browser-safe path under current assumptions).
+- Implement the HTTP/client strategy from [`phase1.md`](./phase1.md) per [`phase3.md`](./phase3.md) (JSONP client module for the three v1 endpoints).
 
 ---
 

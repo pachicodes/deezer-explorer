@@ -17,7 +17,9 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 2** is **complete**: **Vite + React + TypeScript** at the root, with `dev`, `build`, and `preview` scripts; validation is recorded in [`docs/prd/phase2.md`](docs/prd/phase2.md). The UI is **placeholder** only — **no Deezer integration** until **Phase 3** ([`PLAN.md`](PLAN.md)).
 
-**Next step:** Phase 3 — API client module (three endpoints), per the plan.
+**Phase 3** is **in planning / implementation next**: PRD and checklist in [`docs/prd/phase3.md`](docs/prd/phase3.md) — Deezer client module (three endpoints, JSONP only).
+
+**Next step:** Implement Phase 3 per that PRD (then Phase 4 — app shell).
 
 ## Local development
 
@@ -53,7 +55,7 @@ npm run preview
 
 - [`PLAN.md`](PLAN.md): v1 scope, phases, acceptance themes, risks, and decisions.
 - [`docs/prd/phase1.md`](docs/prd/phase1.md): Phase 1 PRD and execution log (CORS, JSONP, manual validation).
-- [`docs/prd/phase2.md`](docs/prd/phase2.md): Phase 2 PRD (Vite + React + TypeScript toolchain, no product UI).
+- [`docs/prd/phase3.md`](docs/prd/phase3.md): Phase 3 PRD — Deezer client module (JSONP, three endpoints).
 - [`AGENTS.md`](AGENTS.md): rules for implementers and automation.
 - [`GLOSSARY.md`](GLOSSARY.md): explanation of technical terms used in the repo.
 
