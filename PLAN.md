@@ -1,324 +1,324 @@
-# Deezer Explorer — Plano inicial
+# Deezer Explorer — Initial plan
 
-## Resumo do produto
+## Product summary
 
-O Deezer Explorer é um app web estático e responsivo que permite ao usuário pesquisar um artista, escolher um resultado, navegar pelos álbuns desse artista em cartões de capa e abrir um álbum para ver a lista de faixas, a data de lançamento e a imagem de capa.
+Deezer Explorer is a static, responsive web app that lets users search for an artist, pick a result, browse that artist’s albums as cover cards, and open an album to see the track list, release date, and cover image.
 
-O produto é propositalmente restrito: concentra-se em um fluxo claro de descoberta e usa apenas a API pública da Deezer para dados. Não há backend, autenticação ou banco de dados no escopo. O ambiente previsto é o GitHub Pages.
+The product is intentionally narrow: one clear discovery flow using only Deezer’s public API for data. There is no backend, authentication, or database in scope. The intended environment is GitHub Pages.
 
-## Alinhamento às notas de operação do repositório
+## Alignment with repository operating notes
 
-Implementadores e automação devem tratar o **AGENTS.md** como restrições de operação junto com este arquivo:
+Implementers and automation must treat **AGENTS.md** as operating constraints alongside this file:
 
-- **PLAN.md** (este documento): escopo do produto, fases, riscos e decisões em aberto que afetam como o app é construído.
-- **README.md**: estado do repositório, resumo para desenvolvedores, fluxo do usuário e histórico de desenvolvimento/publicação quando existir.
+- **PLAN.md** (this document): product scope, phases, risks, and open decisions that affect how the app is built.
+- **README.md**: repository status, developer summary, user flow, and local dev/publishing history when it exists.
 
-Trabalhe em **fases pequenas**, cada uma produzindo algo **verificável de forma independente**. Prefira a menor mudança que prove a próxima decisão. Não introduza escolhas de stack, roteamento ou fluxo que quebrem a compatibilidade com GitHub Pages ou que não estejam fundamentadas aqui. Se escopo, stack, fases, riscos ou decisões que afetem o build mudarem, atualize este arquivo primeiro e mantenha o **README.md** consistente.
+Work in **small phases**, each producing something **independently verifiable**. Prefer the smallest change that proves the next decision. Do not introduce stack, routing, or flow choices that break GitHub Pages compatibility or are not grounded here. If scope, stack, phases, risks, or build-affecting decisions change, update this file first and keep **README.md** consistent.
 
-**Estado atual do repositório:** Fase 1 concluída (descoberta técnica e decisão de acesso à API documentadas em [`docs/prd/fase1.md`](docs/prd/fase1.md)); ainda não há estrutura inicial da aplicação (Vite/React/TypeScript) nem comandos de desenvolvimento neste repositório — isso é objeto da Fase 2. Quando a toolchain existir, os comandos mínimos devem ser documentados no README.
+**Repository status:** **Phase 2 — implementation delivered:** **Vite + React + TypeScript** at the root with README-documented scripts ([`docs/prd/phase2.md`](docs/prd/phase2.md)); UI is still **placeholder** (no Deezer client). **Manual validation** at the end of that PRD (clean install, dev, and build on the developer’s machine) **has not yet been recorded** as complete. **Phase 1** remains documented in [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** run that checklist when it makes sense; in parallel or next — **Phase 3** — API client module.
 
-## Escopo da v1
+## v1 scope
 
-A primeira versão inclui exatamente esta jornada do usuário.
-Observação: a etapa de pesquisa retorna uma lista de possíveis correspondências, e o usuário escolhe o artista correto dentro dessa lista.
+The first version includes exactly this user journey.
+Note: search returns a list of possible matches; the user picks the correct artist from that list.
 
-1. Abrir o site.
-2. Pesquisar um artista pelo nome.
-3. Ver os artistas retornados pela pesquisa.
-4. Selecionar o artista correto entre os resultados.
-5. Ver a lista de álbuns desse artista em cartões com capas.
-6. Abrir um álbum.
-7. Ver a lista de faixas do álbum, a data de lançamento e a imagem de capa.
+1. Open the site.
+2. Search for an artist by name.
+3. See artists returned by search.
+4. Select the correct artist from the results.
+5. See that artist’s albums as cards with covers.
+6. Open an album.
+7. See the album’s track list, release date, and cover image.
 
-### Endpoints de API obrigatórios na v1
+### Mandatory v1 API endpoints
 
 - `GET /search/artist?q=...`
 - `GET /artist/{id}/albums`
 - `GET /album/{id}`
 
-### Limites funcionais da v1
+### v1 functional constraints
 
-- Fluxo em página única é aceitável se mantiver a navegação simples e segura para GitHub Pages.
-- O app deve tratar estados de **vazio**, **carregamento** e **erro** em todo lugar onde houver busca de dados; isso é obrigatório, não polimento.
-- O layout deve ser **mobile first** e permanecer utilizável em telas maiores.
-- A **navegação por teclado** deve funcionar para pesquisa, escolha de artista, escolha de álbum e fechar ou voltar do detalhe do álbum.
-- O app deve ser publicável como **site estático** no GitHub Pages.
-- Mantenha **dependências baixas**, salvo se uma dependência resolver um problema concreto já identificado aqui (por exemplo, CORS ou ferramentas de build).
+- A single-page flow is acceptable if navigation stays simple and GitHub Pages–safe.
+- The app must handle **empty**, **loading**, and **error** states everywhere data is fetched; this is required, not polish.
+- Layout must be **mobile first** and usable on larger screens.
+- **Keyboard navigation** must work for search, artist choice, album choice, and closing or going back from album detail.
+- The app must be publishable as a **static site** on GitHub Pages.
+- Keep **dependencies low**, unless one solves a concrete problem already called out here (e.g. CORS or build tooling).
 
-## Stack inicial
+## Initial stack
 
-### Direção escolhida
+### Chosen direction
 
-- **Vite** — build adequado a sites estáticos, saída de produção simples.
-- **React** — componentes claros para pesquisa, resultados, grade de álbuns e detalhe do álbum.
-- **TypeScript** — tratamento mais seguro dos payloads da API externa.
-- **CSS puro** (variáveis + estilos pequenos escopados ao componente) — sem framework de UI ou design system pesado na v1.
+- **Vite** — build suited to static sites, straightforward production output.
+- **React** — clear components for search, results, album grid, album detail.
+- **TypeScript** — safer handling of external API payloads.
+- **Plain CSS** (variables + small scoped styles) — no heavy UI framework or design system in v1.
 
-### Por que esta stack
+### Why this stack
 
-- Combina com publicação estática no GitHub Pages e uma base de código pequena.
-- TypeScript ajuda nas poucas formas de resposta externa das quais o app depende.
-- CSS puro está alinhado ao objetivo de manter poucas dependências.
+- Fits static GitHub Pages publishing and a small codebase.
+- TypeScript helps with the few external response shapes the app depends on.
+- Plain CSS matches the goal of few dependencies.
 
-### Status da decisão de stack
+### Stack decision status
 
-Esta stack permanece o padrão da v1 **salvo se surgir um problema concreto de implementação** (por exemplo, restrição de build incompatível ou bloqueio que só outra toolchain resolva). Não há mudança de stack nesta revisão; as fases abaixo assumem Vite + React + TypeScript + CSS puro.
-
----
-
-## Fases de implementação
-
-Cada fase abaixo é propositalmente **estreita**, termina com **critérios de aceite explícitos** e deve ser **validada** antes da seguinte. Use a validação mais barata que ainda seja significativa (validações manuais são aceitáveis onde ainda não houver testes automatizados).
-
-### Fase 1 — Acesso à Deezer seguro no navegador (caminho da API)
-
-**Objetivo**  
-Demonstrar como o navegador pode ler dados da Deezer nos três endpoints da v1 sem backend próprio, em condições compatíveis com hospedagem estática (HTTPS, sem chaves secretas no cliente).
-
-**Entregas**
-
-- Uma **decisão** breve e escrita neste repositório (seção neste arquivo ou documento dedicado com link no README): `fetch` direto, proxy público, fallback estilo JSONP ou outro — com justificativa.
-- Uma **reprodução mínima**: por exemplo, uma página HTML temporária servida localmente, ou passos no DevTools/console, que mostre respostas reais para:
-  - pesquisa de artista,
-  - álbuns do artista,
-  - álbum por id.
-- Uma **nota sobre CORS** e conteúdo misto: o que funciona em um navegador real a partir de uma origem semelhante à de produção (servidor de desenvolvimento local é aceitável se documentado).
-
-**Critérios de aceite**
-
-1. Pelo menos uma abordagem está **confirmada em um navegador real** (não só lendo documentação de terceiros) para os três endpoints.
-2. A abordagem escolhida é **compatível com publicação estática no GitHub Pages** (sem servidor privado obrigatório controlado por este app).
-3. A abordagem é **simples o suficiente** para manter o cliente com poucas dependências; se fosse necessário proxy ou serviço intermediário, isso seria mudança de escopo e deve ser registrado aqui antes.
-4. Riscos e itens de continuidade (por exemplo, limites de taxa, formas de erro) estão **listados** para a próxima fase.
-
-**Validação manual**
-
-- Executar os passos documentados no Chrome ou Firefox (ou nos dois se o CORS diferir).
-- Confirmar que o JSON é utilizável no código cliente (parseável, campos esperados presentes em uma resposta de exemplo).
-
-**Riscos**
-
-- A Deezer pode bloquear requisições diretas do navegador (CORS).
-- Se não existir caminho seguro no navegador sem backend, o escopo da v1 ou as premissas de hospedagem precisam ser revistos.
+This remains the v1 default **unless a concrete implementation problem appears** (e.g. incompatible build constraint solvable only by another toolchain). No stack change in this revision; the phases below assume Vite + React + TypeScript + plain CSS.
 
 ---
 
-### Fase 2 — Estrutura inicial da toolchain (sem UI de produto)
+## Implementation phases
 
-**Objetivo**  
-Criar o menor projeto Vite + React + TypeScript que compila e roda localmente, preparado para configuração consciente do GitHub Pages depois.
+Each phase below is intentionally **narrow**, ends with **explicit acceptance criteria**, and should be **validated** before the next. Use the cheapest validation that is still meaningful (manual checks are acceptable where automated tests do not exist yet).
 
-**Entregas**
+### Phase 1 — Safe Deezer access in the browser (API path)
 
-- Raiz do projeto com Vite, React e TypeScript configurados.
-- Scripts no `package.json` para **desenvolvimento** e **build de produção** (nomes documentados no README quando o README for atualizado para a implementação).
-- Um único componente raiz que renderiza texto placeholder (sem integração com a Deezer ainda).
+**Goal**  
+Show how the browser can read Deezer data for the three v1 endpoints without an owned backend, under conditions compatible with static hosting (HTTPS, no client secrets).
 
-**Critérios de aceite**
+**Deliverables**
 
-1. Um novo colaborador consegue subir o servidor de desenvolvimento e ver o app usando apenas comandos documentados.
-2. `npm run build` (ou equivalente do gerenciador escolhido) conclui sem erro e gera assets estáticos em `dist` (ou padrão do Vite).
-3. Nenhuma dependência de produção é adicionada em violação a “poucas dependências” sem motivo registrado neste plano.
-4. O repositório reflete que o projeto deixa de ser “somente planejamento” no que diz respeito a ferramentas (linha de status do README quando você atualizar o README).
+- A brief **written decision** in this repo (section here or dedicated doc linked from README): direct `fetch`, public proxy, JSONP-style fallback, or other — with rationale.
+- A **minimal reproduction**: e.g. temporary HTML served locally, or DevTools/console steps, showing real responses for:
+  - artist search,
+  - artist albums,
+  - album by id.
+- A **note on CORS** and mixed content: what works in a real browser from an origin similar to production (local dev server acceptable if documented).
 
-**Validação manual**
+**Acceptance criteria**
 
-- Instalação limpa, executar dev, executar build, abrir visualização local do build se for usado.
+1. At least one approach is **confirmed in a real browser** (not only reading third-party docs) for all three endpoints.
+2. The chosen approach is **compatible with static publishing on GitHub Pages** (no private server mandatory for this app).
+3. The approach is **simple enough** to keep the client low-dependency; proxy or intermediary service would be scope change and must be recorded here first.
+4. Risks and follow-ons (e.g. rate limits, error shapes) are **listed** for the next phase.
 
-**Riscos**
+**Manual validation**
 
-- `base` incorreto depois pode quebrar URLs de assets no GitHub Pages; anotar para a Fase 8.
+- Run documented steps in Chrome or Firefox (or both if CORS differs).
+- Confirm JSON is usable in client code (parseable, expected fields present in a sample response).
 
----
+**Risks**
 
-### Fase 3 — Módulo cliente Deezer (apenas três endpoints)
-
-**Objetivo**  
-Centralizar chamadas aos três endpoints da v1 usando a estratégia validada na Fase 1, com tratamento de erro previsível.
-
-**Entregas**
-
-- Um módulo pequeno (ou três funções) que exponha: pesquisar artistas, buscar álbuns por id do artista, buscar álbum por id.
-- **Formas** de requisição/resposta tipadas (ou tipos estreitos + parsing seguro) alinhadas ao que a UI precisará.
-- Tratamento consistente de **erros de rede** e respostas HTTP **não OK** (expõe um tipo ou mensagem de erro simples para a UI).
-
-**Critérios de aceite**
-
-1. As três operações passam por esta camada (sem `fetch` ad hoc espalhado em componentes).
-2. Quem chama consegue distinguir **carregamento**, **sucesso** e **falha** sem analisar `Response` cru na UI.
-3. O comportamento coincide com o documentado na Fase 1 (mesma estratégia de URL, cabeçalhos ou contorno).
-4. Existe uma **validação estreita**: chamada manual a partir de um botão só para desenvolvimento ou tela temporária, ou um teste automatizado pequeno se você adicionar runner de testes — o suficiente para provar o módulo antes de montar o shell completo.
-
-**Validação manual**
-
-- Disparar cada função uma vez com id/query conhecidos e confirmar dados parseados.
-- Disparar falha (offline ou id inválido) e confirmar o caminho de erro.
-
-**Riscos**
-
-- Campos nulos na API; imagens opcionais — os tipos devem permitir capa ausente sem quebrar.
+- Deezer may block direct browser requests (CORS).
+- If no browser-safe path exists without backend, v1 scope or hosting assumptions must be revisited.
 
 ---
 
-### Fase 4 — Shell do app, layout e placeholders de estado
+### Phase 2 — Initial toolchain (no product UI)
 
-**Objetivo**  
-Construir a estrutura visível do fluxo completo usando **apenas dados mock ou vazios**: regiões, ordem de foco e estados explícitos da UI.
+**Goal**  
+Create the smallest Vite + React + TypeScript project that compiles and runs locally, ready for deliberate GitHub Pages configuration later.
 
-**Entregas**
+**Deliverables**
 
-- Layout responsivo com áreas distintas: pesquisa, resultados de artistas, grade de álbuns, detalhe do álbum (ou empilhamento equivalente em coluna única em telas pequenas).
-- Um **modelo de estado** explícito por área (ou por etapa do fluxo) para carregamento, vazio, erro e sucesso — ligado a **placeholders** para que as transições sejam visíveis sem a Deezer.
-- **Ordem de tab** sensata e controles focáveis para todo elemento interativo do shell.
+- Project root with Vite, React, and TypeScript configured.
+- `package.json` scripts for **development** and **production build** (names documented in README when README is updated for implementation).
+- One root component rendering placeholder text (no Deezer integration yet).
 
-**Critérios de aceite**
+**Acceptance criteria**
 
-1. O layout é utilizável de **~320px de largura** para cima, sem rolagem horizontal no fluxo principal (exceto overflow opcional da lista de faixas tratado de forma legível).
-2. Sem chamadas à API, o usuário consegue percorrer com tab pesquisa → resultados → álbuns → controles do detalhe em ordem **previsível**.
-3. Cada área pode ser forçada (por exemplo, com alternadores temporários de desenvolvimento) a mostrar conteúdo placeholder de **carregamento**, **vazio**, **erro** e **sucesso** sem colapso de layout.
-4. Nenhuma escolha de roteamento é introduzida que **quebre o GitHub Pages** (evitar modo histórico de SPA em subcaminho sem mitigação documentada).
+1. A new contributor can start the dev server and see the app using only documented commands.
+2. `npm run build` (or the chosen manager’s equivalent) completes without error and emits static assets in `dist` (or Vite default).
+3. No production dependency is added in violation of “few dependencies” without rationale recorded in this plan.
+4. The repo reflects that the project is no longer “planning-only” **for tooling** (README status line when README is updated).
 
-**Validação manual**
+**Manual validation**
 
-- Redimensionar a viewport; percurso só com tab pelo shell; alternar cada estado.
+- Clean install, run dev, run build, open local preview of build if used.
 
-**Decisões em aberto** (não bloqueiam a fase; documente a escolha quando tomada)
+**Risks**
 
-- Detalhe do álbum como seção inline versus painel sobreposto.
-- Se a seleção deve aparecer na URL na v1.
-
----
-
-### Fase 5 — Pesquisa e seleção de artista
-
-**Objetivo**  
-Ligar a UI de pesquisa ao `GET /search/artist` e persistir o artista escolhido para as fases seguintes.
-
-**Entregas**
-
-- Campo de pesquisa e envio (ou pesquisa só com debounce se estiver documentado — prefira envio por submit para previsibilidade, salvo se acrescentar debounce ao plano).
-- Lista de resultados com **nome** e **imagem quando disponível**; layout estável quando a imagem falta.
-- A seleção armazena **id do artista** (e campos de exibição necessários) no estado do app.
-- Estados de resultados de pesquisa **vazios**, **carregamento** e **erro**.
-- Nova pesquisa **substitui** o artista atual e limpa a UI dependente (álbuns/detalhe) de forma definida.
-
-**Critérios de aceite**
-
-1. Consulta conhecida devolve uma lista coerente com o conteúdo da API para essa consulta.
-2. Consulta sem sentido mostra mensagem dedicada de **vazio**, não lista em branco ou quebrada.
-3. Falha de rede mostra estado de **erro** claro sem derrubar o app.
-4. Todo o caminho é utilizável **só com teclado** (enviar, mover foco para resultados, selecionar).
-5. Após selecionar um artista, a UI está pronta para carregar álbuns (mesmo que álbuns ainda sejam stub até a Fase 6).
-
-**Validação manual**
-
-- Caminho feliz, vazio, erro, só teclado, repetir pesquisa após seleção.
-
-**Riscos**
-
-- Resultados ruidosos; a UI deve deixar a linha selecionada inequívoca.
+- Wrong `base` later may break asset URLs on GitHub Pages; note for Phase 8.
 
 ---
 
-### Fase 6 — Lista de álbuns e detalhe do álbum
+### Phase 3 — Deezer client module (three endpoints only)
 
-**Objetivo**  
-Carregar álbuns do artista selecionado e mostrar detalhe com lista de faixas, data de lançamento e capa; suportar **voltar** sem perder o contexto do artista.
+**Goal**  
+Centralize calls to the three v1 endpoints using the strategy validated in Phase 1, with predictable error handling.
 
-**Entregas**
+**Deliverables**
 
-- Grade ou lista de álbuns com **cartões de capa**; capa ausente tratada.
-- Buscar `GET /album/{id}` na seleção; mostrar **lista de faixas** (ordem da API), **data de lançamento**, **capa**.
-- **Voltar** do detalhe para a lista de álbuns; **contexto do artista** preservado.
-- **Carregamento** e **erro** para lista e detalhe; falha no detalhe **não** limpa o artista selecionado.
+- A small module (or three functions) exposing: search artists, fetch albums by artist id, fetch album by id.
+- **Typed** request/response shapes (or narrow types + safe parsing) aligned with UI needs.
+- Consistent handling of **network errors** and non-OK HTTP responses (simple error type or message for UI).
 
-**Critérios de aceite**
+**Acceptance criteria**
 
-1. Álbuns exibidos após selecionar artista correspondem a esse artista na API.
-2. A tela de detalhes corresponde ao id do álbum selecionado (conferir título e contagem de faixas).
-3. Voltar retorna à lista de álbuns com a lista ainda utilizável; o segundo álbum substitui o detalhe de forma limpa.
-4. Listas longas de faixas rolam ou quebram linha sem destruir o layout da página.
-5. Teclado: o usuário vai dos álbuns ao detalhe e **volta** sem mouse.
+1. All three operations go through this layer (no ad hoc `fetch` scattered in components).
+2. Callers can distinguish **loading**, **success**, and **failure** without parsing raw `Response` in UI.
+3. Behavior matches Phase 1 documentation (same URL strategy, headers, or workaround).
+4. There is **narrow validation**: manual trigger from a dev-only button or temporary screen, or a small automated test if a runner is added — enough to prove the module before the full shell.
 
-**Validação manual**
+**Manual validation**
 
-- Dois álbuns diferentes do mesmo artista; voltar; erro na busca do álbum; caminho só com teclado.
+- Call each function once with known id/query and confirm parsed data.
+- Trigger failure (offline or invalid id) and confirm error path.
 
-**Riscos**
+**Risks**
 
-- Proporção de imagens; títulos longos — o CSS deve evitar capas distorcidas.
-
----
-
-### Fase 7 — Rodada de acessibilidade e resiliência
-
-**Objetivo**  
-Fechar lacunas para uso real com teclado e mobile e para rede ou imagens instáveis.
-
-**Entregas**
-
-- Estilos de **foco** visíveis em todos os controles interativos.
-- **Cabeçalhos**, **botões** e **landmarks** semânticos onde melhorarem a navegação.
-- Texto **alt** em imagens ou marcação decorativa conforme boas práticas HTML; fallback de imagem quebrada não desloca o layout de forma catastrófica.
-- Textos e rótulos para pesquisa, resultados, álbuns, voltar/fechar.
-- **Link “pular para o conteúdo”** opcional só se o layout final justificar (documente de qualquer forma).
-
-**Critérios de aceite**
-
-1. Jornada completa (pesquisa → artista → álbum → detalhe → voltar) funciona com **Tab**, **Shift+Tab**, **Enter** e **Escape** quando aplicável, sem armadilhas de foco.
-2. O texto principal permanece legível em larguras comuns de mobile.
-3. Falha de rede simulada em cada etapa de fetch deixa a UI **recuperável** (usuário pode tentar de novo ou pesquisar de novo).
-4. Nenhum controle interativo fica sem foco ou com foco invisível.
-
-**Validação manual**
-
-- Uma passagem completa só com teclado; viewport mobile; offline ou requisições bloqueadas no DevTools.
+- Nullable API fields; optional images — types must allow missing cover without breaking.
 
 ---
 
-### Fase 8 — Publicação no GitHub Pages
+### Phase 4 — App shell, layout, and state placeholders
 
-**Objetivo**  
-Publicar o build estático e confirmar o comportamento na URL real do Pages.
+**Goal**  
+Build the visible structure of the full flow using **only mock or empty data**: regions, focus order, and explicit UI states.
 
-**Entregas**
+**Deliverables**
 
-- GitHub Actions ou publicação manual documentada que publique a saída `dist` do Vite no GitHub Pages.
-- **URL base** / `base` no Vite alinhado ao caminho do repositório (site de projeto versus site de usuário); links de assets funcionando.
-- **Checklist de publicação** curto no README (quando o README for atualizado): build, base path, teste de fumaça.
+- Responsive layout with distinct areas: search, artist results, album grid, album detail (or equivalent stacked column on small screens).
+- **Explicit state model** per area (or per flow step) for loading, empty, error, and success — wired to **placeholders** so transitions are visible without Deezer.
+- Sensible **tab order** and focusable controls for every interactive shell element.
 
-**Critérios de aceite**
+**Acceptance criteria**
 
-1. O app carrega na URL de produção do GitHub Pages **sem bundle principal ou CSS quebrados**.
-2. **Assets estáticos** resolvem sob o caminho publicado (conferir aba de rede).
-3. O fluxo principal (pesquisa → artista → álbuns → detalhe) funciona **na URL publicada**, não só em localhost.
-4. **Atualizar** a página no site publicado não deixa o usuário em tela em branco para o modelo de navegação escolhido (hash, vista única sem deep links ou fallback documentado de SPA).
+1. Layout is usable from **~320px width** upward, without horizontal scroll in the main flow (optional overflow for long track lists handled readably).
+2. With no API calls, the user can tab search → results → albums → detail controls in **predictable** order.
+3. Each area can be forced (e.g. temporary dev toggles) to show placeholder **loading**, **empty**, **error**, and **success** without layout collapse.
+4. No routing choice is introduced that **breaks GitHub Pages** (avoid history-mode SPA on subpaths without documented mitigation).
 
-**Validação manual**
+**Manual validation**
 
-- Abrir URL publicada; executar fluxo principal; atualizar no meio do fluxo conforme a escolha de roteamento; verificar carregamento das imagens.
+- Resize viewport; keyboard-only walkthrough of shell; toggle each state.
 
-**Riscos**
+**Open decisions** (non-blocking; record choice when made)
 
-- Configuração errada de hospedagem em subcaminho; roteamento no cliente sem fallback `404.html` se usar modo histórico.
-
-**Decisões em aberto**
-
-- Roteamento por hash versus por caminho versus vista única sem deep links — decidir antes de considerar a Fase 8 concluída.
+- Album detail inline vs overlay panel.
+- Whether selection appears in the URL in v1.
 
 ---
 
-## Nota sobre GitHub Pages
+### Phase 5 — Search and artist selection
 
-Hospedagem estática mantém as operações simples; o principal risco é **base path incorreto** ou premissas de **roteamento no cliente**. Valide o comportamento na URL de produção antes de anunciar o primeiro release público.
+**Goal**  
+Wire search UI to `GET /search/artist` and persist the chosen artist for later phases.
 
-## Fora do escopo da v1
+**Deliverables**
 
-- Contas de usuário ou autenticação.
-- Favoritos ou qualquer dado persistente por usuário.
-- Histórico de pesquisa.
-- Reprodução, previews ou controles de áudio.
-- Filtragem ou ordenação avançada além do fluxo básico.
-- Recursos no servidor, bancos de dados ou backend próprio controlado por este projeto.
-- Frameworks de UI ou design systems com muitas dependências.
-- Polimento visual além do necessário para clareza, usabilidade, responsividade e acessibilidade conforme acima.
+- Search field and submit (or debounced search only if documented — prefer submit for predictability unless debounce is added to the plan).
+- Results list with **name** and **image when available**; stable layout when image is missing.
+- Selection stores **artist id** (and display fields needed) in app state.
+- Search results **empty**, **loading**, and **error** states.
+- New search **replaces** current artist and clears dependent UI (albums/detail) in a defined way.
+
+**Acceptance criteria**
+
+1. Known query returns a list coherent with API content for that query.
+2. Nonsense query shows dedicated **empty** state, not a blank or broken list.
+3. Network failure shows clear **error** without crashing the app.
+4. Full path usable **keyboard-only** (submit, move focus to results, select).
+5. After selecting an artist, UI is ready to load albums (albums may still stub until Phase 6).
+
+**Manual validation**
+
+- Happy path, empty, error, keyboard-only, search again after selection.
+
+**Risks**
+
+- Noisy results; selection row must be unambiguous.
+
+---
+
+### Phase 6 — Album list and album detail
+
+**Goal**  
+Load albums for the selected artist and show detail with track list, release date, and cover; support **back** without losing artist context.
+
+**Deliverables**
+
+- Grid or list of albums as **cover cards**; missing cover handled.
+- Fetch `GET /album/{id}` on selection; show **track list** (API order), **release date**, **cover**.
+- **Back** from detail to album list; **artist context** preserved.
+- **Loading** and **error** for list and detail; detail failure **does not** clear selected artist.
+
+**Acceptance criteria**
+
+1. Albums shown after selecting an artist match that artist in the API.
+2. Detail screen matches selected album id (check title and track count).
+3. Back returns to album list with list still usable; selecting another album replaces detail cleanly.
+4. Long track lists scroll or wrap without destroying page layout.
+5. Keyboard: user moves from albums to detail and **back** without mouse.
+
+**Manual validation**
+
+- Two albums from same artist; back; album fetch error; keyboard-only path.
+
+**Risks**
+
+- Image aspect ratios; long titles — CSS should avoid distorted covers.
+
+---
+
+### Phase 7 — Accessibility and resilience pass
+
+**Goal**  
+Close gaps for real keyboard/mobile use and unstable network or images.
+
+**Deliverables**
+
+- Visible **focus** styles on all interactive controls.
+- Semantic **headings**, **buttons**, and **landmarks** where they help navigation.
+- **alt** text on images or decorative markup per HTML best practices; broken image fallback without catastrophic layout shift.
+- Copy and labels for search, results, albums, back/close.
+- Optional **skip link** only if final layout warrants it (document either way).
+
+**Acceptance criteria**
+
+1. Full journey (search → artist → albums → detail → back) works with **Tab**, **Shift+Tab**, **Enter**, and **Escape** where applicable, without focus traps.
+2. Main text stays readable at common mobile widths.
+3. Simulated network failure at each fetch stage leaves UI **recoverable** (retry or search again).
+4. No interactive control lacks focus or has invisible focus.
+
+**Manual validation**
+
+- Full keyboard pass; mobile viewport; offline or blocked requests in DevTools.
+
+---
+
+### Phase 8 — GitHub Pages publishing
+
+**Goal**  
+Publish the static build and confirm behavior at the real Pages URL.
+
+**Deliverables**
+
+- GitHub Actions or documented manual publishing that deploys Vite `dist` output to GitHub Pages.
+- **Base URL** / Vite `base` aligned with repo path (project site vs user site); asset links working.
+- Short **publishing checklist** in README when README is updated: build, base path, smoke test.
+
+**Acceptance criteria**
+
+1. App loads at production GitHub Pages URL **without broken main bundle or CSS**.
+2. **Static assets** resolve under the published path (check Network tab).
+3. Main flow (search → artist → albums → detail) works **on the published URL**, not only localhost.
+4. **Reload** on the published site does not strand the user on a blank screen for the chosen navigation model (hash, single view without deep links, or documented SPA fallback).
+
+**Manual validation**
+
+- Open published URL; run main flow; reload mid-flow per routing choice; check images load.
+
+**Risks**
+
+- Wrong subpath hosting config; client routing without `404.html` fallback if using history mode.
+
+**Open decisions**
+
+- Hash vs path vs single view without deep links — decide before treating Phase 8 complete.
+
+---
+
+## Note on GitHub Pages
+
+Static hosting keeps operations simple; main risks are **wrong base path** or **client routing assumptions**. Validate behavior on the production URL before announcing the first public release.
+
+## Out of v1 scope
+
+- User accounts or authentication.
+- Favorites or any per-user persistent data.
+- Search history.
+- Playback, previews, or audio controls.
+- Advanced filtering or sorting beyond the basic flow.
+- Server resources, databases, or an owned backend for this project.
+- UI frameworks or design systems with heavy dependencies.
+- Visual polish beyond what clarity, usability, responsiveness, and accessibility above require.

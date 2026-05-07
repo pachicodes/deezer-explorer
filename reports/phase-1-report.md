@@ -10,12 +10,12 @@ No application UI, Vite/React scaffold, or production API client module was intr
 
 | Area | Files |
 | --- | --- |
-| PRD / execution record | `docs/prd/fase1.md` — objectives, scope, acceptance criteria, execution log, decision record, manual validation checklist (completed), field mapping for later phases |
-| Plan / repo status | `README.md` — reflects Phase 1 done; links PRD; states no app scaffold yet |
-| Plan / repo status | `PLAN.md` — repository status line updated to reference Phase 1 completion and PRD |
-| Agent notes | `AGENTS.md` — minor wording (`fundamentados` vs `respaldados`); **note:** the section *Estado técnico atual* still reads like generic planning text and may need a follow-up edit for consistency with README/PLAN |
+| PRD / execution record | `docs/prd/phase1.md` — objectives, scope, acceptance criteria, execution log, decision record, manual validation checklist (completed), field mapping for later phases |
+| Plan / repo status | `README.md` — reflects Phase 1 done; links PRD |
+| Plan / repo status | `PLAN.md` — repository status references Phase 1 completion and PRD |
+| Agent notes | `AGENTS.md` — operating constraints for implementers and automation |
 
-*(Other glossary/planning docs such as `GLOSSARIO.md` may exist from earlier work; they are not required deliverables of Phase 1 itself.)*
+*(Other docs such as `GLOSSARY.md` may exist from broader repo work; they are not required deliverables of Phase 1 itself.)*
 
 ## Technical decisions
 
@@ -33,15 +33,15 @@ No application UI, Vite/React scaffold, or production API client module was intr
 
 Validation was **manual**; no automated test suite was added (acceptable per plan for this phase).
 
-## PRD criteria met (`docs/prd/fase1.md`)
+## PRD criteria met (`docs/prd/phase1.md`)
 
 | PRD acceptance theme | Status |
 | --- | --- |
 | All three endpoints exercised with evidence | **Met** — terminal + browser manual validation |
 | At least one browser-safe strategy for all three | **Met** — JSONP confirmed in Chrome |
 | Compatible with static publishing (GitHub Pages) | **Met** — no backend required for chosen path |
-| Decision and evidence documented in one reusable place | **Met** — `docs/prd/fase1.md` + README link |
-| Risks / open questions explicit | **Met** — PRD *Riscos / perguntas em aberto* + decision notes |
+| Decision and evidence documented in one reusable place | **Met** — `docs/prd/phase1.md` + README link |
+| Risks / open questions explicit | **Met** — PRD *Risks / open questions* + decision notes |
 | Manual validation checklist | **Met** — all items marked complete in PRD |
 
 ## Problems encountered and resolution
@@ -52,14 +52,13 @@ Validation was **manual**; no automated test suite was added (acceptable per pla
 | **Confusion separating document vs API rows in Network tab** | Filtering by host / repeating `fetch` with Preserve log; documented in conversational guidance (not a code fix). |
 | **`net::ERR_FAILED` with 200** | Explained as browser withholding response body from JS under CORS despite HTTP success. |
 
-## Outstanding items / limitations for the next phase
+## Outstanding items / limitations for later phases
 
-1. **Phase 2 deliverables** (`PLAN.md`): minimal **Vite + React + TypeScript** project, dev/build scripts, root placeholder component—**not started** in this phase.
-2. **Firefox:** `PLAN.md` suggests Chrome or Firefox if CORS differs; validation matrix in the PRD was **Chrome-only**. Consider a quick Firefox smoke check later if parity matters.
-3. **`AGENTS.md` “Estado técnico atual”** may still describe the repo as only “planejamento”; README/PLAN already state Phase 1 done—**sync recommended**.
-4. **GitHub Pages vs localhost:** CORS and caching can differ by deployment origin; re-verify JSONP/`fetch` behavior once the app is served from the real Pages URL in a later phase if needed.
-5. **JSONP trade-offs** (HTTP semantics, error handling vs `fetch`) remain documented risks for implementation in Phase 3 client module.
+1. **Phase 2** (`PLAN.md`): minimal **Vite + React + TypeScript** project — **implemented** after this report’s original date; see [`docs/prd/phase2.md`](../docs/prd/phase2.md).
+2. **Firefox:** `PLAN.md` suggests Chrome or Firefox if CORS differs; validation matrix in the Phase 1 PRD was **Chrome-only**. Consider a quick Firefox smoke check later if parity matters.
+3. **GitHub Pages vs localhost:** CORS and caching can differ by deployment origin; re-verify JSONP/`fetch` behavior once the app is served from the real Pages URL when publishing.
+4. **JSONP trade-offs** (HTTP semantics, error handling vs `fetch`) remain documented risks for implementation in the Phase 3 client module.
 
 ---
 
-*Phase 1 is documented as complete in `docs/prd/fase1.md` and summarized in `README.md`. Next planned work: Phase 2 — initial toolchain (see `PLAN.md`).*
+*Phase 1 is documented as complete in `docs/prd/phase1.md` and summarized in `README.md`. See `PLAN.md` for current repository status and next phases.*

@@ -1,50 +1,80 @@
 # Deezer Explorer
 
-App web estático para pesquisar artistas na Deezer, navegar por álbuns e abrir detalhes do álbum.
+Static web app to search artists on Deezer, browse albums, and open album details.
 
-## O que é este projeto
+## What this project is
 
-O Deezer Explorer é um projeto de estudo com foco em um fluxo simples:
+Deezer Explorer is a learning project focused on a simple flow:
 
-1. Pesquisar um artista.
-2. Escolher o artista correto nos resultados.
-3. Ver os álbuns desse artista.
-4. Abrir um álbum e ver faixas, data de lançamento e capa.
+1. Search for an artist.
+2. Pick the right artist from the results.
+3. See that artist’s albums.
+4. Open an album and see tracks, release date, and cover art.
 
-## Estado atual
+## Current status
 
-A **Fase 1** (descoberta técnica do acesso à API Deezer no navegador) está **concluída** e registrada na PRD abaixo. Decisão resumida: **`fetch` direto não é a estratégia principal** no cliente atual por causa de CORS; **JSONP** foi validado nos três endpoints obrigatórios da v1 em cenário real de navegador.
+**Phase 1** is **complete**: browser API access decision (CORS / JSONP) in [`docs/prd/phase1.md`](docs/prd/phase1.md).
 
-O repositório **ainda não contém** o scaffold da aplicação (Vite/React/TypeScript): **não há código da UI**, nem `package.json` nem comandos de desenvolvimento ou build neste README até a **Fase 2**.
+**Phase 2** is **implemented** in this repo: **Vite + React + TypeScript** at the root, with `dev`, `build`, and `preview` scripts. The UI is **placeholder** only — **no Deezer integration** until **Phase 3** ([`PLAN.md`](PLAN.md)). To **close the Phase 2 PRD** strictly, run **Manual validation** at the end of [`docs/prd/phase2.md`](docs/prd/phase2.md) on your machine and check the boxes.
 
-**Próximo passo:** estrutura inicial da toolchain conforme [`PLAN.md`](PLAN.md) (Fase 2).
+**Next step:** Phase 3 — API client module (three endpoints), per the plan (you can validate Phase 2 in parallel or first, as you prefer).
 
-## Documentos importantes
+## Local development
 
-- [`PLAN.md`](PLAN.md): escopo da v1, fases, critérios de aceite, riscos e decisões.
-- [`docs/prd/fase1.md`](docs/prd/fase1.md): PRD e registro de execução da Fase 1 (CORS, JSONP, validação manual).
-- [`docs/prd/fase2.md`](docs/prd/fase2.md): PRD da Fase 2 (toolchain Vite + React + TypeScript, sem UI de produto).
-- [`AGENTS.md`](AGENTS.md): regras de trabalho para implementação e automação.
-- [`GLOSSARIO.md`](GLOSSARIO.md): explicação dos termos técnicos usados no projeto.
+### Prerequisites
 
-## Escopo da v1 (resumo)
+- **Node.js** 20.19 or newer (recommended for Vite 8).
+- **npm** (there is a root `package-lock.json`).
 
-- Endpoints usados:
+### Commands
+
+```bash
+npm install
+npm run dev
+```
+
+### Production build
+
+Output goes to `dist/`:
+
+```bash
+npm run build
+```
+
+### Preview the build
+
+Useful to sanity-check static artifacts:
+
+```bash
+npm run preview
+```
+
+## Important documents
+
+- [`PLAN.md`](PLAN.md): v1 scope, phases, acceptance themes, risks, and decisions.
+- [`docs/prd/phase1.md`](docs/prd/phase1.md): Phase 1 PRD and execution log (CORS, JSONP, manual validation).
+- [`docs/prd/phase2.md`](docs/prd/phase2.md): Phase 2 PRD (Vite + React + TypeScript toolchain, no product UI).
+- [`AGENTS.md`](AGENTS.md): rules for implementers and automation.
+- [`GLOSSARY.md`](GLOSSARY.md): explanation of technical terms used in the repo.
+
+## v1 scope (summary)
+
+- Endpoints used:
   - `GET /search/artist?q=...`
   - `GET /artist/{id}/albums`
   - `GET /album/{id}`
-- Sem backend, autenticação ou banco de dados.
-- Compatível com GitHub Pages (site estático).
-- Comportamentos obrigatórios: estados de carregamento, vazio e erro.
-- Usabilidade obrigatória: mobile first e navegação por teclado.
+- No backend, authentication, or database.
+- Compatible with GitHub Pages (static site).
+- Required behaviors: loading, empty, and error states.
+- Required usability: mobile first and keyboard navigation.
 
-Para detalhes completos do escopo e das fases, consulte o [`PLAN.md`](PLAN.md).
+For full scope and phases, see [`PLAN.md`](PLAN.md).
 
-## Fora do escopo por enquanto
+## Out of scope for now
 
-- Contas de usuário
-- Favoritos salvos
-- Histórico de pesquisa
-- Reprodução de áudio ou preview
-- Filtros e ordenação avançados
-- Backend customizado e banco de dados
+- User accounts
+- Saved favorites
+- Search history
+- Audio playback or previews
+- Advanced filters and sorting
+- Custom backend and database

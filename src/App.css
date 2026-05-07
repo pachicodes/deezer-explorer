@@ -1,0 +1,10 @@
+.app {
+  padding: 2rem;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.placeholder {
+  color: #444;
+  margin-top: 0.75rem;
+}
