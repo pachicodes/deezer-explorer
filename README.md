@@ -21,17 +21,16 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 4** is **complete** (implemented + PRD manual validation): mock-only shell — [`docs/prd/phase4.md`](docs/prd/phase4.md); summary in [`reports/phase-4-report.md`](reports/phase-4-report.md).
 
-**Phase 5** — **PRD ready:** [`docs/prd/phase5.md`](docs/prd/phase5.md) (live artist search + selection only; albums/detail stubs until Phase 6).
+**Phase 5** — **implemented** (live search + artist selection): [`docs/prd/phase5.md`](docs/prd/phase5.md). Complete **Manual validation** there before marking Phase 5 closed.
 
-**Next step:** Implement Phase 5 per that PRD.
+**Next step:** Run Phase 5 PRD manual checks, then Phase 6 (albums + detail API).
 
 ## Source layout (high level)
 
 | Path | Purpose |
 | --- | --- |
 | [`src/lib/deezer`](src/lib/deezer) | Deezer v1 client — JSONP only, three endpoints (`PLAN.md` / Phase 3 PRD). |
-| [`src/shell/AppShell.tsx`](src/shell/AppShell.tsx) | Product shell — Phase 4 mocks; Phase 5 wires search/results to [`src/lib/deezer`](src/lib/deezer) per [`docs/prd/phase5.md`](docs/prd/phase5.md). |
-| [`src/mocks/shellMocks.ts`](src/mocks/shellMocks.ts) | Phase 4 mocks — drop or narrow once Phase 5 replaces search/results (see Phase 5 PRD). |
+| [`src/shell/AppShell.tsx`](src/shell/AppShell.tsx) | Product shell — live artist search via [`searchArtists`](src/lib/deezer/client.ts); albums/detail stubbed until Phase 6 ([`docs/prd/phase5.md`](docs/prd/phase5.md)). |
 | [`src/DeezerDevPanel.tsx`](src/DeezerDevPanel.tsx) | Dev-only smoke tests for the JSONP client (`npm run dev` only). |
 | [`src/App.tsx`](src/App.tsx) | Root UI — renders `AppShell` and (in dev) `DeezerDevPanel`. |
 

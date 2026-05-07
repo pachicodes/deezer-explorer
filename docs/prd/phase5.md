@@ -59,7 +59,7 @@ Phase 5 completes **steps 1–3** of the v1 journey at the data layer (**search 
 
 - **Phase 4 dev overrides:** [`ShellDevControls`](../../src/shell/ShellDevControls.tsx) forced mock UI states; Phase 5 should **remove**, **gate**, or **narrow** these controls so they do not conflict with live search/results (record decision in execution log). Keeping dev-only **network simulation** hooks is optional.
 
-- **Mocks:** [`shellMocks.ts`](../../src/mocks/shellMocks.ts) should **not** drive search/results after Phase 5; deleting unused exports or the file is acceptable once nothing imports them.
+- **Mocks:** Phase 4 `src/mocks/shellMocks.ts` was **removed** once search/results were live — nothing under `src/mocks/` remains for the shell.
 
 - **Production bundle:** importing `searchArtists` from product UI ensures the client ships (see Phase 3 PRD production note).
 
@@ -115,9 +115,20 @@ Closed **2026-05-07** so implementation can proceed without silent guesses:
 | **Trim-empty submit** | **Do not** call `searchArtists` when trimmed query is empty; disable submit and/or show short inline validation — avoid treating as a network **error** state. |
 | **Missing / broken thumbnails** | Fixed-aspect **placeholder** slot in each row; `<img>` only when URL present; **`onError`** falls back to placeholder. |
 
+### Automated verification log
+
+- **2026-05-07:** `npm run lint` and `npm run build` succeeded at repo root. `rg "getArtistAlbums|getAlbum" src/shell` returned no matches (Phase 5 shell path uses **`searchArtists`** only).
+
 ### Decisions made during implementation
 
-*(Augment after coding: file/state locations, any tweaks to copy above, screenshot or query examples for empty-state testing.)*
+- **State:** Search/results live in [`src/shell/AppShell.tsx`](../../src/shell/AppShell.tsx): `resultsSlice` (`idle` \| `loading` \| `empty` \| `error` \| `success`), `hits`, `submittedQuery`, `resultsError`, `selectedArtist: ArtistSearchHit | null`. **`searchGenRef`** (+ increment per submit) implements **latest-wins** stale response discard.
+- **Search UI:** Form always visible; whitespace-only input disables submit and shows inline hint + `aria-invalid`; no `searchArtists` call when trimmed query empty.
+- **Results rows:** [`ResultThumb`](../../src/shell/AppShell.tsx) (`picture_small` \| `picture_medium`, placeholder + `onError`); [`shell-list-btn-selected`](../../src/shell/AppShell.css) when `selectedArtist?.id === hit.id`.
+- **Albums/detail:** Primary path is **stub copy only** (no mocks); interactive album grid and detail tracks **removed** until Phase 6.
+- **Mocks:** `src/mocks/shellMocks.ts` **removed** as unused (directory removed).
+- **`ShellDevControls`:** [`DevOverrideRegionId`](../../src/shell/types.ts) = `albums` \| `detail` only; panel copy updated for Phase 5.
+
+*(Optional: record a concrete zero-hit query used for §Manual validation §2.)*
 
 ### Notes for Phase 6
 
@@ -201,7 +212,7 @@ Use **Chrome** or **Firefox** with **`npm run dev`** (network allowed to `api.de
 1. `npm run lint` completes without error.
 2. `npm run build` completes without error.
 
-- [ ] Lint + build OK.
+- [x] Lint + build OK. *(2026-05-07 — automated.)*
 
 ### Closure
 

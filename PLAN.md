@@ -15,7 +15,7 @@ Implementers and automation must treat **AGENTS.md** as operating constraints al
 
 Work in **small phases**, each producing something **independently verifiable**. Prefer the smallest change that proves the next decision. Do not introduce stack, routing, or flow choices that break GitHub Pages compatibility or are not grounded here. If scope, stack, phases, risks, or build-affecting decisions change, update this file first and keep **README.md** consistent.
 
-**Repository status:** **Phase 3 — complete**; **Phase 4 — complete** (mock shell + [`docs/prd/phase4.md`](docs/prd/phase4.md) checklist closed). **Phase 5 PRD** — [`docs/prd/phase5.md`](docs/prd/phase5.md) (search + artist selection; implementation next). Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** implement Phase 5 per [`docs/prd/phase5.md`](docs/prd/phase5.md).
+**Repository status:** **Phase 3 — complete**; **Phase 4 — complete** (mock shell + [`docs/prd/phase4.md`](docs/prd/phase4.md) checklist closed). **Phase 5 — implemented** ([`docs/prd/phase5.md`](docs/prd/phase5.md)); close PRD after **Manual validation**. Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** validate Phase 5, then Phase 6 — albums + album detail ([`PLAN.md`](PLAN.md) §Phase 6).
 
 ## v1 scope
 
