@@ -3,13 +3,20 @@
   left: 0.5rem;
   top: 0.5rem;
   z-index: 10;
-  padding: 0.5rem 0.85rem;
+  padding: 0.5rem 0.9rem;
   font-size: 0.875rem;
   font-weight: 600;
+  font-family: var(--font-sans);
   color: #fff;
-  background: #0958d9;
-  border-radius: 4px;
+  background: linear-gradient(
+    135deg,
+    var(--color-accent) 0%,
+    var(--color-magenta) 55%,
+    var(--color-cyan) 100%
+  );
+  border-radius: var(--radius-sm);
   text-decoration: none;
+  box-shadow: var(--shadow-md);
   clip-path: inset(100%);
   clip: rect(0 0 0 0);
   width: 1px;
@@ -28,39 +35,70 @@
   height: auto;
   margin: 0;
   overflow: visible;
-  outline: 2px solid #064194;
-  outline-offset: 2px;
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 
 .app {
   box-sizing: border-box;
   width: 100%;
-  max-width: 40rem;
+  max-width: 42rem;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 0.25rem;
   min-width: 0;
+}
+
+@media (min-width: 480px) {
+  .app {
+    padding: 0 0.5rem;
+  }
 }
 
 .dev-panel {
   margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #ccc;
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-strong);
+  border: 1px solid var(--color-surface-border);
+  box-shadow: var(--shadow-sm);
   max-width: 42rem;
 }
 
 .dev-panel-title {
   font-size: 1rem;
+  font-weight: 700;
   margin: 0 0 0.5rem;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent-deep),
+    var(--color-magenta)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (forced-colors: active) {
+  .dev-panel-title {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: CanvasText;
+  }
 }
 
 .dev-panel-help {
   font-size: 0.875rem;
-  color: #555;
+  color: var(--color-ink-muted);
   margin: 0 0 1rem;
 }
 
 .dev-panel-help code {
   font-size: 0.8125rem;
+  padding: 0.1em 0.35em;
+  border-radius: 6px;
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--color-accent-deep);
 }
 
 .dev-panel-buttons {
@@ -72,19 +110,36 @@
 
 .dev-panel-buttons button {
   font-size: 0.8125rem;
-  padding: 0.35rem 0.6rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  padding: 0.45rem 0.75rem;
   cursor: pointer;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-surface-border);
+  background: linear-gradient(180deg, #fff 0%, rgba(238, 242, 255, 0.9) 100%);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-sm);
 }
 
 .dev-panel-buttons button:focus-visible {
-  outline: 2px solid #0958d9;
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+.dev-panel-buttons button:hover {
+  border-color: rgba(99, 102, 241, 0.35);
 }
 
 .dev-panel-log {
   font-size: 0.75rem;
-  line-height: 1.4;
-  background: #f6f6f6;
+  line-height: 1.45;
+  background: linear-gradient(
+    160deg,
+    rgba(238, 242, 255, 0.95) 0%,
+    rgba(252, 231, 243, 0.5) 100%
+  );
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-sm);
   padding: 0.75rem;
   overflow: auto;
   max-height: 14rem;

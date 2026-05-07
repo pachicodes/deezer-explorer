@@ -4,12 +4,97 @@
   box-sizing: border-box;
 }
 
+:root {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+
+  --color-ink: #1e1147;
+  --color-ink-muted: #5b5278;
+  --color-ink-soft: #7c7399;
+
+  --color-bg-1: #e8ecff;
+  --color-bg-2: #fce7f3;
+  --color-bg-3: #fef3c7;
+
+  --color-surface: rgba(255, 255, 255, 0.82);
+  --color-surface-strong: rgba(255, 255, 255, 0.94);
+  --color-surface-border: rgba(99, 102, 241, 0.14);
+
+  --color-accent: #6366f1;
+  --color-accent-deep: #4f46e5;
+  --color-magenta: #db2777;
+  --color-cyan: #0891b2;
+  --color-amber: #d97706;
+
+  --color-danger: #dc2626;
+  --color-danger-bg: rgba(254, 226, 226, 0.65);
+
+  --focus-ring: #4338ca;
+  --focus-ring-offset: #fff;
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+
+  --shadow-sm: 0 2px 8px rgba(30, 17, 71, 0.06);
+  --shadow-md: 0 8px 24px rgba(99, 102, 241, 0.12),
+    0 4px 12px rgba(219, 39, 119, 0.06);
+  --shadow-card-hover: 0 12px 28px rgba(99, 102, 241, 0.18),
+    0 4px 12px rgba(8, 145, 178, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.5;
+  color: var(--color-ink);
+  background-color: var(--color-bg-1);
+  background-image: radial-gradient(
+      ellipse 120% 80% at 10% -10%,
+      rgba(167, 139, 250, 0.35) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 90% 70% at 95% 15%,
+      rgba(244, 114, 182, 0.28) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 80% 60% at 50% 100%,
+      rgba(251, 191, 36, 0.22) 0%,
+      transparent 45%
+    ),
+    linear-gradient(
+      165deg,
+      var(--color-bg-1) 0%,
+      var(--color-bg-2) 42%,
+      var(--color-bg-3) 100%
+    );
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {
   min-height: 100vh;
+}
+
+@media (forced-colors: active) {
+  :root {
+    --focus-ring: Highlight;
+  }
+
+  body {
+    background: Canvas;
+  }
 }
