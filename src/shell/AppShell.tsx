@@ -314,8 +314,10 @@ export function AppShell() {
             </label>
             <input
               id="shell-query"
-              type="search"
+              type="text"
               name="q"
+              inputMode="search"
+              enterKeyHint="search"
               className="shell-input"
               placeholder="Artist name"
               value={query}
