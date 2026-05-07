@@ -79,6 +79,7 @@ Provide a **single client layer** in the application that performs all v1 Deezer
 
 - PRD authored: 2026-05-07
 - Implementation landed: 2026-05-07
+- **Manual validation (§Manual validation):** completed **2026-05-07** — dev panel smoke tests in browser (search, albums, album detail, parse guard, timeout).
 - Node / toolchain: per [`phase2.md`](./phase2.md) (Vite + React + TypeScript)
 
 ### Decisions made during implementation
@@ -128,7 +129,7 @@ Check each item when verified.
 
 ### Check: manual validation
 
-- [ ] All steps in **Manual validation** below were run and checkboxes marked.
+- [x] All steps in **Manual validation** below were run and checkboxes marked.
 
 ---
 
@@ -141,28 +142,28 @@ Run in a browser after implementation (Chrome or Firefox recommended).
 1. Trigger search with a known query (e.g. `daft punk`).
 2. Confirm resolved payload contains at least one item with `id` and `name`.
 
-- [ ] Search happy path OK.
+- [x] Search happy path OK.
 
 ### 2. Artist albums
 
 1. Use a known artist id (e.g. `27`).
 2. Confirm resolved payload contains album entries with `id` and `title`.
 
-- [ ] Album list happy path OK.
+- [x] Album list happy path OK.
 
 ### 3. Album detail
 
 1. Use a known album id (e.g. one returned from step 2).
 2. Confirm resolved payload includes `title`, `release_date`, and track list data usable for Phase 6.
 
-- [ ] Album detail happy path OK.
+- [x] Album detail happy path OK.
 
 ### 4. Failure paths
 
 1. Trigger offline mode or block `api.deezer.com` in DevTools **or** use an invalid id if API returns an error payload — at least one path where the client reports **failure** without uncaught exceptions.
 
-- [ ] Failure path surfaces structured error (no silent hang; timeout tested at least once).
+- [x] Failure path surfaces structured error (no silent hang; timeout tested at least once).
 
 ### Closure
 
-When every checkbox above is marked, Phase 3 is closed from this PRD’s perspective for implementation validation.
+**Phase 3 is closed** from this PRD’s perspective as of **2026-05-07**: manual validation was completed via the dev-only smoke panel (`npm run dev`) — search, albums, album detail, parse guard, and 1 ms timeout path verified in browser.
