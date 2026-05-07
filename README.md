@@ -17,7 +17,7 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 2** is **complete**: **Vite + React + TypeScript** at the root, with `dev`, `build`, and `preview` scripts; validation is recorded in [`docs/prd/phase2.md`](docs/prd/phase2.md).
 
-**Phase 3** is **implemented**: JSONP client for the three v1 endpoints lives in [`src/lib/deezer`](src/lib/deezer); PRD and checklist in [`docs/prd/phase3.md`](docs/prd/phase3.md). A **dev-only** smoke-test panel appears when you run `npm run dev` (not in production preview/build output until later phases import the client).
+**Phase 3** is **complete**: JSONP client in [`src/lib/deezer`](src/lib/deezer); PRD (implementation + manual validation) in [`docs/prd/phase3.md`](docs/prd/phase3.md).
 
 **Next step:** Phase 4 — app shell and layout ([`PLAN.md`](PLAN.md)).
 
@@ -65,7 +65,7 @@ Run **`npm run dev`** (not `preview`) so the **Phase 3 — client smoke tests** 
 
 Optional: DevTools **offline** or block `api.deezer.com` → expect `network` / `timeout`-style failure from a happy-path button.
 
-Then tick the **Manual validation** boxes in [`docs/prd/phase3.md`](docs/prd/phase3.md).
+Optional repeat runs after changing the client. Manual validation is **recorded** in [`docs/prd/phase3.md`](docs/prd/phase3.md) (2026-05-07).
 
 ## Important documents
 
