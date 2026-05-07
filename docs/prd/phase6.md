@@ -30,7 +30,7 @@ Wire the **albums** and **album detail** regions to the Deezer API using the exi
 
 ## Out of scope
 
-- **Phase 7** — systematic focus-visible audit, skip links, full resilience copy polish.  
+- **Phase 7** — systematic focus-visible audit, skip links, full resilience copy polish ([`phase7.md`](./phase7.md)).  
 - **Phase 8** — GitHub Pages pipeline / production URL smoke (unless a one-line doc fix is required).  
 - **Audio playback** / previews.  
 - **Pagination or infinite scroll** for artist albums unless Deezer returns more than one page and the client already exposes it — default is **single response list** from existing **`getArtistAlbums`** mapping only; expanding scope requires PLAN + PRD amendment.  

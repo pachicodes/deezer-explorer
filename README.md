@@ -25,7 +25,7 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 6** — **implemented** (live albums + album detail): [`docs/prd/phase6.md`](docs/prd/phase6.md); summary in [`reports/phase-6-report.md`](reports/phase-6-report.md). PRD **manual validation** §§1–5 and compliance checklists remain until marked in the PRD.
 
-**Next step:** Run Phase 6 **manual validation** in [`docs/prd/phase6.md`](docs/prd/phase6.md), then Phase 7 accessibility pass per [`PLAN.md`](PLAN.md). Optionally finish Phase 5 PRD §§1 & §3 in [`docs/prd/phase5.md`](docs/prd/phase5.md).
+**Next step:** Implement **Phase 7** per [`docs/prd/phase7.md`](docs/prd/phase7.md). Optionally finish Phase 6 PRD manual validation in [`docs/prd/phase6.md`](docs/prd/phase6.md) and Phase 5 §§1 & §3 in [`docs/prd/phase5.md`](docs/prd/phase5.md).
 
 ## Source layout (high level)
 
@@ -90,6 +90,7 @@ Optional: DevTools **offline** or block **`api.deezer.com`** on a happy-path but
 - [`docs/prd/phase4.md`](docs/prd/phase4.md): Phase 4 PRD — app shell, layout, state placeholders (mock data).
 - [`docs/prd/phase5.md`](docs/prd/phase5.md): Phase 5 PRD — live search + artist selection.
 - [`docs/prd/phase6.md`](docs/prd/phase6.md): Phase 6 PRD — album list + album detail API.
+- [`docs/prd/phase7.md`](docs/prd/phase7.md): Phase 7 PRD — accessibility + resilience pass.
 - [`reports/phase-6-report.md`](reports/phase-6-report.md): Phase 6 implementation summary.
 - [`AGENTS.md`](AGENTS.md): rules for implementers and automation.
 - [`GLOSSARY.md`](GLOSSARY.md): technical terms used in this repo.
