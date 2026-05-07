@@ -27,12 +27,16 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 7** — **implemented** (accessibility + resilience pass): [`docs/prd/phase7.md`](docs/prd/phase7.md). PRD **manual validation** §§1–5 remains for browser sign-off; §6 (lint/build) recorded in the PRD.
 
-**Next step:** Implement **Phase 8** per [`docs/prd/phase8.md`](docs/prd/phase8.md) (GitHub Pages publishing). Optionally finish Phase 6 / Phase 7 PRD checklists in the browser and Phase 5 §§1 & §3 in [`docs/prd/phase5.md`](docs/prd/phase5.md).
+**Phase 8** — **implemented** (GitHub Pages via Actions): [`docs/prd/phase8.md`](docs/prd/phase8.md); workflow [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml); **`base`** [`vite.config.ts`](vite.config.ts). Run PRD **manual validation** §§1–4 on your live **`https://<user>.github.io/deezer-explorer/`** URL after the first deploy.
+
+**Next step:** Open **GitHub → Settings → Pages → Source: GitHub Actions**, merge/push **`main`**, confirm the live URL, then tick [`docs/prd/phase8.md`](docs/prd/phase8.md). Optionally finish Phase 5–7 PRD browser items.
 
 ## Source layout (high level)
 
 | Path | Purpose |
 | --- | --- |
+| [`vite.config.ts`](vite.config.ts) | Vite config — **`base`** for GitHub project Pages (`/deezer-explorer/`). |
+| [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) | CI: build `dist/` and deploy to GitHub Pages. |
 | [`src/lib/deezer`](src/lib/deezer) | Deezer v1 client — JSONP only, three endpoints (`PLAN.md` / Phase 3 PRD). |
 | [`src/shell/AppShell.tsx`](src/shell/AppShell.tsx) | Product shell — live search ([`phase5.md`](docs/prd/phase5.md)), albums + detail ([`phase6.md`](docs/prd/phase6.md)), Phase 7 accessibility refinements ([`phase7.md`](docs/prd/phase7.md)). |
 | [`src/DeezerDevPanel.tsx`](src/DeezerDevPanel.tsx) | Dev-only smoke tests for the JSONP client (`npm run dev` only). |
@@ -62,11 +66,26 @@ npm run build
 
 ### Preview the build
 
-Useful to sanity-check static artifacts:
+Useful to sanity-check static artifacts (**must use the subpath** so asset URLs match production **`base`**):
 
 ```bash
 npm run preview
 ```
+
+Open **`http://localhost:4173/deezer-explorer/`** (not the site root). Confirms [`vite.config.ts`](vite.config.ts) **`base: '/deezer-explorer/'`** matches GitHub Pages.
+
+### Publishing (GitHub Pages)
+
+Target URL shape: **`https://<your-github-username>.github.io/deezer-explorer/`** — **project site** for repo **`deezer-explorer`**.
+
+| Step | Action |
+| --- | --- |
+| 1 | Repo slug on GitHub must stay **`deezer-explorer`**. If you rename it, change **`base`** in [`vite.config.ts`](vite.config.ts) to **`'/<new-repo-name>/'`** and redeploy. |
+| 2 | **Settings → Pages → Build and deployment:** set **Source** to **GitHub Actions**. |
+| 3 | Push to **`main`** or run **Actions → Deploy to GitHub Pages → Run workflow**. Workflow: [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). |
+| 4 | Open the URL shown under **Pages** / workflow summary (`page_url`). Smoke test: search → artist → album → Back; **reload** that entry URL. |
+
+See **[`docs/prd/phase8.md`](docs/prd/phase8.md)** for PRD checklists.
 
 ### Phase 3 client — regression checks (optional)
 

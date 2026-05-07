@@ -113,7 +113,11 @@ Use the **production URL** from repo **Pages** settings (or deployment log).
 1. **`npm run lint`** — no errors (repo hygiene before closing Phase 8).  
 2. **`npm run build`** — succeeds with **same `base`** committed.
 
-- [ ] Lint + build OK.
+- [x] Lint + build OK.
+
+### Browser verification pending
+
+Sections **§§1–4** require the **live** GitHub Pages URL after Actions deploy; complete them and tick the **PRD compliance checklist** below.
 
 ### Closure
 
@@ -149,11 +153,18 @@ When every checklist item below and manual step above is marked, Phase 8 is clos
 
 ### Automated verification log
 
-*(Populate after `npm run lint` / `npm run build` once `base` is final.)*
+- **`npm run lint`** — **pass** — **2026-05-07**
+- **`npm run build`** — **pass** — **2026-05-07** (`dist/index.html` references **`/deezer-explorer/assets/*`**)
 
 ### Decisions made during implementation
 
-*(Workflow filename, exact **`base`** string, production URL, any PLAN/README edits.)*
+- **Workflow:** [`.github/workflows/deploy-pages.yml`](../../.github/workflows/deploy-pages.yml) — **`push`** to **`main`** + **`workflow_dispatch`**; Node **20**; **`npm ci`** + **`npm run build`**; **`actions/upload-pages-artifact@v3`** from **`dist`**; **`actions/deploy-pages@v4`**.
+- **`vite.config.ts`:** **`base: '/deezer-explorer/'`** for GitHub **project** Pages.
+- **Docs:** README **Publishing** subsection + preview URL note; **`base`** / rename caveat documented.
+
+### Production smoke (human)
+
+PRD **Manual validation** §§**1–4** must be run on the **deployed** Pages URL after first successful workflow (replace `<owner>`): **`https://<owner>.github.io/deezer-explorer/`**.
 
 ### Notes post-release
 
@@ -171,13 +182,13 @@ Check each item when verified.
 
 ### Check: scope
 
-- [ ] **`base`** correct for hosting shape.  
-- [ ] Deploy path documented (Actions or manual).  
-- [ ] README publishing checklist present.
+- [x] **`base`** correct for hosting shape (project **`deezer-explorer`**).  
+- [x] Deploy path documented (GitHub Actions + README).  
+- [x] README publishing checklist present.
 
 ### Check: out of scope
 
-- [ ] No scope creep into new product features without **`PLAN.md`** update.
+- [x] No scope creep into new product features without **`PLAN.md`** update.
 
 ### Check: acceptance criteria
 
