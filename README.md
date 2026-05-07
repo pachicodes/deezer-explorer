@@ -23,6 +23,7 @@ O repositório **ainda não contém** o scaffold da aplicação (Vite/React/Type
 
 - [`PLAN.md`](PLAN.md): escopo da v1, fases, critérios de aceite, riscos e decisões.
 - [`docs/prd/fase1.md`](docs/prd/fase1.md): PRD e registro de execução da Fase 1 (CORS, JSONP, validação manual).
+- [`docs/prd/fase2.md`](docs/prd/fase2.md): PRD da Fase 2 (toolchain Vite + React + TypeScript, sem UI de produto).
 - [`AGENTS.md`](AGENTS.md): regras de trabalho para implementação e automação.
 - [`GLOSSARIO.md`](GLOSSARIO.md): explicação dos termos técnicos usados no projeto.
 
