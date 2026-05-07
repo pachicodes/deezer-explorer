@@ -1,17 +1,15 @@
-import type { ShellRegionId, UiState } from './types'
+import type { DevOverrideRegionId, UiState } from './types'
 import { UI_STATES } from './types'
 
 type Props = {
-  overrides: Partial<Record<ShellRegionId, UiState>>
-  onChange: (region: ShellRegionId, state: UiState | undefined) => void
+  overrides: Partial<Record<DevOverrideRegionId, UiState>>
+  onChange: (region: DevOverrideRegionId, state: UiState | undefined) => void
   onClearAll: () => void
 }
 
-const REGIONS: { id: ShellRegionId; label: string }[] = [
-  { id: 'search', label: 'Search' },
-  { id: 'results', label: 'Artist results' },
-  { id: 'albums', label: 'Albums' },
-  { id: 'detail', label: 'Album detail' },
+const REGIONS: { id: DevOverrideRegionId; label: string }[] = [
+  { id: 'albums', label: 'Albums (stub)' },
+  { id: 'detail', label: 'Album detail (stub)' },
 ]
 
 export function ShellDevControls({
@@ -23,12 +21,14 @@ export function ShellDevControls({
     <div
       className="shell-dev-panel"
       role="region"
-      aria-label="Phase 4 region state overrides"
+      aria-label="Phase 5 stub region state overrides"
     >
-      <h2 className="shell-dev-title">Phase 4 — region states (dev only)</h2>
+      <h2 className="shell-dev-title">Phase 5 — stub region states (dev only)</h2>
       <p className="shell-dev-help">
-        Auto follows mock flow. Otherwise force <code>loading</code>,{' '}
-        <code>empty</code>, <code>error</code>, or <code>success</code>.
+        Search and artist results are always live (no overrides). Force{' '}
+        <code>loading</code>, <code>empty</code>, <code>error</code>, or{' '}
+        <code>success</code> on <strong>albums</strong> and <strong>detail</strong>{' '}
+        stubs only.
       </p>
       <div className="shell-dev-grid">
         {REGIONS.map(({ id, label }) => (
@@ -54,7 +54,7 @@ export function ShellDevControls({
         ))}
       </div>
       <button type="button" className="shell-btn-secondary" onClick={onClearAll}>
-        Clear all overrides
+        Clear stub overrides
       </button>
     </div>
   )

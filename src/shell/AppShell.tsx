@@ -1,18 +1,17 @@
 import type { FormEvent } from 'react'
-import { useState } from 'react'
-import {
-  MOCK_ALBUMS_BY_ARTIST,
-  MOCK_ARTISTS,
-  MOCK_DETAIL_BY_ALBUM,
-} from '../mocks/shellMocks'
+import { useCallback, useRef, useState } from 'react'
+import type { ArtistSearchHit } from '../lib/deezer'
+import { searchArtists } from '../lib/deezer'
 import './AppShell.css'
 import { ShellDevControls } from './ShellDevControls'
-import type { ShellRegionId, UiState } from './types'
+import type { DevOverrideRegionId, UiState } from './types'
+
+type ResultsSlice = 'idle' | 'loading' | 'empty' | 'error' | 'success'
 
 function effectiveState(
-  region: ShellRegionId,
+  region: DevOverrideRegionId,
   auto: UiState,
-  overrides: Partial<Record<ShellRegionId, UiState>>,
+  overrides: Partial<Record<DevOverrideRegionId, UiState>>,
 ): UiState {
   if (import.meta.env.DEV && overrides[region] !== undefined) {
     return overrides[region]!
@@ -20,51 +19,94 @@ function effectiveState(
   return auto
 }
 
+function ResultThumb({ hit }: { hit: ArtistSearchHit }) {
+  const [broken, setBroken] = useState(false)
+  const src = hit.picture_small ?? hit.picture_medium
+
+  if (!src || broken) {
+    return (
+      <span
+        className="shell-result-thumb shell-result-thumb-placeholder"
+        aria-hidden
+      />
+    )
+  }
+
+  return (
+    <img
+      className="shell-result-thumb"
+      src={src}
+      alt=""
+      width={48}
+      height={48}
+      loading="lazy"
+      decoding="async"
+      onError={() => setBroken(true)}
+    />
+  )
+}
+
 export function AppShell() {
   const [query, setQuery] = useState('')
-  const [hasSearched, setHasSearched] = useState(false)
-  const [artistId, setArtistId] = useState<string | null>(null)
-  const [albumId, setAlbumId] = useState<string | null>(null)
+  const [submittedQuery, setSubmittedQuery] = useState('')
+  const [resultsSlice, setResultsSlice] = useState<ResultsSlice>('idle')
+  const [hits, setHits] = useState<ArtistSearchHit[]>([])
+  const [resultsError, setResultsError] = useState<string | null>(null)
+  const [selectedArtist, setSelectedArtist] = useState<ArtistSearchHit | null>(
+    null,
+  )
+  const searchGenRef = useRef(0)
+
   const [overrides, setOverrides] = useState<
-    Partial<Record<ShellRegionId, UiState>>
+    Partial<Record<DevOverrideRegionId, UiState>>
   >({})
 
-  const autoSearch: UiState = 'success'
-  const autoResults: UiState = hasSearched ? 'success' : 'empty'
-  const autoAlbums: UiState = artistId ? 'success' : 'empty'
-  const autoDetail: UiState = albumId ? 'success' : 'empty'
+  const trimmed = query.trim()
+  const canSubmit = trimmed.length > 0
+  const whitespaceOnly = query.length > 0 && trimmed.length === 0
 
-  const seSearch = effectiveState('search', autoSearch, overrides)
-  const seResults = effectiveState('results', autoResults, overrides)
+  const autoAlbums: UiState = selectedArtist ? 'success' : 'empty'
+  const autoDetail: UiState = 'empty'
+
   const seAlbums = effectiveState('albums', autoAlbums, overrides)
   const seDetail = effectiveState('detail', autoDetail, overrides)
 
-  const albums =
-    artistId != null ? (MOCK_ALBUMS_BY_ARTIST[artistId] ?? []) : []
-  const detail =
-    albumId != null ? (MOCK_DETAIL_BY_ALBUM[albumId] ?? null) : null
+  const runSearch = useCallback(async (q: string) => {
+    const gen = ++searchGenRef.current
+    setSubmittedQuery(q)
+    setResultsSlice('loading')
+    setResultsError(null)
+    setHits([])
+    setSelectedArtist(null)
+
+    const result = await searchArtists(q)
+    if (gen !== searchGenRef.current) return
+
+    if (!result.ok) {
+      setResultsSlice('error')
+      setResultsError(result.error.message)
+      return
+    }
+    if (result.data.length === 0) {
+      setResultsSlice('empty')
+      return
+    }
+    setHits(result.data)
+    setResultsSlice('success')
+  }, [])
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setHasSearched(true)
-    setArtistId(null)
-    setAlbumId(null)
+    const q = query.trim()
+    if (!q) return
+    void runSearch(q)
   }
 
-  function handlePickArtist(id: string) {
-    setArtistId(id)
-    setAlbumId(null)
+  function handlePickArtist(hit: ArtistSearchHit) {
+    setSelectedArtist(hit)
   }
 
-  function handlePickAlbum(id: string) {
-    setAlbumId(id)
-  }
-
-  function handleBack() {
-    setAlbumId(null)
-  }
-
-  function setOverride(region: ShellRegionId, state: UiState | undefined) {
+  function setOverride(region: DevOverrideRegionId, state: UiState | undefined) {
     setOverrides((prev) => {
       const next = { ...prev }
       if (state === undefined) {
@@ -81,8 +123,8 @@ export function AppShell() {
       <header className="shell-header">
         <h1 className="shell-title">Deezer Explorer</h1>
         <p className="shell-lede">
-          Phase 4 shell uses mock data only. Use the Deezer dev panel below to
-          exercise the real API client.
+          Search Deezer for an artist. Albums and album detail load in a later
+          phase.
         </p>
       </header>
 
@@ -94,23 +136,8 @@ export function AppShell() {
         <h2 id="shell-search-heading" className="shell-region-heading">
           Search
         </h2>
-        {seSearch === 'loading' && (
-          <p className="shell-state-msg" role="status">
-            Loading…
-          </p>
-        )}
-        {seSearch === 'empty' && (
-          <p className="shell-state-msg shell-muted">
-            Search idle — empty state (mock).
-          </p>
-        )}
-        {seSearch === 'error' && (
-          <p className="shell-state-msg shell-error" role="alert">
-            Could not reach search (placeholder).
-          </p>
-        )}
-        {seSearch === 'success' && (
-          <form className="shell-search-form" onSubmit={handleSubmit}>
+        <form className="shell-search-form" onSubmit={handleSubmit}>
+          <div className="shell-search-field-wrap">
             <label htmlFor="shell-query" className="shell-visually-hidden">
               Artist name
             </label>
@@ -119,16 +146,27 @@ export function AppShell() {
               type="search"
               name="q"
               className="shell-input"
-              placeholder="Artist name (mock)"
+              placeholder="Artist name"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               autoComplete="off"
+              aria-invalid={whitespaceOnly}
             />
-            <button type="submit" className="shell-btn-primary">
-              Search (mock)
-            </button>
-          </form>
-        )}
+            {whitespaceOnly ? (
+              <p id="shell-query-hint" className="shell-inline-hint">
+                Enter a search term to continue.
+              </p>
+            ) : null}
+          </div>
+          <button
+            type="submit"
+            className="shell-btn-primary"
+            disabled={!canSubmit}
+            aria-describedby={whitespaceOnly ? 'shell-query-hint' : undefined}
+          >
+            Search
+          </button>
+        </form>
       </section>
 
       <section
@@ -139,31 +177,41 @@ export function AppShell() {
         <h2 id="shell-results-heading" className="shell-region-heading">
           Artist results
         </h2>
-        {seResults === 'loading' && (
-          <p className="shell-state-msg" role="status">
-            Loading artists…
-          </p>
-        )}
-        {seResults === 'empty' && (
+        {resultsSlice === 'idle' && (
           <p className="shell-state-msg shell-muted">
-            Search for an artist to see mock results (empty until search).
+            Submit a search to see matching artists.
           </p>
         )}
-        {seResults === 'error' && (
+        {resultsSlice === 'loading' && (
+          <p className="shell-state-msg" role="status">
+            Searching…
+          </p>
+        )}
+        {resultsSlice === 'empty' && (
+          <p className="shell-state-msg shell-muted">
+            No artists found for &quot;{submittedQuery}&quot;.
+          </p>
+        )}
+        {resultsSlice === 'error' && (
           <p className="shell-state-msg shell-error" role="alert">
-            Artist results failed (placeholder).
+            {resultsError ?? 'Something went wrong'}
           </p>
         )}
-        {seResults === 'success' && (
+        {resultsSlice === 'success' && (
           <ul className="shell-list">
-            {MOCK_ARTISTS.map((a) => (
-              <li key={a.id}>
+            {hits.map((hit) => (
+              <li key={hit.id}>
                 <button
                   type="button"
-                  className="shell-list-btn"
-                  onClick={() => handlePickArtist(a.id)}
+                  className={`shell-list-btn shell-result-row${
+                    selectedArtist?.id === hit.id
+                      ? ' shell-list-btn-selected'
+                      : ''
+                  }`}
+                  onClick={() => handlePickArtist(hit)}
                 >
-                  {a.name}
+                  <ResultThumb hit={hit} />
+                  <span className="shell-result-name">{hit.name}</span>
                 </button>
               </li>
             ))}
@@ -186,7 +234,7 @@ export function AppShell() {
         )}
         {seAlbums === 'empty' && (
           <p className="shell-state-msg shell-muted">
-            Pick an artist to load mock albums.
+            Pick an artist from the results to continue.
           </p>
         )}
         {seAlbums === 'error' && (
@@ -195,21 +243,18 @@ export function AppShell() {
           </p>
         )}
         {seAlbums === 'success' && (
-          <ul className="shell-card-grid">
-            {albums.map((alb) => (
-              <li key={alb.id}>
-                <button
-                  type="button"
-                  className="shell-card-btn"
-                  onClick={() => handlePickAlbum(alb.id)}
-                >
-                  <span className="shell-card-cover" aria-hidden />
-                  <span className="shell-card-title">{alb.title}</span>
-                  <span className="shell-card-meta">{alb.release_date}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
+          <div className="shell-stub-panel">
+            <p className="shell-state-msg shell-muted">
+              {selectedArtist ? (
+                <>
+                  Stub — albums for <strong>{selectedArtist.name}</strong>{' '}
+                  load in Phase 6.
+                </>
+              ) : (
+                'Album list loads in Phase 6.'
+              )}
+            </p>
+          </div>
         )}
       </section>
 
@@ -228,7 +273,7 @@ export function AppShell() {
         )}
         {seDetail === 'empty' && (
           <p className="shell-state-msg shell-muted">
-            Open an album for mock title, date, and tracks.
+            Album detail opens here after you choose an album (Phase 6).
           </p>
         )}
         {seDetail === 'error' && (
@@ -237,33 +282,9 @@ export function AppShell() {
           </p>
         )}
         {seDetail === 'success' && (
-          <>
-            {detail ? (
-              <>
-                <button
-                  type="button"
-                  className="shell-btn-secondary shell-detail-back"
-                  onClick={handleBack}
-                >
-                  Back to albums
-                </button>
-                <h3 className="shell-detail-title">{detail.title}</h3>
-                <p className="shell-detail-meta">{detail.release_date}</p>
-                <div className="shell-track-scroll">
-                  <ol className="shell-track-list">
-                    {detail.tracks.map((t, i) => (
-                      <li key={`${t.title}-${i}`}>{t.title}</li>
-                    ))}
-                  </ol>
-                </div>
-              </>
-            ) : (
-              <p className="shell-state-msg shell-muted">
-                Success state — pick an album with Auto, or this region is forced
-                to success without data.
-              </p>
-            )}
-          </>
+          <p className="shell-state-msg shell-muted">
+            Stub — track list and cover load in Phase 6.
+          </p>
         )}
       </section>
 

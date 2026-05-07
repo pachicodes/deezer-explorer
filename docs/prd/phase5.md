@@ -96,9 +96,28 @@ Phase 5 completes **steps 1–3** of the v1 journey at the data layer (**search 
 - PRD authored: 2026-05-07  
 - Depends on: Phase 3 client ([`phase3.md`](./phase3.md)); Phase 4 shell ([`phase4.md`](./phase4.md)) — search/results regions to be rewired from mocks to API.
 
+### Blocking gate resolutions (before implementation)
+
+Closed **2026-05-07** so implementation can proceed without silent guesses:
+
+| Topic | Decision |
+| --- | --- |
+| **Idle vs empty** | **Idle** (user has not submitted yet): results region shows neutral guidance only (e.g. “Submit a search to see matching artists.”) — **not** an API empty state. **Empty** (`searchArtists` returned `ok: true` with `data.length === 0`): dedicated copy that references the submitted query (e.g. “No artists found for …”) — **must differ** from idle copy. |
+| **Loading placement** | Search **form stays mounted and interactive** (input + submit remain usable during fetch). **Results region alone** shows loading UI while the request is in flight. |
+| **`ShellDevControls`** | **Narrow:** override `<select>`s apply **only** to **`albums`** and **`detail`** stub regions. **`search` and `results` are never dev-overridden** — they always reflect live `searchArtists` behavior (idle / loading / empty / error / success). Remove or hide search/results rows from the dev panel accordingly. |
+| **Stale overlapping searches** | **Latest request wins:** increment a counter (or generation id) on each submit; when a response arrives, **ignore** it if it does not match the latest generation. |
+
+### Additional implementation choices (same gate)
+
+| Topic | Decision |
+| --- | --- |
+| **Selected artist** | Keep **`ArtistSearchHit`** (or equivalent fields: `id`, `name`, optional picture URLs) in app state after row selection for Phase 6. |
+| **Trim-empty submit** | **Do not** call `searchArtists` when trimmed query is empty; disable submit and/or show short inline validation — avoid treating as a network **error** state. |
+| **Missing / broken thumbnails** | Fixed-aspect **placeholder** slot in each row; `<img>` only when URL present; **`onError`** falls back to placeholder. |
+
 ### Decisions made during implementation
 
-*(Record: where search state lives, stale-request policy, idle vs empty distinction, thumbnail/placeholder strategy, fate of Phase 4 `ShellDevControls`, selected-artist type shape.)*
+*(Augment after coding: file/state locations, any tweaks to copy above, screenshot or query examples for empty-state testing.)*
 
 ### Notes for Phase 6
 
