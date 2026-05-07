@@ -124,7 +124,11 @@ Repeat **offline** or **block** patterns; after each failure, **restore network*
 1. **`npm run lint`** — no errors.  
 2. **`npm run build`** — succeeds.
 
-- [ ] Lint + build OK.
+- [x] Lint + build OK.
+
+### Browser verification pending
+
+Sections **§§1–5** were **not** run by the automation agent; complete them in a browser before marking the PRD compliance checklist below.
 
 ### Closure
 
@@ -149,8 +153,6 @@ When every checklist item below and manual step above is marked, Phase 7 is clos
 
 ### Blocking gate resolutions (before implementation)
 
-*(Record decisions that affect implementation before coding — e.g. skip link yes/no, **Escape** behavior, **`alt`** pattern per image type.)*
-
 | Topic | Decision |
 | --- | --- |
 | **Skip link** | **Yes** — first tab stop before `<main>`; text **“Skip to search”**; target **`#shell-search-heading`** (Search region heading inside [`AppShell`](../../src/shell/AppShell.tsx)); visibly styled **only on `:focus`**. |
@@ -159,11 +161,25 @@ When every checklist item below and manual step above is marked, Phase 7 is clos
 
 ### Automated verification log
 
-*(Populate after `npm run lint` / `npm run build`.)*
+- **`npm run lint`** — **pass** — **2026-05-07**
+- **`npm run build`** — **pass** — **2026-05-07**
 
 ### Decisions made during implementation
 
-*(Summarize CSS tokens, landmark structure, any copy changes, and deviations from this PRD.)*
+- **Skip link:** First tab stop in [`src/App.tsx`](../../src/App.tsx); visually hidden until `:focus` in [`src/App.css`](../../src/App.css); targets **`#shell-search-heading`**. **`<h2 id="shell-search-heading">`** has **`tabIndex={-1}`** so skipping moves focus and shows **`#shell-search-heading:focus`** outline in [`src/shell/AppShell.css`](../../src/shell/AppShell.css).
+- **Landmarks:** Document **`id="app-main"`** on `<main>` in **`App.tsx`**; product **`role="banner"`** on shell header; four sections explicit **`role="region"`** plus **`aria-labelledby`** (Search, Artist results, Albums, Album detail).
+- **Focus-visible:** **`outline: 2px solid #0958d9`** with offset on **`button:not(:disabled)`** and **`input:not(:disabled)`** inside **`.shell-root`**; dev-only panel buttons get **`focus-visible`** styling in **`App.css`**.
+- **Touch / readability (~320px):** **`min-height: 2.75rem`** (~44px) on submit/secondary buttons, artist row buttons, album card buttons, and search input; existing **`overflow-x: hidden`** / **`min-width: 0`** retained on shell/grid.
+- **Errors:** **`shell-recovery-hint`** block under each **`role="alert"`** error (search results, album list, album detail) with short retry guidance.
+- **`prefers-reduced-motion`:** **Not applied** — no motion introduced this phase (**N/A**).
+- **Escape:** **Not wired** (see blocking gate).
+- **Focus after async responses:** **Not implemented** — focus remains on the control the user activated unless using skip link (matches PRD “open questions”).
+- **Long album grid tab order:** No skip-inside-grid control — acceptable for v1 per PRD risks.
+
+### Manual validation note
+
+Sections **§§1–5** require **human** verification in **Chrome** / **Firefox** (keyboard, mobile viewport, resilience blocking). This implementation session recorded **§6** only.
+
 
 ### Notes for Phase 8
 
@@ -190,7 +206,7 @@ Check each item when verified.
 
 ### Check: out of scope
 
-- [ ] Phase 8 / playback / routing / frameworks **not** introduced without **`PLAN.md`** update.
+- [x] Phase 8 / playback / routing / frameworks **not** introduced without **`PLAN.md`** update.
 
 ### Check: acceptance criteria
 

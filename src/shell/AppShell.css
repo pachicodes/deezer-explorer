@@ -52,6 +52,19 @@
   color: #a40000;
 }
 
+.shell-recovery-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #444;
+}
+
+.shell-root :where(button:not(:disabled), input:not(:disabled)):focus-visible {
+  outline: 2px solid #0958d9;
+  outline-offset: 2px;
+}
+
 .shell-visually-hidden {
   position: absolute;
   width: 1px;
@@ -89,6 +102,7 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  min-height: 2.75rem;
   padding: 0.375rem 0.6rem;
   font-size: 0.9375rem;
   line-height: 1.35;
@@ -98,11 +112,17 @@
   -webkit-appearance: none;
 }
 
+#shell-search-heading:focus {
+  outline: 2px solid #0958d9;
+  outline-offset: 4px;
+}
+
 .shell-btn-primary,
 .shell-btn-secondary {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  min-height: 2.75rem;
   padding: 0.55rem 0.75rem;
   font-size: 0.9375rem;
   cursor: pointer;
@@ -110,6 +130,11 @@
   border: 1px solid #333;
   background: #222;
   color: #fff;
+}
+
+.shell-btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .shell-btn-secondary {
@@ -131,6 +156,7 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  min-height: 2.75rem;
   text-align: left;
   padding: 0.5rem 0.65rem;
   font-size: 0.9375rem;
@@ -187,6 +213,7 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  min-height: 2.75rem;
   padding: 0;
   margin: 0;
   border: 1px solid #ccc;

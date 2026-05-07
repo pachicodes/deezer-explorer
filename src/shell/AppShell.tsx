@@ -300,7 +300,11 @@ export function AppShell() {
         aria-labelledby="shell-search-heading"
         data-region="search"
       >
-        <h2 id="shell-search-heading" className="shell-region-heading">
+        <h2
+          id="shell-search-heading"
+          className="shell-region-heading"
+          tabIndex={-1}
+        >
           Search
         </h2>
         <form className="shell-search-form" onSubmit={handleSubmit}>
@@ -434,7 +438,10 @@ export function AppShell() {
         )}
         {detailSlice === 'error' && (
           <p className="shell-state-msg shell-error" role="alert">
-            {detailError ?? 'Could not load album'}
+            <span>{detailError ?? 'Could not load album'}</span>{' '}
+            <span className="shell-recovery-hint">
+              Use Back, pick another album, or search again.
+            </span>
           </p>
         )}
         {detailSlice === 'success' && detail && (
