@@ -118,6 +118,7 @@ Closed **2026-05-07** so implementation can proceed without silent guesses:
 ### Automated verification log
 
 - **2026-05-07:** `npm run lint` and `npm run build` succeeded at repo root. `rg "getArtistAlbums|getAlbum" src/shell` returned no matches (Phase 5 shell path uses **`searchArtists`** only).
+- **2026-05-07 (manual, partial):** §§2 (empty), §4 (keyboard), §5 (clear-down) verified locally. §3 (offline/error) **deferred** by choice — complete before PRD closure. §1 (happy path): tick when you have explicitly confirmed it (loading → results → selection + stubs).
 
 ### Decisions made during implementation
 
@@ -184,20 +185,20 @@ Use **Chrome** or **Firefox** with **`npm run dev`** (network allowed to `api.de
 1. Use a query expected to return **zero** hits (pick one locally and record it in the execution log if useful).
 2. Confirm dedicated **empty** state.
 
-- [ ] Empty OK.
+- [x] Empty OK.
 
 ### 3. Error path
 
 1. Use DevTools **Offline** or block **`api.deezer.com`**, submit a query.
 2. Confirm **error** UI and **no** uncaught exceptions in console.
 
-- [ ] Error OK.
+- [ ] Error OK. *(Deferred — run when ready; required before Phase 5 PRD closure.)*
 
 ### 4. Keyboard-only (search slice)
 
 1. Tab to search → submit → tab through results → activate selection with **Enter** or **Space**.
 
-- [ ] Keyboard OK.
+- [x] Keyboard OK.
 
 ### 5. New search clears downstream
 
@@ -205,7 +206,7 @@ Use **Chrome** or **Firefox** with **`npm run dev`** (network allowed to `api.de
 2. Submit a **different** query.
 3. Confirm prior selection cleared and albums/detail not stale.
 
-- [ ] Clear-down OK.
+- [x] Clear-down OK.
 
 ### 6. Production build sanity
 
