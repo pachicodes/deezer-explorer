@@ -15,7 +15,7 @@ Implementers and automation must treat **AGENTS.md** as operating constraints al
 
 Work in **small phases**, each producing something **independently verifiable**. Prefer the smallest change that proves the next decision. Do not introduce stack, routing, or flow choices that break GitHub Pages compatibility or are not grounded here. If scope, stack, phases, risks, or build-affecting decisions change, update this file first and keep **README.md** consistent.
 
-**Repository status:** **Phase 3 — complete**; **Phase 4 — complete** (mock shell + [`docs/prd/phase4.md`](docs/prd/phase4.md) checklist closed). **Phase 5 — implemented** ([`docs/prd/phase5.md`](docs/prd/phase5.md)); close PRD after **Manual validation**. Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** validate Phase 5, then Phase 6 — albums + album detail ([`PLAN.md`](PLAN.md) §Phase 6).
+**Repository status:** **Phase 3 — complete**; **Phase 4 — complete** (mock shell + [`docs/prd/phase4.md`](docs/prd/phase4.md) checklist closed). **Phase 5 — implemented** ([`docs/prd/phase5.md`](docs/prd/phase5.md)); PRD closure optional pending §§1 & §3 manual checks ([`reports/phase-5-report.md`](reports/phase-5-report.md)). **Phase 6 PRD** — [`docs/prd/phase6.md`](docs/prd/phase6.md) (albums + album detail — implementation next). Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** implement Phase 6 per [`docs/prd/phase6.md`](docs/prd/phase6.md).
 
 ## v1 scope
 
@@ -223,6 +223,8 @@ Wire search UI to `GET /search/artist` and persist the chosen artist for later p
 ---
 
 ### Phase 6 — Album list and album detail
+
+**PRD:** [`docs/prd/phase6.md`](docs/prd/phase6.md).
 
 **Goal**  
 Load albums for the selected artist and show detail with track list, release date, and cover; support **back** without losing artist context.

@@ -133,7 +133,7 @@ Closed **2026-05-07** so implementation can proceed without silent guesses:
 
 ### Notes for Phase 6
 
-- Call **`getArtistAlbums`** with stored **`ArtistSearchHit.id`** (stringify id for client path if required by [`getArtistAlbums`](../../src/lib/deezer/client.ts) signature). Replace albums/detail stubs with real cards and detail fetch.
+- Implement [`docs/prd/phase6.md`](./phase6.md): **`getArtistAlbums`** / **`getAlbum`** for albums + detail; preserve **`selectedArtist`** on detail errors and **Back** semantics.
 
 ---
 
