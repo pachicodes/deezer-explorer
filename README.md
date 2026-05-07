@@ -19,17 +19,21 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 3** is **complete**: JSONP client in [`src/lib/deezer`](src/lib/deezer); PRD in [`docs/prd/phase3.md`](docs/prd/phase3.md); completion summary in [`reports/phase-3-report.md`](reports/phase-3-report.md).
 
-**Phase 4** — **PRD ready:** [`docs/prd/phase4.md`](docs/prd/phase4.md) (app shell, layout, state placeholders — mock data only). Implementation next.
+**Phase 4** is **complete** (implemented + PRD manual validation): mock-only shell — [`docs/prd/phase4.md`](docs/prd/phase4.md); summary in [`reports/phase-4-report.md`](reports/phase-4-report.md).
 
-**Next step:** Implement Phase 4 per that PRD.
+**Phase 5** — **PRD ready:** [`docs/prd/phase5.md`](docs/prd/phase5.md) (live artist search + selection only; albums/detail stubs until Phase 6).
+
+**Next step:** Implement Phase 5 per that PRD.
 
 ## Source layout (high level)
 
 | Path | Purpose |
 | --- | --- |
 | [`src/lib/deezer`](src/lib/deezer) | Deezer v1 client — JSONP only, three endpoints (`PLAN.md` / Phase 3 PRD). |
-| [`src/DeezerDevPanel.tsx`](src/DeezerDevPanel.tsx) | Dev-only smoke tests for that client (`npm run dev` only). |
-| [`src/App.tsx`](src/App.tsx) | Root UI placeholder until Phase 4 shell. |
+| [`src/shell/AppShell.tsx`](src/shell/AppShell.tsx) | Product shell — Phase 4 mocks; Phase 5 wires search/results to [`src/lib/deezer`](src/lib/deezer) per [`docs/prd/phase5.md`](docs/prd/phase5.md). |
+| [`src/mocks/shellMocks.ts`](src/mocks/shellMocks.ts) | Phase 4 mocks — drop or narrow once Phase 5 replaces search/results (see Phase 5 PRD). |
+| [`src/DeezerDevPanel.tsx`](src/DeezerDevPanel.tsx) | Dev-only smoke tests for the JSONP client (`npm run dev` only). |
+| [`src/App.tsx`](src/App.tsx) | Root UI — renders `AppShell` and (in dev) `DeezerDevPanel`. |
 
 ## Local development
 
@@ -83,6 +87,7 @@ Optional: DevTools **offline** or block **`api.deezer.com`** on a happy-path but
 - [`docs/prd/phase3.md`](docs/prd/phase3.md): Phase 3 PRD (Deezer client module).
 - [`reports/phase-1-report.md`](reports/phase-1-report.md): Phase 1 completion report.
 - [`docs/prd/phase4.md`](docs/prd/phase4.md): Phase 4 PRD — app shell, layout, state placeholders (mock data).
+- [`docs/prd/phase5.md`](docs/prd/phase5.md): Phase 5 PRD — live search + artist selection.
 - [`AGENTS.md`](AGENTS.md): rules for implementers and automation.
 - [`GLOSSARY.md`](GLOSSARY.md): technical terms used in this repo.
 

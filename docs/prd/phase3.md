@@ -97,7 +97,7 @@ Vite may **tree-shake** the client until product UI imports it; Phase 3 validati
 
 ### Notes for Phase 4
 
-- Follow [`phase4.md`](./phase4.md) for the app shell (mock data only). When Phase 5 wires data, pass **parsed models** from [`src/lib/deezer`](../../src/lib/deezer); keep transport logic out of presentational components.
+- Follow [`phase4.md`](./phase4.md) for the app shell (mock data only). [**Phase 5**](phase5.md) wires **`searchArtists`** into search/results; keep transport logic out of presentational components.
 
 ### Completion report
 

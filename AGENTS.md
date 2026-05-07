@@ -45,7 +45,7 @@ The repository contains the **Phase 2 toolchain** plus the **Phase 3 Deezer clie
 
 - **Vite + React + TypeScript** at the repo root, with `package.json`, `dev`, `build`, and `preview` scripts, and production output in `dist/`.
 - **Deezer v1 API access** is centralized in [`src/lib/deezer`](src/lib/deezer) using **JSONP only** (see [`docs/prd/phase1.md`](docs/prd/phase1.md), [`docs/prd/phase3.md`](docs/prd/phase3.md)). Completion narrative: [`reports/phase-3-report.md`](reports/phase-3-report.md).
-- Product UI is still **placeholder-level**; **Phase 4 PRD** defines the full shell ([`docs/prd/phase4.md`](docs/prd/phase4.md)) — implementation may follow this PRD next.
+- **Phase 4** delivers the visible **product shell** ([`src/shell/AppShell.tsx`](src/shell/AppShell.tsx)) with mock data only ([`docs/prd/phase4.md`](docs/prd/phase4.md)); PRD checklist including manual validation is **closed**. The Deezer client is **not** wired into that flow until Phase 5. **Phase 5 PRD:** [`docs/prd/phase5.md`](docs/prd/phase5.md) (live search + artist selection — implementation next).
 
 Use **npm** and the root `package-lock.json` for reproducible installs, as in the README.
 

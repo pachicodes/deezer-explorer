@@ -15,7 +15,7 @@ Implementers and automation must treat **AGENTS.md** as operating constraints al
 
 Work in **small phases**, each producing something **independently verifiable**. Prefer the smallest change that proves the next decision. Do not introduce stack, routing, or flow choices that break GitHub Pages compatibility or are not grounded here. If scope, stack, phases, risks, or build-affecting decisions change, update this file first and keep **README.md** consistent.
 
-**Repository status:** **Phase 3 — complete**; **Phase 4 PRD** drafted — [`docs/prd/phase4.md`](docs/prd/phase4.md) (shell + placeholders; implementation pending). Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** implement Phase 4 per PRD, then Phase 5.
+**Repository status:** **Phase 3 — complete**; **Phase 4 — complete** (mock shell + [`docs/prd/phase4.md`](docs/prd/phase4.md) checklist closed). **Phase 5 PRD** — [`docs/prd/phase5.md`](docs/prd/phase5.md) (search + artist selection; implementation next). Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** implement Phase 5 per [`docs/prd/phase5.md`](docs/prd/phase5.md).
 
 ## v1 scope
 
@@ -184,12 +184,14 @@ Build the visible structure of the full flow using **only mock or empty data**: 
 
 **Open decisions** (non-blocking; record choice when made)
 
-- Album detail inline vs overlay panel.
-- Whether selection appears in the URL in v1.
+- Album detail inline vs overlay panel — **inline** (see [`docs/prd/phase4.md`](docs/prd/phase4.md) execution log).
+- Whether selection appears in the URL in v1 — **not in Phase 4** (same doc).
 
 ---
 
 ### Phase 5 — Search and artist selection
+
+**PRD:** [`docs/prd/phase5.md`](docs/prd/phase5.md).
 
 **Goal**  
 Wire search UI to `GET /search/artist` and persist the chosen artist for later phases.

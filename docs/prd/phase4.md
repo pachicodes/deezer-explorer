@@ -73,13 +73,22 @@ Build the **visible structure** of the full v1 flow using **only mock or empty d
 - PRD authored: 2026-05-07
 - Depends on: Phase 3 client exists ([`phase3.md`](./phase3.md)) but **must not** drive this shell’s primary UI yet.
 
+### Automated verification log
+
+- **2026-05-07:** `npm run lint` and `npm run build` succeeded at repo root. `rg "lib/deezer" src/shell src/mocks` returned no matches (shell remains mock-only). **Manual validation §§1–4 completed** (viewport, keyboard tab order, dev state overrides, production build).
+
 ### Decisions made during implementation
 
-*(Record: component/file layout, routing pattern if any, album-detail presentation choice, URL strategy, where mock data lives, dev-toggle UX.)*
+- **Components / files:** [`src/shell/AppShell.tsx`](../../src/shell/AppShell.tsx) composes the four regions; [`src/shell/ShellDevControls.tsx`](../../src/shell/ShellDevControls.tsx) holds dev-only state overrides; shared [`UiState`](../../src/shell/types.ts) types; styles in [`src/shell/AppShell.css`](../../src/shell/AppShell.css). Static mocks live in [`src/mocks/shellMocks.ts`](../../src/mocks/shellMocks.ts).
+- **Data:** The shell imports **only** mocks — **no** imports from [`src/lib/deezer`](../../src/lib/deezer) on the Phase 4 UI path. [`src/DeezerDevPanel.tsx`](../../src/DeezerDevPanel.tsx) remains dev-only for Phase 3 regression.
+- **Routing:** **Single-view** React state (`useState` for query / artist / album). No `react-router`, no HTML5 history dependency — **GitHub Pages–safe** without `404.html` mitigation.
+- **Album detail UX:** **Inline** fourth region below albums (not an overlay). **URL:** selection is **not** synced to the address bar in Phase 4.
+- **Focus / tab order (main shell, DOM order):** `#shell-query` → Search **Submit** → artist `.shell-list-btn` rows (top to bottom) → album `.shell-card-btn` (visual grid order may differ slightly from DOM order) → when detail is open with data, **Back to albums** first, then track list is non-interactive (`<ol>`); Shift+Tab reverses. Below the shell in dev only: Phase 4 override selects, **Clear all overrides**, then Phase 3 smoke buttons.
+- **Dev toggles:** Under `import.meta.env.DEV`, **Phase 4 — region states** panel: per-region `<select>` (`Auto` or force `loading` / `empty` / `error` / `success`). **Production build** omits this panel (tree-shaken). Manual validation: cycle each region through all four states and confirm layout does not collapse.
 
 ### Notes for Phase 5
 
-- Replace mocks with `searchArtists` and wire search → results state; preserve region boundaries where possible.
+- Implement [`docs/prd/phase5.md`](./phase5.md): replace mocks with `searchArtists` and wire search → results state; preserve region boundaries where possible.
 
 ---
 
@@ -89,29 +98,29 @@ Check each item when verified.
 
 ### Check: goal
 
-- [ ] Visible shell for search, results, albums, detail exists with mock/empty data only (no shell-driven Deezer client calls).
+- [x] Visible shell for search, results, albums, detail exists with mock/empty data only (no shell-driven Deezer client calls). *(Verified: `AppShell` + mocks only; no `lib/deezer` under `src/shell` or `src/mocks`.)*
 
 ### Check: scope
 
-- [ ] Responsive, mobile-first layout (~320px+).
-- [ ] Explicit loading / empty / error / success per region (or equivalent explicit model).
-- [ ] Dev-only (or clearly marked) controls to force each state.
-- [ ] Predictable tab order through the main flow documented.
+- [x] Responsive, mobile-first layout (~320px+). *(Manual — §1: narrow viewport OK; track list scrolls inside region.)*
+- [x] Explicit loading / empty / error / success per region (or equivalent explicit model).
+- [x] Dev-only (or clearly marked) controls to force each state (`ShellDevControls` under `import.meta.env.DEV`).
+- [x] Predictable tab order through the main flow documented *(Execution log / decisions)*.
 
 ### Check: out of scope
 
-- [ ] Phase 5–6 API wiring not introduced as the primary path.
+- [x] Phase 5–6 API wiring not introduced as the primary path. *(Shell uses mocks only; live client remains dev-only `DeezerDevPanel`.)*
 
 ### Check: acceptance criteria
 
-- [ ] ~320px + no horizontal scroll in main flow (with noted exceptions).
-- [ ] Keyboard-only walkthrough search → results → albums → detail → back works.
-- [ ] All four placeholder states visible per region via dev controls without layout collapse.
-- [ ] GitHub Pages–safe routing choice documented.
+- [x] ~320px + no horizontal scroll in main flow (with noted exceptions). *(Manual — §1.)*
+- [x] Keyboard-only walkthrough search → results → albums → detail → back works. *(Manual — §2.)*
+- [x] All four placeholder states visible per region via dev controls without layout collapse. *(Manual — §3.)*
+- [x] GitHub Pages–safe routing choice documented *(single-view state; no history-mode router)*.
 
 ### Check: manual validation
 
-- [ ] All steps in **Manual validation** below were run and checkboxes marked.
+- [x] All steps in **Manual validation** below were run and checkboxes marked.
 
 ---
 
@@ -124,26 +133,26 @@ Use **Chrome** or **Firefox** after implementation.
 1. Resize to ~320px width (DevTools responsive mode).
 2. Confirm main flow has no unwanted horizontal scroll.
 
-- [ ] Narrow viewport OK.
+- [x] Narrow viewport OK. *(No unwanted horizontal scroll on main column; album track list scrolls inside its region.)*
 
 ### 2. Keyboard-only shell walkthrough
 
 1. From search field, tab through to results area, albums area, open/focus detail, then **back** to albums.
 2. Confirm order is predictable (matches execution log).
 
-- [ ] Tab order OK.
+- [x] Tab order OK. *(Manual keyboard walkthrough; predictable Tab / Shift+Tab.)*
 
 ### 3. Placeholder states (each region)
 
 For **search**, **results**, **albums**, and **detail**, force **loading**, **empty**, **error**, and **success** via dev controls.
 
-- [ ] All states visible; layout intact.
+- [x] All states visible; layout intact. *(Dev overrides per region: loading / empty / error / success.)*
 
 ### 4. Production build sanity
 
 1. `npm run build` completes without error.
 
-- [ ] Build OK.
+- [x] Build OK. *(2026-05-07 — local `npm run lint` + `npm run build`.)*
 
 ### Closure
 
