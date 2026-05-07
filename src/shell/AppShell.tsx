@@ -1,22 +1,27 @@
 import type { FormEvent } from 'react'
-import { useCallback, useRef, useState } from 'react'
-import type { ArtistSearchHit } from '../lib/deezer'
-import { searchArtists } from '../lib/deezer'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type {
+  AlbumCard,
+  AlbumDetail,
+  ArtistSearchHit,
+} from '../lib/deezer'
+import {
+  getAlbum,
+  getArtistAlbums,
+  searchArtists,
+} from '../lib/deezer'
 import './AppShell.css'
-import { ShellDevControls } from './ShellDevControls'
-import type { DevOverrideRegionId, UiState } from './types'
 
 type ResultsSlice = 'idle' | 'loading' | 'empty' | 'error' | 'success'
+type AlbumsSlice = 'idle' | 'loading' | 'empty' | 'error' | 'success'
+type DetailSlice = 'idle' | 'loading' | 'error' | 'success'
 
-function effectiveState(
-  region: DevOverrideRegionId,
-  auto: UiState,
-  overrides: Partial<Record<DevOverrideRegionId, UiState>>,
-): UiState {
-  if (import.meta.env.DEV && overrides[region] !== undefined) {
-    return overrides[region]!
-  }
-  return auto
+function albumCardCoverSrc(card: AlbumCard) {
+  return card.cover_medium ?? card.cover_small
+}
+
+function albumDetailCoverSrc(d: AlbumDetail) {
+  return d.cover_medium ?? d.cover_big ?? d.cover_small
 }
 
 function ResultThumb({ hit }: { hit: ArtistSearchHit }) {
@@ -46,6 +51,56 @@ function ResultThumb({ hit }: { hit: ArtistSearchHit }) {
   )
 }
 
+function AlbumCardCover({ card }: { card: AlbumCard }) {
+  const [broken, setBroken] = useState(false)
+  const src = albumCardCoverSrc(card)
+
+  if (!src || broken) {
+    return (
+      <span
+        className="shell-card-cover shell-card-cover-placeholder"
+        aria-hidden
+      />
+    )
+  }
+
+  return (
+    <img
+      className="shell-card-cover-img"
+      src={src}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      onError={() => setBroken(true)}
+    />
+  )
+}
+
+function DetailHeroCover({ detail }: { detail: AlbumDetail }) {
+  const [broken, setBroken] = useState(false)
+  const src = albumDetailCoverSrc(detail)
+
+  if (!src || broken) {
+    return (
+      <div
+        className="shell-detail-cover shell-detail-cover-placeholder"
+        aria-hidden
+      />
+    )
+  }
+
+  return (
+    <img
+      className="shell-detail-cover-img"
+      src={src}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      onError={() => setBroken(true)}
+    />
+  )
+}
+
 export function AppShell() {
   const [query, setQuery] = useState('')
   const [submittedQuery, setSubmittedQuery] = useState('')
@@ -57,19 +112,63 @@ export function AppShell() {
   )
   const searchGenRef = useRef(0)
 
-  const [overrides, setOverrides] = useState<
-    Partial<Record<DevOverrideRegionId, UiState>>
-  >({})
+  const [albumsSlice, setAlbumsSlice] = useState<AlbumsSlice>('idle')
+  const [albums, setAlbums] = useState<AlbumCard[]>([])
+  const [albumsError, setAlbumsError] = useState<string | null>(null)
+  const albumListGenRef = useRef(0)
+
+  const [selectedAlbumId, setSelectedAlbumId] = useState<number | null>(null)
+  const [detailSlice, setDetailSlice] = useState<DetailSlice>('idle')
+  const [detail, setDetail] = useState<AlbumDetail | null>(null)
+  const [detailError, setDetailError] = useState<string | null>(null)
+  const detailGenRef = useRef(0)
 
   const trimmed = query.trim()
   const canSubmit = trimmed.length > 0
   const whitespaceOnly = query.length > 0 && trimmed.length === 0
 
-  const autoAlbums: UiState = selectedArtist ? 'success' : 'empty'
-  const autoDetail: UiState = 'empty'
+  useEffect(() => {
+    if (!selectedArtist) {
+      albumListGenRef.current += 1
+      setAlbumsSlice('idle')
+      setAlbums([])
+      setAlbumsError(null)
+      detailGenRef.current += 1
+      setSelectedAlbumId(null)
+      setDetailSlice('idle')
+      setDetail(null)
+      setDetailError(null)
+      return
+    }
 
-  const seAlbums = effectiveState('albums', autoAlbums, overrides)
-  const seDetail = effectiveState('detail', autoDetail, overrides)
+    const gen = ++albumListGenRef.current
+    setAlbumsSlice('loading')
+    setAlbums([])
+    setAlbumsError(null)
+
+    detailGenRef.current += 1
+    setSelectedAlbumId(null)
+    setDetailSlice('idle')
+    setDetail(null)
+    setDetailError(null)
+
+    void (async () => {
+      const r = await getArtistAlbums(String(selectedArtist.id))
+      if (gen !== albumListGenRef.current) return
+
+      if (!r.ok) {
+        setAlbumsSlice('error')
+        setAlbumsError(r.error.message)
+        return
+      }
+      if (r.data.length === 0) {
+        setAlbumsSlice('empty')
+        return
+      }
+      setAlbums(r.data)
+      setAlbumsSlice('success')
+    })()
+  }, [selectedArtist])
 
   const runSearch = useCallback(async (q: string) => {
     const gen = ++searchGenRef.current
@@ -103,19 +202,37 @@ export function AppShell() {
   }
 
   function handlePickArtist(hit: ArtistSearchHit) {
+    if (selectedArtist?.id === hit.id) return
     setSelectedArtist(hit)
   }
 
-  function setOverride(region: DevOverrideRegionId, state: UiState | undefined) {
-    setOverrides((prev) => {
-      const next = { ...prev }
-      if (state === undefined) {
-        delete next[region]
-      } else {
-        next[region] = state
+  function handlePickAlbum(card: AlbumCard) {
+    const gen = ++detailGenRef.current
+    setSelectedAlbumId(card.id)
+    setDetailSlice('loading')
+    setDetail(null)
+    setDetailError(null)
+
+    void (async () => {
+      const r = await getAlbum(String(card.id))
+      if (gen !== detailGenRef.current) return
+
+      if (!r.ok) {
+        setDetailSlice('error')
+        setDetailError(r.error.message)
+        return
       }
-      return next
-    })
+      setDetail(r.data)
+      setDetailSlice('success')
+    })()
+  }
+
+  function handleDetailBack() {
+    detailGenRef.current += 1
+    setSelectedAlbumId(null)
+    setDetailSlice('idle')
+    setDetail(null)
+    setDetailError(null)
   }
 
   return (
@@ -123,8 +240,8 @@ export function AppShell() {
       <header className="shell-header">
         <h1 className="shell-title">Deezer Explorer</h1>
         <p className="shell-lede">
-          Search Deezer for an artist. Albums and album detail load in a later
-          phase.
+          Search for an artist, browse albums, and open an album for tracks and
+          release info (powered by the Deezer API).
         </p>
       </header>
 
@@ -227,34 +344,50 @@ export function AppShell() {
         <h2 id="shell-albums-heading" className="shell-region-heading">
           Albums
         </h2>
-        {seAlbums === 'loading' && (
+        {albumsSlice === 'idle' && (
+          <p className="shell-state-msg shell-muted">
+            Pick an artist from the results to see albums.
+          </p>
+        )}
+        {albumsSlice === 'loading' && (
           <p className="shell-state-msg" role="status">
             Loading albums…
           </p>
         )}
-        {seAlbums === 'empty' && (
+        {albumsSlice === 'empty' && (
           <p className="shell-state-msg shell-muted">
-            Pick an artist from the results to continue.
+            No albums found for this artist.
           </p>
         )}
-        {seAlbums === 'error' && (
+        {albumsSlice === 'error' && (
           <p className="shell-state-msg shell-error" role="alert">
-            Albums failed (placeholder).
+            {albumsError ?? 'Could not load albums'}
           </p>
         )}
-        {seAlbums === 'success' && (
-          <div className="shell-stub-panel">
-            <p className="shell-state-msg shell-muted">
-              {selectedArtist ? (
-                <>
-                  Stub — albums for <strong>{selectedArtist.name}</strong>{' '}
-                  load in Phase 6.
-                </>
-              ) : (
-                'Album list loads in Phase 6.'
-              )}
-            </p>
-          </div>
+        {albumsSlice === 'success' && (
+          <ul className="shell-card-grid">
+            {albums.map((alb) => (
+              <li key={alb.id}>
+                <button
+                  type="button"
+                  className={`shell-card-btn${
+                    selectedAlbumId === alb.id ? ' shell-card-btn-selected' : ''
+                  }`}
+                  onClick={() => handlePickAlbum(alb)}
+                >
+                  <AlbumCardCover card={alb} />
+                  <span className="shell-card-title">{alb.title}</span>
+                  {alb.release_date ? (
+                    <span className="shell-card-meta">{alb.release_date}</span>
+                  ) : (
+                    <span className="shell-card-meta shell-card-meta-na">
+                      —
+                    </span>
+                  )}
+                </button>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
 
@@ -266,35 +399,51 @@ export function AppShell() {
         <h2 id="shell-detail-heading" className="shell-region-heading">
           Album detail
         </h2>
-        {seDetail === 'loading' && (
+        {detailSlice === 'idle' && (
+          <p className="shell-state-msg shell-muted">
+            Choose an album to see cover, release date, and tracks.
+          </p>
+        )}
+        {detailSlice === 'loading' && (
           <p className="shell-state-msg" role="status">
             Loading album…
           </p>
         )}
-        {seDetail === 'empty' && (
-          <p className="shell-state-msg shell-muted">
-            Album detail opens here after you choose an album (Phase 6).
-          </p>
-        )}
-        {seDetail === 'error' && (
+        {detailSlice === 'error' && (
           <p className="shell-state-msg shell-error" role="alert">
-            Album detail failed (placeholder).
+            {detailError ?? 'Could not load album'}
           </p>
         )}
-        {seDetail === 'success' && (
-          <p className="shell-state-msg shell-muted">
-            Stub — track list and cover load in Phase 6.
-          </p>
+        {detailSlice === 'success' && detail && (
+          <>
+            <button
+              type="button"
+              className="shell-btn-secondary shell-detail-back"
+              onClick={handleDetailBack}
+            >
+              Back to albums
+            </button>
+            <DetailHeroCover detail={detail} />
+            <h3 className="shell-detail-title">{detail.title}</h3>
+            <p className="shell-detail-meta">
+              {detail.release_date ?? 'Release date unknown'}
+            </p>
+            <div className="shell-track-scroll">
+              {detail.tracks.length === 0 ? (
+                <p className="shell-detail-empty-tracks shell-muted">
+                  No tracks listed for this album.
+                </p>
+              ) : (
+                <ol className="shell-track-list">
+                  {detail.tracks.map((t, i) => (
+                    <li key={`${t.title}-${i}`}>{t.title}</li>
+                  ))}
+                </ol>
+              )}
+            </div>
+          </>
         )}
       </section>
-
-      {import.meta.env.DEV && (
-        <ShellDevControls
-          overrides={overrides}
-          onChange={setOverride}
-          onClearAll={() => setOverrides({})}
-        />
-      )}
     </div>
   )
 }

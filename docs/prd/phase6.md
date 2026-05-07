@@ -135,9 +135,27 @@ When every checklist item below and manual step above is marked, Phase 6 is clos
 - PRD authored: 2026-05-07  
 - Depends on: Phase 5 ([`phase5.md`](./phase5.md)) — **`selectedArtist`**; Phase 3 client — **`getArtistAlbums`**, **`getAlbum`**.
 
+### Blocking gate resolutions (before implementation)
+
+Closed **2026-05-07** before coding:
+
+| Topic | Decision |
+| --- | --- |
+| **`cover_*` hierarchy** | **Album cards:** `cover_medium ?? cover_small`. **Album detail hero:** `cover_medium ?? cover_big ?? cover_small`. Same fallback philosophy; detail prefers larger when present. |
+| **Detail “empty” tracks** | If `getAlbum` returns `ok: true` with `tracks.length === 0`, UI stays **`success`** and shows a short inline message (“No tracks listed for this album.”) inside the detail panel — no separate `detailSlice === 'empty'` for this case. **`detailSlice`:** `idle` \| `loading` \| `error` \| `success` only. |
+| **`ShellDevControls`** | **Removed** for Phase 6 — live albums/detail cannot coexist with fake regional overrides; [`src/shell/ShellDevControls.tsx`](../../src/shell/ShellDevControls.tsx) deleted. |
+| **Manual validation §3 (`getAlbum` error)** | Use Chrome/Firefox **Network request blocking** with pattern `*api.deezer.com/album/*` (or offline) while opening an album after a successful album list — confirm detail error and **`selectedArtist`** unchanged. |
+| **Back / refetch** | **Back** clears album selection and detail state only; **does not** refetch album list or clear **`selectedArtist`**. **No** automatic refetch on Back. |
+
+### Automated verification log
+
+- *(Populate after `npm run lint` / `npm run build` and `rg` checks.)*
+
 ### Decisions made during implementation
 
-*(Record: fetch triggers, gen/ref ids for stale guards, cover URL priority, fate of `ShellDevControls`, Back behavior refetch or not, empty-album test artist if any.)*
+- **Fetches:** `useEffect` on **`selectedArtist`** → **`getArtistAlbums(String(id))`** with **`albumListGenRef`** (latest-wins). **`handlePickAlbum`** → **`getAlbum(String(album.id))`** with **`detailGenRef`**.  
+- **Same artist re-click:** `handlePickArtist` returns early when **`hit.id === selectedArtist?.id`** to avoid redundant list reload.  
+- **Search clears downstream:** existing **`runSearch`** clears **`selectedArtist`**; effect resets albums + detail.
 
 ### Notes for Phase 7
 
