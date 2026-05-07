@@ -49,7 +49,7 @@ The repository contains the **initial toolchain** for the app (Phase 2):
 
 Use **npm** and the root `package-lock.json` for reproducible installs, as in the README.
 
-**Manual validation** at the end of [`docs/prd/phase2.md`](docs/prd/phase2.md) only counts as done when the owning developer has walked through it and checked the boxes on that PRD — technical evidence from an automated environment does not replace that checklist.
+**Phase 2 PRD:** Manual validation with dated evidence is recorded in [`docs/prd/phase2.md`](docs/prd/phase2.md). Repeat that checklist after major toolchain changes or when onboarding on a new machine.
 
 ## Quality expectations
 

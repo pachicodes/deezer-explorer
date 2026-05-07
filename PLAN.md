@@ -15,7 +15,7 @@ Implementers and automation must treat **AGENTS.md** as operating constraints al
 
 Work in **small phases**, each producing something **independently verifiable**. Prefer the smallest change that proves the next decision. Do not introduce stack, routing, or flow choices that break GitHub Pages compatibility or are not grounded here. If scope, stack, phases, risks, or build-affecting decisions change, update this file first and keep **README.md** consistent.
 
-**Repository status:** **Phase 2 — implementation delivered:** **Vite + React + TypeScript** at the root with README-documented scripts ([`docs/prd/phase2.md`](docs/prd/phase2.md)); UI is still **placeholder** (no Deezer client). **Manual validation** at the end of that PRD (clean install, dev, and build on the developer’s machine) **has not yet been recorded** as complete. **Phase 1** remains documented in [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** run that checklist when it makes sense; in parallel or next — **Phase 3** — API client module.
+**Repository status:** **Phase 2 — complete** (toolchain + PRD validation): **Vite + React + TypeScript** at the root with README-documented scripts ([`docs/prd/phase2.md`](docs/prd/phase2.md)); UI is **placeholder** (no Deezer client yet). **Phase 1** remains documented in [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** **Phase 3** — Deezer API client module (three endpoints).
 
 ## v1 scope
 

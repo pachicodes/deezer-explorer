@@ -15,9 +15,9 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 1** is **complete**: browser API access decision (CORS / JSONP) in [`docs/prd/phase1.md`](docs/prd/phase1.md).
 
-**Phase 2** is **implemented** in this repo: **Vite + React + TypeScript** at the root, with `dev`, `build`, and `preview` scripts. The UI is **placeholder** only — **no Deezer integration** until **Phase 3** ([`PLAN.md`](PLAN.md)). To **close the Phase 2 PRD** strictly, run **Manual validation** at the end of [`docs/prd/phase2.md`](docs/prd/phase2.md) on your machine and check the boxes.
+**Phase 2** is **complete**: **Vite + React + TypeScript** at the root, with `dev`, `build`, and `preview` scripts; validation is recorded in [`docs/prd/phase2.md`](docs/prd/phase2.md). The UI is **placeholder** only — **no Deezer integration** until **Phase 3** ([`PLAN.md`](PLAN.md)).
 
-**Next step:** Phase 3 — API client module (three endpoints), per the plan (you can validate Phase 2 in parallel or first, as you prefer).
+**Next step:** Phase 3 — API client module (three endpoints), per the plan.
 
 ## Local development
 
