@@ -15,7 +15,7 @@ Implementadores e automação devem tratar o **AGENTS.md** como restrições de 
 
 Trabalhe em **fases pequenas**, cada uma produzindo algo **verificável de forma independente**. Prefira a menor mudança que prove a próxima decisão. Não introduza escolhas de stack, roteamento ou fluxo que quebrem a compatibilidade com GitHub Pages ou que não estejam fundamentadas aqui. Se escopo, stack, fases, riscos ou decisões que afetem o build mudarem, atualize este arquivo primeiro e mantenha o **README.md** consistente.
 
-**Estado atual do repositório:** fase de planejamento; ainda não há estrutura inicial da aplicação nem comandos de desenvolvimento documentados. As primeiras fases que introduzirem ferramentas também devem documentar os comandos mínimos para executar e compilar o app.
+**Estado atual do repositório:** Fase 1 concluída (descoberta técnica e decisão de acesso à API documentadas em [`docs/prd/fase1.md`](docs/prd/fase1.md)); ainda não há estrutura inicial da aplicação (Vite/React/TypeScript) nem comandos de desenvolvimento neste repositório — isso é objeto da Fase 2. Quando a toolchain existir, os comandos mínimos devem ser documentados no README.
 
 ## Escopo da v1
 
@@ -70,10 +70,10 @@ Esta stack permanece o padrão da v1 **salvo se surgir um problema concreto de i
 
 Cada fase abaixo é propositalmente **estreita**, termina com **critérios de aceite explícitos** e deve ser **validada** antes da seguinte. Use a validação mais barata que ainda seja significativa (validações manuais são aceitáveis onde ainda não houver testes automatizados).
 
-### Fase 1 — Acesso à Deezer seguro no browser (caminho da API)
+### Fase 1 — Acesso à Deezer seguro no navegador (caminho da API)
 
 **Objetivo**  
-Demonstrar como o browser pode ler dados da Deezer nos três endpoints da v1 sem backend próprio, em condições compatíveis com hospedagem estática (HTTPS, sem chaves secretas no cliente).
+Demonstrar como o navegador pode ler dados da Deezer nos três endpoints da v1 sem backend próprio, em condições compatíveis com hospedagem estática (HTTPS, sem chaves secretas no cliente).
 
 **Entregas**
 
@@ -82,11 +82,11 @@ Demonstrar como o browser pode ler dados da Deezer nos três endpoints da v1 sem
   - pesquisa de artista,
   - álbuns do artista,
   - álbum por id.
-- Uma **nota sobre CORS** e conteúdo misto: o que funciona em um browser real a partir de uma origem semelhante à de produção (servidor de desenvolvimento local é aceitável se documentado).
+- Uma **nota sobre CORS** e conteúdo misto: o que funciona em um navegador real a partir de uma origem semelhante à de produção (servidor de desenvolvimento local é aceitável se documentado).
 
 **Critérios de aceite**
 
-1. Pelo menos uma abordagem está **confirmada em um browser real** (não só lendo documentação de terceiros) para os três endpoints.
+1. Pelo menos uma abordagem está **confirmada em um navegador real** (não só lendo documentação de terceiros) para os três endpoints.
 2. A abordagem escolhida é **compatível com publicação estática no GitHub Pages** (sem servidor privado obrigatório controlado por este app).
 3. A abordagem é **simples o suficiente** para manter o cliente com poucas dependências; se fosse necessário proxy ou serviço intermediário, isso seria mudança de escopo e deve ser registrado aqui antes.
 4. Riscos e itens de continuidade (por exemplo, limites de taxa, formas de erro) estão **listados** para a próxima fase.
@@ -98,8 +98,8 @@ Demonstrar como o browser pode ler dados da Deezer nos três endpoints da v1 sem
 
 **Riscos**
 
-- A Deezer pode bloquear requisições diretas do browser (CORS).
-- Se não existir caminho seguro no browser sem backend, o escopo da v1 ou as premissas de hospedagem precisam ser revistos.
+- A Deezer pode bloquear requisições diretas do navegador (CORS).
+- Se não existir caminho seguro no navegador sem backend, o escopo da v1 ou as premissas de hospedagem precisam ser revistos.
 
 ---
 

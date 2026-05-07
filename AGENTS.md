@@ -33,7 +33,7 @@ Se houver conflito entre suposições e esses documentos, atualize os documentos
 
 ## Como trabalhar neste repositório
 
-Antes de propor mudanças, leia **PLAN.md** e **README.md** e use-os para fundamentar o próximo passo. Não invente escolhas de stack, endpoints, detalhes de fluxo ou comportamento de publicação que não estejam respaldados nesses arquivos.
+Antes de propor mudanças, leia **PLAN.md** e **README.md** e use-os para fundamentar o próximo passo. Não invente escolhas de stack, endpoints, detalhes de fluxo ou comportamento de publicação que não estejam fundamentados nesses arquivos.
 
 Quando a tarefa exigir implementação, trabalhe em **fases pequenas** que possam ser validadas de forma independente. Prefira a menor mudança que prove a próxima decisão. Evite reescritas amplas ou mudanças arquiteturais especulativas.
 
@@ -53,7 +53,7 @@ Não assuma gerenciadores de pacotes, scripts ou estrutura de pastas que não ex
 
 Mantenha mudanças específicas, testáveis e alinhadas ao fluxo documentado.
 
-- Valide cedo o caminho de acesso à Deezer seguro para o browser, pois **CORS** é um risco real.
+- Valide cedo o caminho de acesso à Deezer seguro para o navegador, pois **CORS** é um risco real.
 - Preserve comportamento mobile first e usabilidade com teclado.
 - Trate estados de carregamento, vazio e erro como **comportamento obrigatório**, não como polimento opcional.
 - Mantenha dependências baixas, salvo se uma dependência resolver um problema concreto já identificado no plano.
@@ -65,7 +65,7 @@ Use a validação mais barata que ainda seja significativa para a mudança feita
 
 - Para mudanças em documentação, verifique o conteúdo do arquivo diretamente e confirme que a redação está alinhada ao plano.
 - Para mudanças de implementação, valide o recorte tocado antes de expandir o escopo.
-- Para qualquer decisão de acesso à API, confirme o comportamento no browser em vez de assumir que a API da Deezer aceitará requisições padrão.
+- Para qualquer decisão de acesso à API, confirme o comportamento no navegador em vez de assumir que a API da Deezer aceitará requisições padrão.
 
 Se existir uma validação estreita, execute-a antes de trabalhos de acompanhamento não relacionados.
 

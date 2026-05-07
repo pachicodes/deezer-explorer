@@ -13,15 +13,16 @@ O Deezer Explorer é um projeto de estudo com foco em um fluxo simples:
 
 ## Estado atual
 
-O projeto ainda está em planejamento.
+A **Fase 1** (descoberta técnica do acesso à API Deezer no navegador) está **concluída** e registrada na PRD abaixo. Decisão resumida: **`fetch` direto não é a estratégia principal** no cliente atual por causa de CORS; **JSONP** foi validado nos três endpoints obrigatórios da v1 em cenário real de navegador.
 
-- Ainda não há código da aplicação.
-- Ainda não há scripts de execução documentados.
-- O próximo passo é criar a estrutura inicial do app.
+O repositório **ainda não contém** o scaffold da aplicação (Vite/React/TypeScript): **não há código da UI**, nem `package.json` nem comandos de desenvolvimento ou build neste README até a **Fase 2**.
+
+**Próximo passo:** estrutura inicial da toolchain conforme [`PLAN.md`](PLAN.md) (Fase 2).
 
 ## Documentos importantes
 
 - [`PLAN.md`](PLAN.md): escopo da v1, fases, critérios de aceite, riscos e decisões.
+- [`docs/prd/fase1.md`](docs/prd/fase1.md): PRD e registro de execução da Fase 1 (CORS, JSONP, validação manual).
 - [`AGENTS.md`](AGENTS.md): regras de trabalho para implementação e automação.
 - [`GLOSSARIO.md`](GLOSSARIO.md): explicação dos termos técnicos usados no projeto.
 
