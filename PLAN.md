@@ -15,7 +15,7 @@ Implementers and automation must treat **AGENTS.md** as operating constraints al
 
 Work in **small phases**, each producing something **independently verifiable**. Prefer the smallest change that proves the next decision. Do not introduce stack, routing, or flow choices that break GitHub Pages compatibility or are not grounded here. If scope, stack, phases, risks, or build-affecting decisions change, update this file first and keep **README.md** consistent.
 
-**Repository status:** **Phase 3 — complete** (client + PRD manual validation): Deezer JSONP layer in [`src/lib/deezer`](src/lib/deezer); checklist closed in [`docs/prd/phase3.md`](docs/prd/phase3.md). Dev smoke panel only in **`npm run dev`**. **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md); UI **placeholder** until Phase 4. **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** Phase 4 — app shell, layout, and state placeholders.
+**Repository status:** **Phase 3 — complete**; **Phase 4 PRD** drafted — [`docs/prd/phase4.md`](docs/prd/phase4.md) (shell + placeholders; implementation pending). Client: [`src/lib/deezer`](src/lib/deezer); Phase 3 checklist: [`docs/prd/phase3.md`](docs/prd/phase3.md); report: [`reports/phase-3-report.md`](reports/phase-3-report.md). **Phase 2** — [`docs/prd/phase2.md`](docs/prd/phase2.md). **Phase 1** — [`docs/prd/phase1.md`](docs/prd/phase1.md). **Next:** implement Phase 4 per PRD, then Phase 5.
 
 ## v1 scope
 

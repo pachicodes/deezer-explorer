@@ -17,9 +17,19 @@ Deezer Explorer is a learning project focused on a simple flow:
 
 **Phase 2** is **complete**: **Vite + React + TypeScript** at the root, with `dev`, `build`, and `preview` scripts; validation is recorded in [`docs/prd/phase2.md`](docs/prd/phase2.md).
 
-**Phase 3** is **complete**: JSONP client in [`src/lib/deezer`](src/lib/deezer); PRD (implementation + manual validation) in [`docs/prd/phase3.md`](docs/prd/phase3.md).
+**Phase 3** is **complete**: JSONP client in [`src/lib/deezer`](src/lib/deezer); PRD in [`docs/prd/phase3.md`](docs/prd/phase3.md); completion summary in [`reports/phase-3-report.md`](reports/phase-3-report.md).
 
-**Next step:** Phase 4 — app shell and layout ([`PLAN.md`](PLAN.md)).
+**Phase 4** — **PRD ready:** [`docs/prd/phase4.md`](docs/prd/phase4.md) (app shell, layout, state placeholders — mock data only). Implementation next.
+
+**Next step:** Implement Phase 4 per that PRD.
+
+## Source layout (high level)
+
+| Path | Purpose |
+| --- | --- |
+| [`src/lib/deezer`](src/lib/deezer) | Deezer v1 client — JSONP only, three endpoints (`PLAN.md` / Phase 3 PRD). |
+| [`src/DeezerDevPanel.tsx`](src/DeezerDevPanel.tsx) | Dev-only smoke tests for that client (`npm run dev` only). |
+| [`src/App.tsx`](src/App.tsx) | Root UI placeholder until Phase 4 shell. |
 
 ## Local development
 
@@ -51,30 +61,32 @@ Useful to sanity-check static artifacts:
 npm run preview
 ```
 
-### Phase 3 — validating the Deezer client (PRD)
+### Phase 3 client — regression checks (optional)
 
-Run **`npm run dev`** (not `preview`) so the **Phase 3 — client smoke tests** panel is visible. Click each button and confirm the log:
+The PRD manual checklist is **closed** (recorded in [`docs/prd/phase3.md`](docs/prd/phase3.md)). After changing [`src/lib/deezer`](src/lib/deezer), run **`npm run dev`** and use **Phase 3 — client smoke tests**:
 
-| Button | PRD check |
+| Button | Expect |
 | --- | --- |
-| Search “daft punk” | Search happy path: ≥1 hit with `id` + `name` |
-| Albums artist 27 | Album list: entries with `id` + `title` |
-| Album 494309801 | Detail: `title`, `release_date`, track count |
-| Parse fail (bad id) | Structured error (`parse`), no uncaught exception |
-| Timeout (1ms) | Structured error (`timeout`), no hang |
+| Search “daft punk” | ≥1 hit with `id` + `name` |
+| Albums artist 27 | Album rows with `id` + `title` |
+| Album 494309801 | Title, `release_date`, track count |
+| Parse fail (bad id) | Error `kind: parse`, no uncaught exception |
+| Timeout (1ms) | Error `kind: timeout`, no hang |
 
-Optional: DevTools **offline** or block `api.deezer.com` → expect `network` / `timeout`-style failure from a happy-path button.
-
-Optional repeat runs after changing the client. Manual validation is **recorded** in [`docs/prd/phase3.md`](docs/prd/phase3.md) (2026-05-07).
+Optional: DevTools **offline** or block **`api.deezer.com`** on a happy-path button → `network` / timeout-style failure.
 
 ## Important documents
 
 - [`PLAN.md`](PLAN.md): v1 scope, phases, acceptance themes, risks, and decisions.
-- [`docs/prd/phase1.md`](docs/prd/phase1.md): Phase 1 PRD and execution log (CORS, JSONP, manual validation).
+- [`docs/prd/phase1.md`](docs/prd/phase1.md): Phase 1 PRD (CORS / JSONP).
 - [`docs/prd/phase2.md`](docs/prd/phase2.md): Phase 2 PRD (toolchain).
-- [`docs/prd/phase3.md`](docs/prd/phase3.md): Phase 3 PRD — Deezer client module (JSONP, three endpoints).
+- [`docs/prd/phase3.md`](docs/prd/phase3.md): Phase 3 PRD (Deezer client module).
+- [`reports/phase-1-report.md`](reports/phase-1-report.md): Phase 1 completion report.
+- [`docs/prd/phase4.md`](docs/prd/phase4.md): Phase 4 PRD — app shell, layout, state placeholders (mock data).
 - [`AGENTS.md`](AGENTS.md): rules for implementers and automation.
-- [`GLOSSARY.md`](GLOSSARY.md): explanation of technical terms used in the repo.
+- [`GLOSSARY.md`](GLOSSARY.md): technical terms used in this repo.
+
+For Phase PRDs and validation detail, prefer the PRDs above; reports summarize outcomes after local verification.
 
 ## v1 scope (summary)
 

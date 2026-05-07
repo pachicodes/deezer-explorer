@@ -97,7 +97,11 @@ Vite may **tree-shake** the client until product UI imports it; Phase 3 validati
 
 ### Notes for Phase 4
 
-- Pass **parsed models** into the shell; keep UI free of Deezer transport logic.
+- Follow [`phase4.md`](./phase4.md) for the app shell (mock data only). When Phase 5 wires data, pass **parsed models** from [`src/lib/deezer`](../../src/lib/deezer); keep transport logic out of presentational components.
+
+### Completion report
+
+- [`reports/phase-3-report.md`](../../reports/phase-3-report.md) — objective summary after implementation and local validation.
 
 ---
 

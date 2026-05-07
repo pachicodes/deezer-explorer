@@ -30,6 +30,10 @@ Alternative approach when the primary one fails. Example: if direct `fetch` fail
 
 Native browser API for HTTP requests.
 
+## JSONP (JSON with Padding)
+
+Legacy technique where the browser loads a **`<script>`** whose URL returns executable JavaScript that calls a named function with JSON data. Deezer Explorer uses JSONP (with `output=jsonp` and `callback`) as the **browser-safe** way to read v1 endpoints, because direct **`fetch`** from the page origin hits **CORS** limits against `api.deezer.com` (see Phase 1 PRD). Implementation: [`src/lib/deezer`](src/lib/deezer).
+
 ## GitHub Pages
 
 GitHub’s static hosting service. It is the intended production environment for Deezer Explorer.
