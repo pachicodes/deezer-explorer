@@ -155,6 +155,7 @@ When every checklist item below and manual step above is marked, Phase 8 is clos
 
 - **`npm run lint`** — **pass** — **2026-05-07**
 - **`npm run build`** — **pass** — **2026-05-07** (`dist/index.html` references **`/deezer-explorer/assets/*`**)
+- **`npm run preview`** — **pass** — **2026-05-07**: **`curl`** against **`http://127.0.0.1:4173/deezer-explorer/`** (entry), **`.../assets/*.css`**, **`.../assets/*.js`** → **HTTP 200** (parity with Pages **`base`** before live deploy).
 
 ### Decisions made during implementation
 
