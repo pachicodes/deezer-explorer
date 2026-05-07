@@ -1,3 +1,37 @@
+.app-skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  z-index: 10;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: #0958d9;
+  border-radius: 4px;
+  text-decoration: none;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+}
+
+.app-skip-link:focus,
+.app-skip-link:focus-visible {
+  clip-path: none;
+  clip: auto;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  outline: 2px solid #064194;
+  outline-offset: 2px;
+}
+
 .app {
   box-sizing: border-box;
   width: 100%;

@@ -37,6 +37,7 @@ function ResultThumb({ hit }: { hit: ArtistSearchHit }) {
     )
   }
 
+  /* Decorative image: artist name is in sibling `.shell-result-name` (Phase 7 PRD). */
   return (
     <img
       className="shell-result-thumb"
@@ -64,6 +65,7 @@ function AlbumCardCover({ card }: { card: AlbumCard }) {
     )
   }
 
+  /* Decorative image: album title is in sibling `.shell-card-title` (Phase 7 PRD). */
   return (
     <img
       className="shell-card-cover-img"
@@ -89,6 +91,7 @@ function DetailHeroCover({ detail }: { detail: AlbumDetail }) {
     )
   }
 
+  /* Decorative image: album title follows as `<h3>` (Phase 7 PRD). */
   return (
     <img
       className="shell-detail-cover-img"
@@ -150,7 +153,10 @@ function AlbumGridSection({
       )}
       {albumsSlice === 'error' && (
         <p className="shell-state-msg shell-error" role="alert">
-          {albumsError ?? 'Could not load albums'}
+          <span>{albumsError ?? 'Could not load albums'}</span>{' '}
+          <span className="shell-recovery-hint">
+            Try another artist or check your connection.
+          </span>
         </p>
       )}
       {albumsSlice === 'success' && (
@@ -280,7 +286,7 @@ export function AppShell() {
 
   return (
     <div className="shell-root">
-      <header className="shell-header">
+      <header className="shell-header" role="banner">
         <h1 className="shell-title">Deezer Explorer</h1>
         <p className="shell-lede">
           Search for an artist, browse albums, and open an album for tracks and
@@ -290,6 +296,7 @@ export function AppShell() {
 
       <section
         className="shell-region"
+        role="region"
         aria-labelledby="shell-search-heading"
         data-region="search"
       >
@@ -331,6 +338,7 @@ export function AppShell() {
 
       <section
         className="shell-region"
+        role="region"
         aria-labelledby="shell-results-heading"
         data-region="results"
       >
@@ -354,7 +362,10 @@ export function AppShell() {
         )}
         {resultsSlice === 'error' && (
           <p className="shell-state-msg shell-error" role="alert">
-            {resultsError ?? 'Something went wrong'}
+            <span>{resultsError ?? 'Something went wrong'}</span>{' '}
+            <span className="shell-recovery-hint">
+              Try searching again or check your connection.
+            </span>
           </p>
         )}
         {resultsSlice === 'success' && (
@@ -381,6 +392,7 @@ export function AppShell() {
 
       <section
         className="shell-region"
+        role="region"
         aria-labelledby="shell-albums-heading"
         data-region="albums"
       >
@@ -403,6 +415,7 @@ export function AppShell() {
 
       <section
         className="shell-region shell-region-detail"
+        role="region"
         aria-labelledby="shell-detail-heading"
         data-region="detail"
       >

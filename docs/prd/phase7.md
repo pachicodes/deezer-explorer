@@ -153,9 +153,9 @@ When every checklist item below and manual step above is marked, Phase 7 is clos
 
 | Topic | Decision |
 | --- | --- |
-| **Skip link** | *TBD* |
-| **`alt` strategy** | *TBD* |
-| **Escape key** | *TBD* |
+| **Skip link** | **Yes** — first tab stop before `<main>`; text **“Skip to search”**; target **`#shell-search-heading`** (Search region heading inside [`AppShell`](../../src/shell/AppShell.tsx)); visibly styled **only on `:focus`**. |
+| **`alt` strategy** | **Decorative catalog images:** **`alt=""`** for artist thumbnails, album grid covers, and detail hero — adjacent **`hit.name`**, button text (**album title** / meta), or **`detail.title`** carry the name (avoids double announcement). Placeholders already **`aria-hidden`**. |
+| **Escape key** | **Not wired** — no modal or overlay; **Back** / search suffice per PRD. Document only in execution log. |
 
 ### Automated verification log
 
